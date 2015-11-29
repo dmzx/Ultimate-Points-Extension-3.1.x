@@ -1,0 +1,3 @@
+dmzx_ultimatepoints_controller:
+    path: /ultimatepoints
+    defaults: { _controller: dmzx.ultimatepoints.controller:handle_ultimatepoints }

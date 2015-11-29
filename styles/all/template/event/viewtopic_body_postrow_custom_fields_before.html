@@ -1,0 +1,6 @@
+<!-- IF USE_POINTS -->
+	<dd><strong>{L_POINTS_CASH_ON_HAND}{L_COLON}</strong> <!-- IF postrow.POSTER_LOCK -->{L_POINTS_LOCKED}<!-- ELSE -->{postrow.POSTER_POINTS} <!-- IF USE_IMAGES_POINTS --><img src="{BOARD_URL}ext/dmzx/ultimatepoints/styles/all/theme/images/money.png" width="11px" height="11px" alt="" /><!-- ELSE -->{P_NAME}<!-- ENDIF --><!-- IF not postrow.S_IS_OWN_POST and S_USER_LOGGED_IN --><br /><a href="{postrow.U_POINTS_DONATE}">{postrow.L_DONATE}</a><!-- ELSE --><br /><!-- ENDIF --><a href="{postrow.U_POINTS_MODIFY}">{postrow.L_MOD_USER_POINTS}</a><!-- ENDIF --></dd>
+	<!-- IF USE_BANK and postrow.BANK_ACCOUNT -->
+		<dd><strong>{L_BANK_TITLE_MAIN}{L_COLON}</strong><!-- IF postrow.POSTER_BANK_LOCK --> {L_POINTS_LOCKED}<!-- ELSE --> {postrow.BANK_GOLD} <!-- IF USE_IMAGES_POINTS --><img src="{BOARD_URL}ext/dmzx/ultimatepoints/styles/all/theme/images/money.png" width="11px" height="11px" alt="" /><!-- ELSE -->{P_NAME}<!-- ENDIF --><br /><a href="{postrow.U_BANK_MODIFY}">{postrow.L_MOD_USER_POINTS}</a><!-- ENDIF --></dd>
+	<!-- ENDIF -->
+<!-- ENDIF -->

@@ -1,0 +1,89 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<!-- IF S_LOTTERY -->
+
+	<h1>{L_ACP_POINTS} - {L_ACP_POINTS_LOTTERY_TITLE}</h1>
+	<p>{L_ACP_POINTS_LOTTERY_EXPLAIN}</p>
+
+	<!-- IF S_ERROR -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERROR_MSG}</p>
+		</div>
+	<!-- ENDIF -->
+
+	<div class="successbox">{L_ACP_POINTS_VALUES_HINT}</div>
+
+	<form id="acp_lottery" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_LOTTERY_OPTIONS}</legend>
+			<dl>
+				<dt><label>{L_LOTTERY_ENABLE}{L_COLON}</label><br /><span>{L_LOTTERY_ENABLE_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="lottery_enable" value="1"<!-- IF LOTTERY_ENABLE --> id="lottery_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="lottery_enable" value="0"<!-- IF not LOTTERY_ENABLE --> id="lottery_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label for="lottery_name">{L_LOTTERY_NAME}{L_COLON}</label><br /><span>{L_LOTTERY_NAME_EXPLAIN}</span></dt>
+				<dd><input type="text" id="lottery_name" name="lottery_name" value="{LOTTERY_NAME}" maxlength="30" size="30" /></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_LOTTERY_MULTI_TICKETS}{L_COLON}</label><br /><span>{L_LOTTERY_MULTI_TICKETS_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="lottery_multi_ticket_enable" value="1"<!-- IF LOTTERY_MULTI_TICKET_ENABLE --> id="lottery_multi_ticket_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="lottery_multi_ticket_enable" value="0"<!-- IF not LOTTERY_MULTI_TICKET_ENABLE --> id="lottery_multi_ticket_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_LOTTERY_DISPLAY_STATS}{L_COLON}</label><br /><span>{L_LOTTERY_DISPLAY_STATS_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="display_lottery_stats" value="1"<!-- IF DISPLAY_LOTTERY_STATS --> id="display_lottery_stats" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="display_lottery_stats" value="0"<!-- IF not DISPLAY_LOTTERY_STATS --> id="display_lottery_stats" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label for="lottery_ticket_cost">{L_LOTTERY_TICKET_COST}{L_COLON}</label></dt>
+				<dd><input type="text" id="lottery_ticket_cost" name="lottery_ticket_cost" value="{LOTTERY_TICKET_COST}" maxlength="8" size="10" /> {LOTTERY_CASH_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="lottery_base_amount">{L_LOTTERY_BASE_AMOUNT}{L_COLON}</label><br /><span>{L_LOTTERY_BASE_AMOUNT_EXPLAIN}</span></dt>
+				<dd><input type="text" id="lottery_base_amount" name="lottery_base_amount" value="{LOTTERY_BASE_AMOUNT}" maxlength="8" size="10" /> {LOTTERY_CASH_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="lottery_chance">{L_LOTTERY_CHANCE}{L_COLON}</label><br /><span>{L_LOTTERY_CHANCE_EXPLAIN}</span></dt>
+				<dd><input type="text" id="lottery_chance" name="lottery_chance" value="{LOTTERY_CHANCE}" maxlength="8" size="10" /> %</dd>
+			</dl>
+			<dl>
+				<dt><label for="lottery_max_tickets">{L_LOTTERY_MAX_TICKETS}{L_COLON}</label><br /><span>{L_LOTTERY_MAX_TICKETS_EXPLAIN}</span></dt>
+				<dd><input type="text" id="lottery_max_tickets" name="lottery_max_tickets" value="{LOTTERY_MAX_TICKETS}" maxlength="8" size="10" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="lottery_draw_period">{L_LOTTERY_DRAW_PERIOD}{L_COLON}</label><br /><span>{L_LOTTERY_DRAW_PERIOD_EXPLAIN}</span></dt>
+				<dd><input type="text" id="lottery_draw_period" name="lottery_draw_period" value="{LOTTERY_DRAW_PERIOD}" maxlength="6" size="10" /> {L_HOURS}</dd>
+			</dl>
+			<dl>
+				<dt><label for="lottery_pm_from">{L_LOTTERY_PM_ID}{L_COLON}</label><br /><span>{L_LOTTERY_PM_ID_EXPLAIN}</span></dt>
+				<dd><input type="text" id="lottery_pm_from" name="lottery_pm_from" value="{LOTTERY_PM_FROM}" maxlength="6" size="10" /></dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<legend>{L_SUBMIT}</legend>
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+	</form>
+
+	<div class="errorbox">{L_RESYNC_ATTENTION}</div>
+
+	<form id="action_lottery_history_form" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_RESYNC_LOTTERY_HISTORY}</legend>
+			<dl>
+				<dt><label for="action_lottery_history">{L_RESYNC_LOTTERY_HISTORY}</label><br /><span>{L_RESYNC_LOTTERY_HISTORY_EXPLAIN}</span></dt>
+				<dd><input type="hidden" name="action" value="lottery_history" /><input class="button2" type="submit" id="action_lottery_history" name="action_lottery_history" value="{L_RUN}" /></dd>
+			</dl>
+		</fieldset>
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

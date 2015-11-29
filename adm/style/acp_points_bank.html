@@ -1,0 +1,71 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<!-- IF S_POINTS_BANK -->
+
+	<h1>{L_ACP_POINTS} - {L_ACP_POINTS_BANK_TITLE}</h1>
+	<p>{L_ACP_POINTS_BANK_EXPLAIN}</p>
+
+	<!-- IF S_ERROR -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERROR_MSG}</p>
+		</div>
+	<!-- ENDIF -->
+
+	<div class="successbox">{L_ACP_POINTS_VALUES_HINT}</div>
+
+	<form id="acp_bank" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_BANK_OPTIONS}</legend>
+			<dl>
+				<dt><label>{L_BANK_ENABLE}{L_COLON}</label><br /><span>{L_BANK_ENABLE_EXPLAIN}</span></dt>
+				<dd><label><input type="radio" class="radio" name="bank_enable" value="1"<!-- IF BANK_ENABLE --> id="bank_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="bank_enable" value="0"<!-- IF not BANK_ENABLE --> id="bank_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_name">{L_BANK_NAME}{L_COLON}</label><br /><span>{L_BANK_NAME_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_name" name="bank_name" value="{BANK_NAME}" maxlength="30" size="30" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_interest">{L_BANK_INTEREST}{L_COLON}</label><br /><span>{L_BANK_INTEREST_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_interest" name="bank_interest" value="{BANK_INTEREST}" maxlength="10" size="10" /> %</dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_fees">{L_BANK_FEES}{L_COLON}</label><br /><span>{L_BANK_FEES_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_fees" name="bank_fees" value="{BANK_FEES}" maxlength="10" size="10" /> %</dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_pay_period">{L_BANK_PAY}{L_COLON}</label><br /><span>{L_BANK_PAY_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_pay_period" name="bank_pay_period" value="{BANK_PAY_PERIOD}" maxlength="5" size="10" /> {L_BANK_TIME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_min_withdraw">{L_BANK_MINWITHDRAW}{L_COLON}</label><br /><span>{L_BANK_MINWITHDRAW_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_min_withdraw" name="bank_min_withdraw" value="{BANK_MIN_WITHDRAW}" maxlength="8" size="10" /> {BANK_POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_min_deposit">{L_BANK_MINDEPOSIT}{L_COLON}</label><br /><span>{L_BANK_MINDEPOSIT_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_min_deposit" name="bank_min_deposit" value="{BANK_MIN_DEPOSIT}" maxlength="8" size="10" /> {BANK_POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_interestcut">{L_BANK_INTERESTCUT}{L_COLON}</label><br /><span>{L_BANK_INTERESTCUT_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_interestcut" name="bank_interestcut" value="{BANK_INTERESTCUT}" maxlength="15" size="10" /> {BANK_POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="bank_cost">{L_BANK_COST}{L_COLON}</label><br /><span>{L_BANK_COST_EXPLAIN}</span></dt>
+				<dd><input type="text" id="bank_cost" name="bank_cost" value="{BANK_COST}" maxlength="8" size="10" /> {BANK_POINTS_NAME}</dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<legend>{L_SUBMIT}</legend>
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

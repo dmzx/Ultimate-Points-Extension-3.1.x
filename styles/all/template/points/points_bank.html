@@ -1,0 +1,136 @@
+<!-- INCLUDE overall_header.html -->
+
+<div id="tabs">
+	<ul>
+		<li class="tab"><a href="{U_POINTS}">{L_POINTS_OVERVIEW}</a></li>
+		<li class="tab"><a href="{U_INFO}">{L_POINTS_INFO}</a></li>
+		<!-- IF TRANSFER_ENABLE and U_USE_TRANSFER --><li class="tab"><a href="{U_TRANSFER_USER}">{L_POINTS_TRANSFER}</a></li><!-- ENDIF -->
+		<!-- IF LOGS_ENABLE and U_USE_LOGS --><li class="tab"><a href="{U_LOGS}">{L_POINTS_LOGS}</a></li><!-- ENDIF -->
+		<!-- IF LOTTERY_ENABLE and U_USE_LOTTERY --><li class="tab"><a href="{U_LOTTERY}">{LOTTERY_NAME}</a></li><!-- ENDIF -->
+		<!-- IF BANK_ENABLE and U_USE_BANK --><li class="tab activetab"><a href="{U_BANK}">{BANK_NAME}</a></li><!-- ENDIF -->
+		<!-- IF ROBBERY_ENABLE and U_USE_ROBBERY --><li class="tab"><a href="{U_ROBBERY}">{L_POINTS_ROBBERY}</a></li><!-- ENDIF -->
+	</ul>
+</div>
+
+<div class="panel bg3">
+	<div class="inner">
+		<div id="cp-menu">
+			<div class="cp-mini">
+				<div class="inner">
+					<dl>
+						<dd>
+							<h3>{L_BANK_RICHEST_USER}</h3>
+						</dd>
+						<!-- IF S_DISPLAY_INDEX -->
+							<dt>
+								<!-- BEGIN bank -->
+									<span style="float:left; padding-left:5px; padding-top:2px;">{bank.USERNAME}</span>
+									<span style="float:right;padding-right:10px; padding-top:2px;">{bank.POINT}</span>
+									<br style="clear:both" />
+								<!-- BEGINELSE -->
+									{BANK_NOBODY_IN_BANK}
+								<!-- END bank -->
+							</dt>
+						<!-- ELSE -->
+							<dt>{L_POINTS_MOST_RICH_USERS_DISABLED}</dt>
+						<!-- ENDIF -->
+					</dl>
+				</div>
+			</div>
+			<div class="cp-mini">
+				<div class="inner">
+					<dl class="mini">
+						<dd><h3>{L_POINTS_DESCRIPTION}</h3></dd>
+						<dd>{L_BANK_DESCRIPTION}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+
+		<div id="cp-main" class="ucp-main">
+			<h2>{BANK_NAME}</h2>
+			<div class="panel">
+				<div class="inner">
+					<fieldset>
+						<!-- IF S_USER_LOGGED_IN -->
+							<!-- BEGIN has_account -->
+								<h3>{L_BANK_ACTIONS}</h3>
+								<form id="bank_deposit" method="post" action="{U_DEPOSIT}">
+									<dl>
+										<dt><label><input type="submit" tabindex="2" name="deposit" value="{L_BANK_BUTTON_DEPOSIT}" class="button1" /></label></dt>
+										<dd><input type="text" tabindex="1" maxlength="10" class="inputbox autowidth" title="{L_POINTS_NUMBER_FORMAT_EXPLAIN}" name="deposit" size="20" value="{USER_GOLD}" /> {POINTS_NAME}{S_FORM_TOKEN}</dd>
+									</dl>
+								</form>
+								<form id="bank_withdraw" method="post" action="{U_WITHDRAW}">
+									<dl>
+										<dt><label><input type="submit" tabindex="4"	name="withdraw" value="{L_BANK_BUTTON_WITHDRAW}" class="button1" /></label></dt>
+										<dd><input type="text" tabindex="3" maxlength="10" class="inputbox autowidth" title="{L_POINTS_NUMBER_FORMAT_EXPLAIN}" name="withdraw" size="20" value="{USER_WITHDRAW}" /> {POINTS_NAME}{S_FORM_TOKEN}</dd>
+									</dl>
+								</form>
+							<!-- END has_account -->
+							<!-- BEGIN no_account -->
+								<p>{no_account.USER_NO_ACCOUNT}</p>
+								<p><strong>{no_account.OPEN_ACCOUNT}</strong></p>
+							<!-- END no_account -->
+						<!-- ELSE -->
+							<p>{L_POINTS_BOT_GUEST}</p>
+						<!-- ENDIF -->
+						<h3>{L_BANK_INFO}</h3>
+						<!-- BEGIN has_account -->
+							<dl>
+								<dt>{L_BANK_BALANCE}{L_COLON}</dt>
+								<dd>{USER_BALANCE} {POINTS_NAME}</dd>
+							</dl>
+						<!-- END has_account -->
+						<dl>
+							<dt>{L_BANK_INTEREST_RATE}{L_COLON}</dt>
+							<dd>{BANK_INTEREST}%</dd>
+						</dl>
+						<dl>
+							<dt>{L_BANK_INTEREST_PERIOD}{L_COLON}</dt>
+							<dd>{BANK_INTEREST_PERIOD}</dd>
+						</dl>
+						<dl>
+							<dt>{L_BANK_MAX_HOLD}{L_COLON}</dt>
+							<dd>{BANK_MAX_HOLD} {POINTS_NAME}</dd>
+						</dl>
+						<!-- BEGIN switch_withdraw_fees -->
+							<dl>
+								<dt>{L_BANK_WITHDRAW_RATE}{L_COLON}</dt>
+								<dd>{BANK_FEES}%</dd>
+							</dl>
+						<!-- END switch_withdraw_fees -->
+						<dl>
+							<dt>{L_BANK_COST}{L_COLON}</dt>
+							<dd>{BANK_COST} {POINTS_NAME}</dd>
+						</dl>
+						<!-- BEGIN switch_min_depo -->
+							<dl>
+								<dt>{L_BANK_MIN_DEPO}{L_COLON}</dt>
+								<dd>{BANK_MIN_DEPO} {POINTS_NAME}</dd>
+							</dl>
+						<!-- END switch_min_depo -->
+						<!-- BEGIN switch_min_with -->
+							<dl>
+								<dt>{L_BANK_MIN_WITH}{L_COLON}</dt>
+								<dd>{BANK_MIN_WITH} {POINTS_NAME}</dd>
+							</dl>
+						<!-- END switch_min_with -->
+						<dl>
+							<dt>{L_BANK_TOTAL_ACCOUNTS}{L_COLON}</dt>
+							<dd>{BANK_ACCOUNTS}</dd>
+						</dl>
+						<dl>
+							<dt>{L_BANK_HOLDING}{L_COLON}</dt>
+							<dd>{BANK_HOLDINGS} {POINTS_NAME}</dd>
+						</dl>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br /><div style="text-align: center;" class="copyright">{L_POINTS_COPYRIGHT}{POINT_VERS}<br />{L_POINTS_COPYRIGHTS}</div>
+
+<!-- INCLUDE overall_footer.html -->

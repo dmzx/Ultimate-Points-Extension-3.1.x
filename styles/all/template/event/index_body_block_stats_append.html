@@ -1,0 +1,9 @@
+<!-- IF S_DISPLAY_POINTS_STATS -->
+	<h3>{L_POINTS_STATISTICS}</h3>
+	<p>{TOTAL_POINTS_USER} &bull; {TOTAL_BANK_USER} &bull; {TOTAL_BANK_POINTS} <!-- IF S_DISPLAY_LOTTERY --> &bull; {LOTTERY_TIME} <!-- ENDIF --></p>
+
+	<!-- IF S_DISPLAY_INDEX -->
+		<h3>{L_POINTS_MOST_RICH_USERS}</h3>
+		<p><!-- BEGIN rich_user --><!-- IF not rich_user.S_FIRST_ROW --> &bull; <!-- ENDIF -->{rich_user.USERNAME} ({rich_user.SUM_POINTS} {rich_user.SUM_POINTS_NAME})<!-- END rich_user --></p>
+	<!-- ENDIF -->
+<!-- ENDIF -->

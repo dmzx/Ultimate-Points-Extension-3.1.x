@@ -1,0 +1,236 @@
+<!-- INCLUDECSS css/ultimatepointsacp.css -->
+<!-- INCLUDE overall_header.html -->
+<h1 class="ExtensionName"><!-- IF META_DISPLAY_NAME -->{META_DISPLAY_NAME} - {L_ACP_POINTS_INDEX_TITLE}<!-- ENDIF --></h1>
+<!-- IF S_VERSIONCHECK && S_UP_TO_DATE -->
+	<div class="description_bubble small_bubble" title="{UP_TO_DATE_MSG}">
+		<span class="description_name">{L_VERSION}</span>
+		<span class="description_value description_value_ok" id="meta_version">{META_VERSION}</span>
+	</div>
+	<!-- ELSE IF S_VERSIONCHECK && not S_UP_TO_DATE -->
+	<div class="description_bubble small_bubble" title="{UP_TO_DATE_MSG}">
+		<span class="description_name">{L_VERSION}</span>
+		<span class="description_value description_value_old" id="meta_version">{META_VERSION}</span>
+	</div>
+	<!-- ELSE -->
+	<div class="description_bubble small_bubble">
+		<span class="description_name">{L_VERSION}</span>
+		<span class="description_value" id="meta_version">{META_VERSION}</span>
+	</div>
+<!-- ENDIF -->
+<!-- IF S_VERSIONCHECK && not S_UP_TO_DATE -->
+	<!-- BEGIN updates_available -->
+		<fieldset>
+			<span class="requirements_title">{L_LATEST_VERSION}</span>
+			<div class="extension_latest_version_wrapper">
+				<strong class="extension_latest_version">{updates_available.current}</strong>
+				<!-- IF updates_available.download-->
+				<a href="{updates_available.download}" class="extension_author_link" title="{L_DOWNLOAD_LATEST}">{L_DOWNLOAD} {META_NAME} {LATEST_VERSION}</i></a>
+				<!-- ENDIF -->
+				<!-- IF updates_available.announcement -->
+				<a href="{updates_available.announcement}" class="extension_author_link" title="{L_ANNOUNCEMENT_TOPIC}">{L_RELEASE_ANNOUNCEMENT}</i></a>
+				<!-- ENDIF -->
+			</div>
+		</fieldset>
+	<!-- END updates_available -->
+<!-- ENDIF -->
+
+<a name="maincontent"></a>
+
+<!-- IF S_POINTS_MAIN -->
+
+	<p>{L_ACP_POINTS_INDEX_EXPLAIN}</p>
+
+	<!-- IF not S_POINTS_ACTIVATED -->
+		<div class="errorbox">{L_ACP_POINTS_DEACTIVATED}</div>
+	<!-- ENDIF -->
+
+	<div class="successbox">{L_ACP_POINTS_VALUES_HINT}</div>
+
+	<form id="acp_points_main" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_ACP_POINTS_INDEX_TITLE}</legend>
+			<dl>
+				<dt><label>{L_POINTS_NAME}{L_COLON}</label><br />{L_POINTS_NAME_EXPLAIN}</dt>
+				<dd><input name="points_name" type="text" id="points_name" size="30" maxlength="30" value="{POINTS_NAME}" /></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_ENABLE}{L_COLON}</label><br />{L_POINTS_ENABLE_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="points_enable" value="1"<!-- IF POINTS_ENABLE --> id="points_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="points_enable" value="0"<!-- IF not POINTS_ENABLE --> id="points_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_DISABLEMSG}{L_COLON}</label><br />{L_POINTS_DISABLEMSG_EXPLAIN}</dt>
+				<dd><input name="points_disablemsg" type="text" id="points_disablemsg" size="50" maxlength="50" value="{POINTS_DISABLEMSG}" /></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_TRANSFER}{L_COLON}</label><br />{L_POINTS_TRANSFER_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="transfer_enable" value="1"<!-- IF TRANSFER_ENABLE --> id="transfer_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="transfer_enable" value="0"<!-- IF not TRANSFER_ENABLE --> id="transfer_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_STATS}{L_COLON}</label><br />{L_POINTS_STATS_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="stats_enable" value="1"<!-- IF STATS_ENABLE --> id="stats_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="stats_enable" value="0"<!-- IF not STATS_ENABLE --> id="stats_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_TRANSFER_PM}{L_COLON}</label><br />{L_POINTS_TRANSFER_PM_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="transfer_pm_enable" value="1"<!-- IF TRANSFER_PM_ENABLE --> id="transfer_pm_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="transfer_pm_enable" value="0"<!-- IF not TRANSFER_PM_ENABLE --> id="transfer_pm_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_COMMENTS}{L_COLON}</label><br />{L_POINTS_COMMENTS_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="comments_enable" value="1"<!-- IF COMMENTS_ENABLE --> id="comments_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="comments_enable" value="0"<!-- IF not COMMENTS_ENABLE --> id="comments_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_LOGS}{L_COLON}</label><br />{L_POINTS_LOGS_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="logs_enable" value="1"<!-- IF LOGS_ENABLE --> id="logs_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="logs_enable" value="0"<!-- IF not LOGS_ENABLE --> id="logs_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_IMAGES_TOPIC}{L_COLON}</label><br />{L_POINTS_IMAGES_TOPIC_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="images_topic_enable" value="1"<!-- IF IMAGES_TOPIC_ENABLE --> id="images_topic_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="images_topic_enable" value="0"<!-- IF not IMAGES_TOPIC_ENABLE --> id="images_topic_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_IMAGES_MEMBERLIST}{L_COLON}</label><br />{L_POINTS_IMAGES_MEMBERLIST_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="images_memberlist_enable" value="1"<!-- IF IMAGES_MEMBERLIST_ENABLE --> id="images_memberlist_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="images_memberlist_enable" value="0"<!-- IF not IMAGES_MEMBERLIST_ENABLE --> id="images_memberlist_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+		</fieldset>
+
+		<fieldset>
+			<legend>{L_POINTS_ADV_OPTIONS}</legend>
+			<p>{L_POINTS_ADV_OPTIONS_EXPLAIN}</p>
+			<dl>
+				<dt><label for="points_per_attach">{L_POINTS_ATTACHMENT}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_attach" name="points_per_attach" value="{POINTS_PER_ATTACH}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_attach_file">{L_POINTS_ATTACHMENT_PER_FILE}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_attach_file" name="points_per_attach_file" value="{POINTS_PER_ATTACH_FILE}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_poll">{L_POINTS_POLL}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_poll" name="points_per_poll" value="{POINTS_PER_POLL}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_poll_option">{L_POINTS_POLL_PER_OPTION}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_poll_option" name="points_per_poll_option" value="{POINTS_PER_POLL_OPTION}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_topic_word">{L_POINTS_TOPIC_PER_WORD}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_topic_word" name="points_per_topic_word" value="{POINTS_PER_TOPIC_WORD}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_topic_character">{L_POINTS_TOPIC_PER_CHARACTER}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_topic_character" name="points_per_topic_character" value="{POINTS_PER_TOPIC_CHARACTER}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_post_word">{L_POINTS_POST_PER_WORD}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_post_word" name="points_per_post_word" value="{POINTS_PER_POST_WORD}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_post_character">{L_POINTS_POST_PER_CHARACTER}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_post_character" name="points_per_post_character" value="{POINTS_PER_POST_CHARACTER}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="points_per_warn">{L_POINTS_WARN}{L_COLON}</label></dt>
+				<dd><input type="text" id="points_per_warn" name="points_per_warn" value="{POINTS_PER_WARN}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="reg_points_bonus">{L_REG_POINTS_BONUS}{L_COLON}</label></dt>
+				<dd><input type="text" id="reg_points_bonus" name="reg_points_bonus" value="{REG_POINTS_BONUS}" maxlength="8" size="10" /> {POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label for="number_show_per_page">{L_POINTS_SHOW_PER_PAGE}{L_COLON}</label><br />{L_POINTS_SHOW_PER_PAGE_EXPLAIN}</dt>
+				<dd><input type="text" id="number_show_per_page" name="number_show_per_page" value="{NUMBER_SHOW_PER_PAGE}" maxlength="5" size="5" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="number_show_top_points">{L_TOP_POINTS}{L_COLON}</label><br />{L_TOP_POINTS_EXPLAIN}</dt>
+				<dd><input type="text" id="number_show_top_points" name="number_show_top_points" value="{NUMBER_SHOW_TOP_POINTS}" maxlength="5" size="5" /></dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<legend>{L_SUBMIT}</legend>
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+	</form>
+
+	<form id="postform" action="{U_ACTION}" method="post" enctype="multipart/form-data">
+		<fieldset>
+			<legend>{L_POINTS_GROUP_TRANSFER}</legend>
+			<p>{L_POINTS_GROUP_TRANSFER_EXPLAIN}</p>
+			<dl>
+				<dt><label>{L_POINTS_GROUP_TRANSFER_USER}{L_COLON}</label></dt>
+				<dd><select name="group_id" id="group_id">{S_GROUP_OPTIONS}</select></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_GROUP_TRANSFER_VALUE}{L_COLON}</label></dt>
+				<dd><input type="text" tabindex="1" class="post" name="group_transfer_points" size="20" maxlength="18" />&nbsp;{POINTS_NAME}</dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_GROUP_TRANSFER_PM_TITLE}{L_COLON}</label></dt>
+				<dd><input type="text" tabindex="3" class="post" name="pm_subject" size="40" maxlength="255" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="message">{L_POINTS_GROUP_TRANSFER_PM_COMMENT}{L_COLON}</label></dt>
+				<dd><textarea id="message" tabindex="4" name="pm_text" cols="60" rows="4" >{COMMENT}</textarea></dd>
+				<dd><a href="{U_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_POINTS_SMILIES}</a>
+
+					<script type="text/javascript">
+					// <![CDATA[
+						var form_name = 'postform';
+						var text_name = 'message';
+						var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]','[size=]','[/size]');
+					// ]]>
+					</script>
+					<!-- INCLUDEJS editor.js -->
+					<script type="text/javascript" src="{T_TEMPLATE_PATH}/editor.js"></script>
+					<input type="button" class="button2" accesskey="b" name="addbbcode0" value=" B " style="font-weight:bold; width: 30px" onclick="bbstyle(0)" />
+					<input type="button" class="button2" accesskey="i" name="addbbcode2" value=" i " style="font-style:italic; width: 30px" onclick="bbstyle(2)" />
+					<input type="button" class="button2" accesskey="u" name="addbbcode4" value=" u " style="text-decoration: underline; width: 30px" onclick="bbstyle(4)" />
+					<input type="button" class="button2" accesskey="q" name="addbbcode6" value="Quote" style="width: 50px" onclick="bbstyle(6)" />
+					<input type="button" class="button2" accesskey="c" name="addbbcode8" value="Code" style="width: 40px" onclick="bbstyle(8)" />
+					<input type="button" class="button2" accesskey="l" name="addbbcode10" value="List" style="width: 40px" onclick="bbstyle(10)" />
+					<input type="button" class="button2" accesskey="o" name="addbbcode12" value="List=" style="width: 40px" onclick="bbstyle(12)" />
+					<input type="button" class="button2" accesskey="t" name="addlitsitem" value="[*]" style="width: 40px" onclick="bbstyle(-1)" />
+					<input type="button" class="button2" accesskey="p" name="addbbcode14" value="Img" style="width: 40px" onclick="bbstyle(14)" />
+					<input type="button" class="button2" accesskey="w" name="addbbcode16" value="URL" style="text-decoration: underline; width: 40px" onclick="bbstyle(16)" />
+
+				</dd>
+			</dl>
+			<dl>
+				<dt><label>{L_POINTS_GROUP_TRANSFER_FUNCTION}{L_COLON}</label></dt>
+				<dd><label><input type="radio" tabindex="5" class="radio" name="func" value="add" checked="checked"/> {L_POINTS_GROUP_TRANSFER_ADD}</label><label><input type="radio" tabindex="6" class="radio" name="func" value="substract"/> {L_POINTS_GROUP_TRANSFER_SUBSTRACT}</label><label><input type="radio" tabindex="7" class="radio" name="func" value="set"/> {L_POINTS_GROUP_TRANSFER_SET}</label></dd>
+			</dl>
+			<p class="submit-buttons">
+				<input type="submit" tabindex="8" name="group_transfer" value="{L_SUBMIT}" class="button1" />&nbsp;&nbsp;<input type="reset" tabindex="8" value="{L_RESET}" class="button2" />
+				{S_FORM_TOKEN}
+			</p>
+		</fieldset>
+	</form>
+
+	<div class="errorbox">{L_RESYNC_ATTENTION}</div>
+
+	<fieldset>
+		<legend>{L_RESYNC_DESC}</legend>
+		<form id="action_points_form" method="post" action="{U_ACTION}">
+			<dl>
+				<dt><label for="action_points">{L_RESYNC_POINTS}</label><br /><span>{L_RESYNC_POINTS_EXPLAIN}</span></dt>
+				<dd><input type="hidden" name="action" value="points" /><input class="button2" type="submit" id="action_points" name="action_points" value="{L_RUN}" /></dd>
+			</dl>
+		</form>
+		<form id="action_points_logs_form" method="post" action="{U_ACTION}">
+			<dl>
+				<dt><label for="action_points_logs">{L_RESYNC_POINTSLOGS}</label><br /><span>{L_RESYNC_POINTSLOGS_EXPLAIN}</span></dt>
+				<dd><input type="hidden" name="action" value="points_logs" /><input class="button2" type="submit" id="action_points_logs" name="action_points_logs" value="{L_RUN}" /></dd>
+			</dl>
+		</form>
+	</fieldset>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

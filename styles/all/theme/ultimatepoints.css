@@ -1,0 +1,32 @@
+/*  Ultimate Points Styling
+--------------------------- */
+
+.icon-points { 
+  background-image: url("./images/icon_points.gif"); 
+  
+}
+
+table.table1 thead.logs_head th {
+	color: #303333;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.back-lottery {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.points-main-main {
+	float: left;
+	clear: left;
+	width: 40%;
+}
+
+.points-main-lists {
+	float: right;
+	width: 12%;
+	margin: 4px;
+	margin-top: 0;
+}
+	

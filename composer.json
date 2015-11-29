@@ -1,0 +1,56 @@
+{
+	"name": "dmzx/ultimatepoints",
+	"type": "phpbb-extension",
+	"description": "The Ultimate Points is an addition to your phpBB3 forum, where people can gain points and also are able to spend points, of course.",
+	"homepage": "http://www.dmzx-web.net",
+	"version": "1.0.0",
+	"time": "2015-11-22",
+	"keywords": ["phpbb", "extension", "ultimatepoints"],
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "dmzx",
+			"homepage": "http://www.dmzx-web.net",
+			"email": "info@dmzx-web.net",
+			"role": "3.1 Extension Developer"
+		},
+		{
+			"name": "posey",
+			"homepage": "http://www.godfathertalks.com",
+			"email": "admin@godfathertalks.com",
+			"role": "3.1 Extension Developer"
+		},
+		{
+			"name": "Felix Mueller (femu)",
+			"homepage": "http://www.die-muellers.org",
+			"role": "3.0 Modification Developer"
+		},
+		{
+			"name": "Christian Nowak (Wuerzi)",
+			"homepage": "http://www.spieleresidenz.de",
+			"role": "3.0 Modification Developer"
+		},
+		{
+			"name": "Vladimir Sokolov (el_teniente)",
+			"homepage": "http://vfalcone.ru/forum/",
+			"role": "3.0 Modification Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "Ultimate Points",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.0,<3.2.*@dev"
+		},
+		"version-check": {
+			"host": "www.dmzx-web.net",
+			"directory": "/versions",
+			"filename": "ultimatepoints_version.json"
+		}
+	}
+}
