@@ -418,7 +418,7 @@ class admin_controller
 				'FROM'		=> array(
 					USER_GROUP_TABLE => 'g',
 				),
-				'WHERE'	=> 'user_pending <> ' . TRUE . '
+				'WHERE'	=> 'user_pending <> ' . true . '
 					AND group_id = ' . (int) $group_id,
 			);
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -477,7 +477,7 @@ class admin_controller
 							'FROM'		=> array(
 								USER_GROUP_TABLE => 'g',
 							),
-							'WHERE'	=> 'user_pending <> ' . TRUE . '
+							'WHERE'	=> 'user_pending <> ' . true . '
 								AND group_id = ' . (int) $group_id,
 						);
 						$sql = $this->db->sql_build_query('SELECT', $sql_array);

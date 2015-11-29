@@ -455,7 +455,7 @@ class points_lottery
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 
-			if ($row == NULL)
+			if ($row == null)
 			{
 				$username_colored = $this->user->lang['LOTTERY_NO_WINNER'];
 			}

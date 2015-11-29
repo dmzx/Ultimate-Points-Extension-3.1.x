@@ -39,7 +39,7 @@ class ultimatepoints_module
 				$this->page_title = $user->lang['ACP_POINTS_INDEX_TITLE'];
 				// Load the display points in the admin controller
 				$admin_controller->display_points();
-		 	break;
+			break;
 
 			case 'lottery':
 				// Load a template from adm/style for our ACP page

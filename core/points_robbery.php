@@ -206,7 +206,7 @@ class points_robbery
 			);
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
-			$user_row = $this->db->sql_fetchrow($result);;
+			$user_row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
 			// If no matching user id is found

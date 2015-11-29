@@ -163,7 +163,7 @@ class points_transfer_user
 			$transfer_user = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
-			if ($transfer_user == NULL)
+			if ($transfer_user == null)
 			{
 				$message = $this->user->lang['TRANSFER_NO_USER_RETURN'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
