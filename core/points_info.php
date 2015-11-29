@@ -93,7 +93,6 @@ class points_info
 		$info_topic_character	= ($points_values['points_per_topic_character'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['points_per_topic_character']) . '&nbsp;' . $this->config['points_name']);
 		$info_post_word			= ($points_values['points_per_post_word'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['points_per_post_word']) . '&nbsp;' . $this->config['points_name']);
 		$info_post_character	= ($points_values['points_per_post_character'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['points_per_post_character']) . '&nbsp;' . $this->config['points_name']);
-		$info_cost_dl_attach	= ($points_values['points_dl_cost_per_attach'] == 0) ? sprintf($this->user->lang['INFO_NO_COST'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['points_dl_cost_per_attach']) . '&nbsp;' . $this->config['points_name']);
 		$info_cost_warning		= ($points_values['points_per_warn'] == 0) ? sprintf($this->user->lang['INFO_NO_COST'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['points_per_warn']) . '&nbsp;' . $this->config['points_name']);
 		$info_reg_bonus			= ($points_values['reg_points_bonus'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['reg_points_bonus']) . '&nbsp;' . $this->config['points_name']);
 
@@ -112,7 +111,6 @@ class points_info
 			'INFO_TOPIC_CHARACTER'		=> $info_topic_character,
 			'INFO_POST_WORD'			=> $info_post_word,
 			'INFO_POST_CHARACTER'		=> $info_post_character,
-			'INFO_COST_DL_ATTACH'		=> $info_cost_dl_attach,
 			'INFO_COST_WARNING'			=> $info_cost_warning,
 			'INFO_REG_BONUS'			=> $info_reg_bonus,
 
