@@ -82,7 +82,7 @@ class points_transfer
 		$this->helper 				= $helper;
 		$this->phpEx 				= $phpEx;
 		$this->phpbb_root_path 		= $phpbb_root_path;
-		$this->points_bank_table 	= $points_log_table;
+		$this->points_log_table 	= $points_log_table;
 		$this->points_config_table 	= $points_config_table;
 	}
 
