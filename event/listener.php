@@ -311,24 +311,10 @@ class listener implements EventSubscriberInterface
 		$result = $this->db->sql_query($sql);
 		$holding = $this->db->sql_fetchfield('holding');
 
-		// Are points enabled?
-		if ($this->config['points_enable'])
-		{
-			// User allowed to use points?
-			$pointslock = !$this->auth->acl_get('u_use_points');
-
-			// Is bank enabled?
-			if ($points_config['bank_enable'])
-			{
-				// User allowed to use bank?
-				$banklock = !$this->auth->acl_get('u_use_bank');
-			}
-		}
-
 		$this->template->assign_vars(array(
 			'USER_PROF_POINTS'		=> $this->functions_points->number_format_points($user_points),
-			'USER_LOCK'				=> $pointslock,
-			'USER_BANK_LOCK'		=> $banklock,
+			'USER_LOCK'				=> !$this->auth->acl_get('u_use_points'),
+			'USER_BANK_LOCK'		=> !$this->auth->acl_get('u_use_bank'),
 			'USER_BANK_ACC'			=> ($holding) ? true : false,
 			'USER_BANK_POINTS'		=> $this->functions_points->number_format_points($holding),
 			'L_USER_NO_BANK_ACC'	=> sprintf($this->user->lang['BANK_NO_ACCOUNT'], $points_values['bank_name']),
