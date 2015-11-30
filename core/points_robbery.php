@@ -316,7 +316,7 @@ class points_robbery
 
 					if ($points_config['robbery_notify'])
 					{
-				
+
 						// Increase robbery notification ID
 						$sql = 'UPDATE ' . $this->points_values_table . '
 								SET robbery_notify_id = robbery_notify_id + 1';

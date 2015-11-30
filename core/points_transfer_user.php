@@ -230,7 +230,7 @@ class points_transfer_user
 			// Send pm to receiver, if PM is enabled
 			if (!$points_config['transfer_pm_enable'] == 0 && $transfer_user['user_allow_pm'])
 			{
-		
+
 				$points_name = $this->config['points_name'];
 				$comment = $this->db->sql_escape($comment);
 				$pm_subject	= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_SUBJECT']));
