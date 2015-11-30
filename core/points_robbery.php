@@ -316,12 +316,7 @@ class points_robbery
 
 					if ($points_config['robbery_notify'])
 					{
-						// Select the receiver language
-						$user_row['user_lang'] = (file_exists($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . $user_row['user_lang'] . "/common.{$this->phpEx}")) ? $user_row['user_lang'] : $this->config['default_lang'];
-
-						// load receivers language
-						include($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . basename($user_row['user_lang']) . "/common.{$this->phpEx}");
-
+				
 						// Increase robbery notification ID
 						$sql = 'UPDATE ' . $this->points_values_table . '
 								SET robbery_notify_id = robbery_notify_id + 1';

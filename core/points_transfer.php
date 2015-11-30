@@ -194,16 +194,10 @@ class points_transfer
 				$user_row = $this->db->sql_fetchrow($result);
 				$this->db->sql_freeresult($result);
 
-				// Select the receiver language
-				$user_row['user_lang'] = (file_exists($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . $user_row['user_lang'] . "/common.{$this->phpEx}")) ? $user_row['user_lang'] : $this->config['default_lang'];
-
-				// load receivers language
-				include($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . basename($user_row['user_lang']) . "/common.{$this->phpEx}");
-
 				$points_name 	= $this->config['points_name'];
 				$comment 		= $this->db->sql_escape($comment);
-				$pm_subject		= utf8_normalize_nfc(sprintf($lang['TRANSFER_PM_SUBJECT']));
-				$pm_text		= utf8_normalize_nfc(sprintf($lang['TRANSFER_PM_BODY'], $am, $points_name, $text));
+				$pm_subject		= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_SUBJECT']));
+				$pm_text		= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_BODY'], $am, $points_name, $text));
 
 				$poll = $uid = $bitfield = $options = '';
 				generate_text_for_storage($pm_subject, $uid, $bitfield, $options, false, false, false);

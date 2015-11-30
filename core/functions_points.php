@@ -388,12 +388,6 @@ class functions_points
 
 				if ($lottery_enabled != 0)
 				{
-					// Select the receiver language
-					$winner['user_lang'] = (file_exists($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . $winner['user_lang'] . "/common.{$this->phpEx}")) ? $winner['user_lang'] : $this->config['default_lang'];
-
-					// load receivers language
-					include($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . basename($winner['user_lang']) . "/common.{$this->phpEx}");
-
 					$winnings_update = $winner['user_points'] + $this->points_values('lottery_jackpot');
 					$this->set_points($winner['user_id'], $winnings_update);
 
