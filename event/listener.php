@@ -485,7 +485,7 @@ class listener implements EventSubscriberInterface
 			'SELECT'	=> 'f.forum_cost',
 
 			'FROM'		=> array(
-				FORUMS_WATCH_TABLE	=> 'f',
+				FORUMS_TABLE	=> 'f',
 			),
 
 			'LEFT_JOIN' => array(
