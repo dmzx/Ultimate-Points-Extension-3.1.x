@@ -2,8 +2,7 @@
 --------------------------- */
 
 .icon-points { 
-  background-image: url("./images/icon_points.gif"); 
-  
+  background-image: url("./images/icon_points.gif");
 }
 
 table.table1 thead.logs_head th {
@@ -29,4 +28,3 @@ table.table1 thead.logs_head th {
 	margin: 4px;
 	margin-top: 0;
 }
-	

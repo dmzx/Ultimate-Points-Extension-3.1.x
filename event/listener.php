@@ -106,6 +106,7 @@ class listener implements EventSubscriberInterface
 			'core.index_modify_page_title'					=> 'index_modify_page_title',
 			'core.memberlist_view_profile'					=> 'memberlist_view_profile',
 			'core.viewtopic_assign_template_vars_before'	=> 'viewtopic_assign_template_vars_before',
+			'core.parse_attachments_modify_template_data'	=> 'parse_attachments_modify_template_data',
 			'core.viewtopic_get_post_data'					=> 'viewtopic_get_post_data',
 			'core.viewtopic_post_rowset_data'				=> 'viewtopic_post_rowset_data',
 			'core.viewtopic_modify_post_row'				=> 'viewtopic_modify_post_row',
@@ -121,6 +122,8 @@ class listener implements EventSubscriberInterface
 			'core.mcp_warn_user_after'						=> 'mcp_warn_user_after',
 			'core.user_add_modify_data'						=> 'user_add_modify_data',
 			'core.submit_post_end'							=> 'submit_post_end',
+			'core.modify_posting_auth'						=> 'modify_posting_auth',
+			'core.permissions'								=> 'permissions',
 		);
 	}
 
@@ -170,7 +173,7 @@ class listener implements EventSubscriberInterface
 		return $points_values;
 	}
 
-	// Show some information on the index page: Point Statistics, richest banker, lottery..
+	// Show some information on the index page: Point Statistics, Richest Banker, Lottery..
 	public function index_modify_page_title($event)
 	{
 		if (isset($this->config['points_name']))
@@ -192,7 +195,7 @@ class listener implements EventSubscriberInterface
 			$bankholdings = ($b_row['total_holding']) ? $b_row['total_holding'] : 0;
 			$bankusers = $b_row['total_users'];
 
-			// Create most rich users - cash and bank
+			// Create richest users - cash and bank
 			$limit = $points_values['number_show_top_points'];
 			$sql_array = array(
 				'SELECT'	=> 'u.user_id, u.username, u.user_colour, u.user_points, b.holding',
@@ -334,12 +337,35 @@ class listener implements EventSubscriberInterface
 	public function viewtopic_assign_template_vars_before($event)
 	{
 		$points_config = $this->cache->get('points_config');
+
 		$this->template->assign_vars(array(
 			'P_NAME'			=> $this->config['points_name'],
 			'USE_POINTS'		=> $this->config['points_enable'],
 			'USE_IMAGES_POINTS'	=> $points_config['images_topic_enable'],
 			'USE_BANK'			=> $points_config['bank_enable'],
 		));
+	}
+
+	public function parse_attachments_modify_template_data($event)
+	{
+		$block_array = $event['block_array'];
+		$forum_id = (int) $event['forum_id'];
+		$display_cat = (int) $event['display_cat'];
+
+		$sql = 'SELECT forum_cost
+				FROM ' . FORUMS_TABLE . '
+				WHERE forum_id = ' . (int) $forum_id;
+		$result = $this->db->sql_query($sql);
+		$forum_cost = $this->db->sql_fetchfield('forum_cost');
+		$this->db->sql_freeresult($result);
+
+		if ($forum_cost > 0 && $this->auth->acl_get('f_pay_attachment', (int) $forum_id) && $display_cat != 1)
+		{
+			$this->template->assign_vars(array(
+				'L_DOWNLOAD_COST'		=> $this->user->lang['POINTS_DOWNLOAD_COST'],
+				'DOWNLOAD_COST'			=> $forum_cost,
+			));
+		}
 	}
 
 	public function viewtopic_get_post_data($event)
@@ -415,8 +441,8 @@ class listener implements EventSubscriberInterface
 		$row = $event['row'];
 		$user_poster_data = $event['user_poster_data'];
 		$post_row = $event['post_row'];
-		$post_id = $row['post_id'];
-		$poster_id = $event['poster_id'];
+		$post_id = (int) $row['post_id'];
+		$poster_id = (int) $event['poster_id'];
 
 		$post_row = array_merge($post_row, array(
 			'POSTER_POINTS'		=> $this->functions_points->number_format_points($row['points']),
@@ -464,7 +490,8 @@ class listener implements EventSubscriberInterface
 	// Check if people have to pay points for downloading attachments
 	public function download_file_send_to_browser_before($event)
 	{
-		$topic_id = $event['attachment']['topic_id'];
+		$topic_id = (int) $event['attachment']['topic_id'];
+		$display_cat = $event['display_cat'];
 		$points_values = $this->cache->get('points_values');
 
 		$sql_array = array(
@@ -489,14 +516,17 @@ class listener implements EventSubscriberInterface
 		$forum_cost = $this->db->sql_fetchfield('forum_cost');
 		$this->db->sql_freeresult($result);
 
-		if ($this->config['allow_attachments'] && $this->config['points_enable'] && ($this->user->data['user_points'] < $forum_cost))
+		if ($forum_cost > 0 && $display_cat != 1 && $this->auth->acl_getf('f_pay_attachment'))
 		{
-			$message = sprintf($this->user->lang['POINTS_ATTACHMENT_MINI_POSTS'], $this->config['points_name']) . '<br /><br /><a href="' . append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") . '">&laquo; ' . $this->user->lang['POINTS_RETURN_INDEX'] . '</a>';
-			trigger_error($message);
-		}
-		if ($this->config['points_enable'])
-		{
-			$this->functions_points->substract_points($this->user->data['user_id'], $forum_cost);
+			if ($this->config['allow_attachments'] && $this->config['points_enable'] && ($this->user->data['user_points'] < $forum_cost))
+			{
+				$message = sprintf($this->user->lang['POINTS_ATTACHMENT_MINI_POSTS'], $this->config['points_name']) . '<br /><br /><a href="' . append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") . '">&laquo; ' . $this->user->lang['POINTS_RETURN_INDEX'] . '</a>';
+				trigger_error($message);
+			}
+			if ($this->config['points_enable'])
+			{
+				$this->functions_points->substract_points($this->user->data['user_id'], $forum_cost);
+			}
 		}
 	}
 
@@ -510,6 +540,8 @@ class listener implements EventSubscriberInterface
 			'forum_perpost'		=> $this->request->variable('forum_perpost', 0.00),
 			'forum_peredit'		=> $this->request->variable('forum_peredit', 0.00),
 			'forum_cost'		=> $this->request->variable('forum_cost', 0.00),
+			'forum_cost_topic'	=> $this->request->variable('forum_cost_topic', 0.00),
+			'forum_cost_post'	=> $this->request->variable('forum_cost_post', 0.00),
 		));
 
 		$event['forum_data'] = $forum_data;
@@ -525,6 +557,8 @@ class listener implements EventSubscriberInterface
 			$forum_data['forum_perpost'] =	0.00;
 			$forum_data['forum_peredit'] =	0.00;
 			$forum_data['forum_cost'] = 0.00;
+			$forum_data['forum_cost_topic'] = 0.00;
+			$forum_data['forum_cost_post']	= 0.00;
 		}
 		$event['forum_data'] = $forum_data;
 	}
@@ -540,6 +574,8 @@ class listener implements EventSubscriberInterface
 			'FORUM_PERPOST'				=> $forum_data['forum_perpost'],
 			'FORUM_PEREDIT'				=> $forum_data['forum_peredit'],
 			'FORUM_COST'				=> $forum_data['forum_cost'],
+			'FORUM_COST_TOPIC'			=> $forum_data['forum_cost_topic'],
+			'FORUM_COST_POST'			=> $forum_data['forum_cost_post'],
 		));
 
 		$event['template_data'] = $template_data;
@@ -646,6 +682,9 @@ class listener implements EventSubscriberInterface
 			$forum_id = (int) $data['forum_id'];
 			$user_id = (int) $this->user->data['user_id'];
 
+			// Send the user_id away to check for a bonus increment
+			$this->functions_points->random_bonus_increment($user_id);
+
 			/**
 			* Grab our message and strip it clean.
 			* This means removing all BBCode,
@@ -663,25 +702,35 @@ class listener implements EventSubscriberInterface
 
 			// We grab global points increment
 			$topic_word = $points_values['points_per_topic_word']; // Points per word in a topic
-			$topic_char = $points_values['points_per_topic_character']; // Points per charachter in a topic
+			$topic_char = $points_values['points_per_topic_character']; // Points per character in a topic
 			$post_word = $points_values['points_per_post_word']; // Points per word in a post (reply)
-			$post_char = $points_values['points_per_post_charachter']; // Points per word in a post (reply)
+			$post_char = $points_values['points_per_post_character']; // Points per word in a post (reply)
 			$has_attach = $points_values['points_per_attach']; // Points for having attachments in your post
 			$per_attach = $points_values['points_per_attach_file']; // Points per attachment in your post
 			$has_poll = $points_values['points_per_poll']; // Points for having a poll in your topic
 			$per_poll = $points_values['points_per_poll_option']; // Points per poll option in your topic
 
 			// We grab forum specific points increment
-			$sql = 'SELECT forum_peredit, forum_perpost, forum_pertopic
+			$sql = 'SELECT forum_peredit, forum_perpost, forum_pertopic, forum_cost_topic, forum_cost_post
 					FROM ' . FORUMS_TABLE . '
 					WHERE forum_id = ' . (int) $forum_id;
 			$result = $this->db->sql_query($sql);
 			$forum = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
+			// First we check if we have to pay for new topics/post
+			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $this->auth->acl_get('f_pay_topic', (int) $forum_id))
+			{
+				$this->functions_points->substract_points((int) $user_id, $forum['forum_cost_topic']);
+			}
+			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $this->auth->acl_get('f_pay_post', (int) $forum_id))
+			{
+				$this->functions_points->substract_points((int) $user_id, $forum['forum_cost_post']);
+			}
+
 			// We grab some specific message data
 			$sizeof_msg = sizeof(explode(' ', $message)); // Amount of words
-			$chars_msg = utf8_strlen($message); // Amount of charachters
+			$chars_msg = utf8_strlen($message); // Amount of characters
 
 			// Check if the post has attachment, if so calculate attachment points
 			if (!empty($data['attachment_data']))
@@ -791,5 +840,105 @@ class listener implements EventSubscriberInterface
 		{
 			return;
 		}
+	}
+
+	public function modify_posting_auth($event)
+	{
+		if ($this->config['points_enable'])
+		{
+			$mode = $event['mode'];
+
+			// Grab the costs of making a topic or post in this forum
+			$sql = 'SELECT forum_cost_topic, forum_cost_post
+					FROM ' . FORUMS_TABLE . '
+					WHERE forum_id = ' . (int) $event['forum_id'];
+			$result = $this->db->sql_query($sql);
+			$forum = $this->db->sql_fetchrow($result);
+			$this->db->sql_freeresult($result);
+
+			// Grab the user's points
+			$sql = 'SELECT user_points
+					FROM ' . USERS_TABLE . '
+					WHERE user_id = ' . (int) $this->user->data['user_id'];
+			$result = $this->db->sql_query($sql);
+			$user_points = $this->db->sql_fetchfield('user_points');
+			$this->db->sql_freeresult($result);
+
+			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $user_points < $forum['forum_cost_topic'] && $this->auth->acl_get('f_pay_topic', (int) $event['forum_id']))
+			{
+				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_TOPIC'], $forum['forum_cost_topic'], $this->config['points_name']);
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.{$this->phpEx}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				trigger_error($message);
+			}
+			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int) $event['forum_id']))
+			{
+				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.{$this->phpEx}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				trigger_error($message);
+			}
+			else
+			{
+				$event['is_authed'] = true;
+			}
+		}
+	}
+
+	// Show permissions
+	public function permissions($event)
+	{
+		$permissions = $event['permissions'];
+		$permissions += array(
+			'u_use_points'		=> array(
+				'lang'		=> 'ACL_U_USE_POINTS',
+				'cat'		=> 'ultimatepoints'
+			),
+			'u_use_bank'	=> array(
+				'lang'		=> 'ACL_U_USE_BANK',
+				'cat'		=> 'ultimatepoints'
+			),
+			'u_use_logs'	=> array(
+				'lang'		=> 'ACL_U_USE_LOGS',
+				'cat'		=> 'ultimatepoints'
+			),
+			'u_use_robbery'	=> array(
+				'lang'		=> 'ACL_U_USE_ROBBERY',
+				'cat'		=> 'ultimatepoints'
+			),
+			'u_use_lottery'	=> array(
+				'lang'		=> 'ACL_U_USE_LOTTERY',
+				'cat'		=> 'ultimatepoints'
+			),
+			'u_use_transfer'	=> array(
+				'lang'		=> 'ACL_U_USE_TRANSFER',
+				'cat'		=> 'ultimatepoints'
+			),
+			'f_pay_attachment'	=> array(
+				'lang'		=> 'ACL_F_PAY_ATTACHMENT',
+				'cat'		=> 'ultimatepoints'
+			),
+			'f_pay_topic'	=> array(
+				'lang'		=> 'ACL_F_PAY_TOPIC',
+				'cat'		=> 'ultimatepoints'
+			),
+			'f_pay_post'	=> array(
+				'lang'		=> 'ACL_F_PAY_POST',
+				'cat'		=> 'ultimatepoints'
+			),
+			'm_chg_points'	=> array(
+				'lang'		=> 'ACL_M_CHG_POINTS',
+				'cat'		=> 'ultimatepoints'
+			),
+			'm_chg_bank'	=> array(
+				'lang'		=> 'ACL_M_CHG_BANK',
+				'cat'		=> 'ultimatepoints'
+			),
+			'a_points'	=> array(
+				'lang'		=> 'ACL_A_POINTS',
+				'cat'		=> 'ultimatepoints'
+			),
+		);
+		$event['permissions'] = $permissions;
+		$categories['ultimatepoints'] = 'ACL_CAT_POINTS';
+		$event['categories'] = array_merge($event['categories'], $categories);
 	}
 }

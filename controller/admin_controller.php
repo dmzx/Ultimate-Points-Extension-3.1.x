@@ -200,6 +200,9 @@ class admin_controller
 				'points_per_post_word' 			=> round($this->request->variable('points_per_post_word', 0.00),2),
 				'points_per_post_character'		=> round($this->request->variable('points_per_post_character', 0.00),2),
 				'reg_points_bonus' 				=> round($this->request->variable('reg_points_bonus', 0.00),2),
+				'points_bonus_chance'			=> round($this->request->variable('points_bonus_chance', 0.00),2),
+				'points_bonus_min'				=> round($this->request->variable('points_bonus_min', 0.00),2),
+				'points_bonus_max'				=> round($this->request->variable('points_bonus_max', 0.00),2),
 				'points_per_warn'				=> round($this->request->variable('points_per_warn', 0.00),2),
 			);
 
@@ -278,6 +281,9 @@ class admin_controller
 				'POINTS_PER_POST_CHARACTER'		=> $points_values['points_per_post_character'],
 				'POINTS_PER_WARN'				=> $points_values['points_per_warn'],
 				'REG_POINTS_BONUS'				=> $points_values['reg_points_bonus'],
+				'POINTS_BONUS_CHANCE'			=> $points_values['points_bonus_chance'],
+				'POINTS_BONUS_MIN'				=> $points_values['points_bonus_min'],
+				'POINTS_BONUS_MAX'				=> $points_values['points_bonus_max'],
 
 				'NUMBER_SHOW_TOP_POINTS'		=> $points_values['number_show_top_points'],
 				'NUMBER_SHOW_PER_PAGE'			=> $points_values['number_show_per_page'],
@@ -1144,19 +1150,25 @@ class admin_controller
 				$forum_post		= round($this->request->variable('forum_post', 0.00),2);
 				$forum_edit		= round($this->request->variable('forum_edit', 0.00),2);
 				$forum_cost		= round($this->request->variable('forum_cost', 0.00),2);
+				$forum_cost_t	= round($this->request->variable('forum_cost_topic', 0.00),2);
+				$forum_cost_p	= round($this->request->variable('forum_cost_post', 0.00),2);
 
 				// Update values in phpbb_points_values
 				$this->functions_points->set_points_values('forum_topic', $forum_topic);
 				$this->functions_points->set_points_values('forum_post', $forum_post);
 				$this->functions_points->set_points_values('forum_edit', $forum_edit);
 				$this->functions_points->set_points_values('forum_cost', $forum_cost);
+				$this->functions_points->set_points_values('forum_cost_topic', $forum_cost_t);
+				$this->functions_points->set_points_values('forum_cost_post', $forum_cost_p);
 
 				// Update all forum points
 				$data = array(
 					'forum_pertopic'	=> $forum_topic,
 					'forum_perpost'		=> $forum_post,
 					'forum_peredit'		=> $forum_edit,
-					'forum_cost'		=> $forum_cost
+					'forum_cost'		=> $forum_cost,
+					'forum_cost_topic'	=> $forum_cost_t,
+					'forum_cost_post'	=> $forum_cost_p
 				);
 
 				$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $data);
@@ -1174,6 +1186,8 @@ class admin_controller
 					'forum_post'			=> $this->request->variable('forum_post', 0.00),
 					'forum_edit'			=> $this->request->variable('forum_edit', 0.00),
 					'forum_cost'			=> $this->request->variable('forum_cost', 0.00),
+					'forum_cost_topic'		=> $this->request->variable('forum_cost_topic', 0.00),
+					'forum_cost_post'		=> $this->request->variable('forum_cost_post', 0.00),
 					'mode'					=> $mode,
 					'action'				=> $action,
 					'action_point_values'	=> true,
@@ -1189,6 +1203,8 @@ class admin_controller
 			'FORUM_POST'		=> $points_values['forum_post'],
 			'FORUM_EDIT'		=> $points_values['forum_edit'],
 			'FORUM_COST'		=> $points_values['forum_cost'],
+			'FORUM_COST_TOPIC'	=> $points_values['forum_cost_topic'],
+			'FORUM_COST_POST'	=> $points_values['forum_cost_post'],
 
 			'S_FORUMPOINTS'		=> true,
 			'U_ACTION'			=> $this->u_action)

@@ -36,6 +36,9 @@ class points_points_edit
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
+	/** @var \phpbb\log\log */
+	protected $log;
+
 	/** @var \phpbb\request\request */
 	protected $request;
 
@@ -54,13 +57,14 @@ class points_points_edit
 	* @param \phpbb\db\driver\driver_interface	$db
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
+	* @param \phpbb\log\log					 	$log
 	* @param \phpbb\request\request				$request
 	* @param 									$phpEx
 	* @param									$phpbb_root_path
 	*
 	*/
 
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\request\request $request, $phpEx, $phpbb_root_path)
+	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\controller\helper $helper,	\phpbb\log\log $log, \phpbb\request\request $request, $phpEx, $phpbb_root_path)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -69,6 +73,7 @@ class points_points_edit
 		$this->db 					= $db;
 		$this->config 				= $config;
 		$this->helper 				= $helper;
+		$this->log 					= $log;
 		$this->request				= $request;
 		$this->phpEx				= $phpEx;
 		$this->phpbb_root_path 		= $phpbb_root_path;
@@ -127,8 +132,8 @@ class points_points_edit
 				$result = $this->db->sql_query($sql);
 				$points_user = $this->db->sql_fetchrow($result);
 
-				add_log('admin', 'LOG_MOD_POINTS', $points_user['username']);
-
+				// Add logs
+				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS', false, array($points_user['username']));
 				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="'. append_sid("{$this->phpbb_root_path}viewtopic.{$this->phpEx}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") . '">', '</a>');
 				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
 			}

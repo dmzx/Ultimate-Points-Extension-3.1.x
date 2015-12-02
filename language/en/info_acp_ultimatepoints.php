@@ -90,6 +90,10 @@ $lang = array_merge($lang, array(
 	'FORUM_PERTOPIC_EXPLAIN'			=> 'Enter here, how much points users will receive for placing a <strong>new topic</strong>. Please be aware, that they will also receive additional points, which you defined in the advanced points settings.<br />Set to 0 to disable receiving points for this forum. This way also the advanced points settings are disabled for this forum!',
 	'FORUM_COST'						=> 'Points Per Attachment Download',
 	'FORUM_COST_EXPLAIN'				=> 'Enter here, how much points users will have to pay for <strong>downloading an attachment</strong>.<br />Set to 0 to disable this feature.',
+	'FORUM_COST_TOPIC'					=> 'Points to pay for new topic',
+	'FORUM_COST_TOPIC_EXPLAIN'			=> 'Enter here, how much points a user has to pay to start a new topic in this forum',
+	'FORUM_COST_POST'					=> 'Points to pay for new post',
+	'FORUM_COST_POST_EXPLAIN'			=> 'Enter here, how much points a user has to pay to make a new post in thsi forum',
 	'FORUM_POINT_SETTINGS'				=> 'Ultimate Points Settings',
 	'FORUM_POINT_SETTINGS_EXPLAIN'		=> 'Here you can setup, how much points users will gain for placing new topics, new posts (replies) and editing their posts. These settings are on a per forum basis. This way you can make it very detailed, where users will get points and where not.',
 	'FORUM_POINT_SETTINGS_UPDATED'		=> 'Global forum points updated',
@@ -98,15 +102,17 @@ $lang = array_merge($lang, array(
 
 	'LOG_GROUP_TRANSFER_ADD'			=> 'Transferred Points to a group',
 	'LOG_GROUP_TRANSFER_SET'			=> 'Set Points to a new value for a group',
-	'LOG_MOD_BANK'						=> 'Edited %1s bank points',
-	'LOG_MOD_POINTS'					=> 'Edited %1s points',
-	'LOG_MOD_POINTS_BANK'				=> 'Edited bank settings',
-	'LOG_MOD_POINTS_FORUM'				=> 'Edited Global Forum Points settings',
-	'LOG_MOD_POINTS_FORUM_SWITCH'		=> 'Edited Forum Point Switches',
-	'LOG_MOD_POINTS_FORUM_VALUES'		=> 'Edited Forum Point Values',
-	'LOG_MOD_POINTS_LOTTERY'			=> 'Edited Lottery settings',
-	'LOG_MOD_POINTS_ROBBERY'			=> 'Edited Robbery settings',
-	'LOG_MOD_POINTS_SETTINGS'			=> 'Edited Points settings',
+	'LOG_MOD_BANK'						=> '<strong>Edited bank points</strong><br />» %1$s',
+	'LOG_MOD_POINTS'					=> '<strong>Edited points</strong><br />» %1$s',
+	'LOG_MOD_POINTS_BANK'				=> '<strong>Edited bank settings</strong>',
+	'LOG_MOD_POINTS_BANK_PAYS'			=> '<strong>Bank interest payments</strong><br />» %1$s',
+	'LOG_MOD_POINTS_FORUM'				=> '<strong>Edited Global Forum Points settings</strong>',
+	'LOG_MOD_POINTS_FORUM_SWITCH'		=> '<strong>Edited Forum Point Switches</strong>',
+	'LOG_MOD_POINTS_FORUM_VALUES'		=> '<strong>Edited Forum Point Values</strong>',
+	'LOG_MOD_POINTS_LOTTERY'			=> '<strong>Edited Lottery settings</strong>',
+	'LOG_MOD_POINTS_RANDOM'				=> '<strong>Random points won by</strong><br />» %1$s',
+	'LOG_MOD_POINTS_ROBBERY'			=> '<strong>Edited Robbery settings</strong>',
+	'LOG_MOD_POINTS_SETTINGS'			=> '<strong>Edited Points settings</strong>',
 	'LOG_RESYNC_LOTTERY_HISTORY'		=> '<strong>The lottery history was reset successfully</strong>',
 	'LOG_RESYNC_POINTSCOUNTS'			=> '<strong>All users points were reset successfully</strong>',
 	'LOG_RESYNC_POINTSLOGSCOUNTS'		=> '<strong>All user logs were reset successfully</strong>',
@@ -141,6 +147,10 @@ $lang = array_merge($lang, array(
 	'POINTS_ADV_OPTIONS_EXPLAIN'		=> 'If Forum Points are set to 0 (disabled), all settings here are not calculated.',
 	'POINTS_ATTACHMENT'					=> 'General points for adding attachments in a post',
 	'POINTS_ATTACHMENT_PER_FILE'		=> 'Additional points for each file attachment',
+	'POINTS_BONUS_CHANCE'				=> 'Point Bonus Chance',
+	'POINTS_BONUS_CHANCE_EXPLAIN'		=> 'The chance a user receives bonus points for making a new topic, post or edit.<br />Chance is between 0 and 100%, you can use decimals.<br />Set to <strong>0</strong> to disable this feature.',
+	'POINTS_BONUS_VALUE'				=> 'Point Bonus Value',
+	'POINTS_BONUS_VALUE_EXPLAIN'		=> 'Give boundaries between which we will choose a random bonus amount.<br />If you want a fixed amount, set the minimum and the maximum the same.',
 	'POINTS_COMMENTS'					=> 'Allow Comments',
 	'POINTS_COMMENTS_EXPLAIN'			=> 'Allow users to leave comments with their points transfer/donation',
 	'POINTS_CONFIG_SUCCESS'				=> 'The Ultimate Points settings have been updated successfully',
@@ -162,12 +172,14 @@ $lang = array_merge($lang, array(
 	'POINTS_GROUP_TRANSFER_SUCCESS'		=> 'The Group Transfer was processed successfully.',
 	'POINTS_GROUP_TRANSFER_USER'		=> 'User group',
 	'POINTS_GROUP_TRANSFER_VALUE'		=> 'Value',
-	'POINTS_IMAGES_MEMBERLIST'			=> 'Display an image after points in profile',
-	'POINTS_IMAGES_MEMBERLIST_EXPLAIN'	=> 'Display an image after the points name in users profiles',
-	'POINTS_IMAGES_TOPIC'				=> 'Display an image after points',
-	'POINTS_IMAGES_TOPIC_EXPLAIN'		=> 'Display an image in topics after of the points name',
+	'POINTS_IMAGES_MEMBERLIST'			=> 'Display an image instead of points in profile',
+	'POINTS_IMAGES_MEMBERLIST_EXPLAIN'	=> 'Display an image instead of the points name in users profiles',
+	'POINTS_IMAGES_TOPIC'				=> 'Display an image instead of points',
+	'POINTS_IMAGES_TOPIC_EXPLAIN'		=> 'Display an image in topics instead of the points name',
 	'POINTS_LOGS'						=> 'Enable points logs',
 	'POINTS_LOGS_EXPLAIN'				=> 'Allow users to view transfer logs',
+	'POINTS_MINIMUM'					=> '&nbsp;Minimum', // &nbsp; is for alignment of input boxes for Points Bonus Value
+	'POINTS_MAXIMUM'					=> 'Maximum',
 	'POINTS_NAME'						=> 'Points',
 	'POINTS_NAME_EXPLAIN'				=> 'The name you want to display instead of the word <em>Points</em> on your board',
 	'POINTS_POLL'						=> 'Points per new poll',
@@ -225,15 +237,19 @@ $lang = array_merge($lang, array(
 	'USER_POINTS_EXPLAIN'				=> 'Amount of points the user owns',
 
 	//Permissions
+	'ACL_CAT_POINTS'		=> 'Ultimate Points',
 	'ACL_U_USE_POINTS'		=> 'Can use Ultimate Points',
-	'ACL_U_USE_ROBBERY'		=> 'Ultimate Points can use Robbery Module',
-	'ACL_U_USE_BANK'		=> 'Ultimate Points can use Bank Module',
-	'ACL_U_USE_LOGS'		=> 'Ultimate Points can use Log Module',
-	'ACL_U_USE_LOTTERY'		=> 'Ultimate Points can use Lottery Module',
-	'ACL_U_USE_TRANSFER'	=> 'Ultimate Points can use Transfer Module',
-	'ACL_M_CHG_POINTS'		=> 'Ultimate Points can change users points',
-	'ACL_M_CHG_BANK'		=> 'Ultimate Points can change users Bank points',
-	'ACL_A_POINTS'			=> 'Ultimate Points can administrate Ultimate Points',
+	'ACL_U_USE_ROBBERY'		=> 'Can use Robbery Module',
+	'ACL_U_USE_BANK'		=> 'Can use Bank Module',
+	'ACL_U_USE_LOGS'		=> 'Can use Log Module',
+	'ACL_U_USE_LOTTERY'		=> 'Can use Lottery Module',
+	'ACL_U_USE_TRANSFER'	=> 'Can use Transfer Module',
+	'ACL_F_PAY_ATTACHMENT'	=> 'Has to pay for downloading attachments',
+	'ACL_F_PAY_TOPIC'		=> 'Has to pay for making a new topic',
+	'ACL_F_PAY_POST'		=> 'Has to pay for making a new post',
+	'ACL_M_CHG_POINTS'		=> 'Can change users points',
+	'ACL_M_CHG_BANK'		=> 'Can change users Bank points',
+	'ACL_A_POINTS'			=> 'Can administrate Ultimate Points',
 ));
 
 $help = array(
@@ -344,7 +360,15 @@ If you set 0 in the forum or disabled the points for new posts, the additional p
 	),
 	array(
 		0 => 'Points for registering',
-		1 => 'Here you can set, how much points a user will receive on registering on your board. This way he will have a seed capital. These points are given at once. So not after releasing his account!'
+		1 => 'Here you can set how much points a user will receive on registering on your board. This way he will have a seed capital. These points are given at once. So not after releasing his account!'
+	),
+	array(
+		0 => 'Points Bonus Chance',
+		1 => 'Here you can set the percentage for the chance of a user receiving a bonus Points amount, on top of the amount he receives for making a new topic or post, or editing an existing one. You can use decimals, these are factored in when making the calculations.<br />Set to <strong>0</strong> to disable this feature, so nobody will have a chance at bonus points.'
+	),
+	array(
+		0 => 'Points Bonus Value',
+		1 => 'Here you can set the minimum and the maximum between we will generate a random amount of points that we will give as a bonus, if the user is lucky enough to get a bonus. If you want a fixed amount as bonus value, set the minimum and the maximum to <strong>exactly</strong> the same value.'
 	),
 	array(
 		0 => 'Entries per page',
@@ -386,10 +410,18 @@ If you set 0, also the advanced points settings (words, characters) are NOT coun
 		1 => 'Here you can set, if a user will gain points for editing a topic or a post.'
 	),
 	array(
-		0 => 'Forum liable to pay costs for attachments',
-		1 => 'Here you can set, if the user will have costs, if downloading attachments. The costs will be set in <astrong>Posting -> Attachments -> Manage extensions</strong>. There you can the if the user will have costs per extension and if so, how much it will be!
-
-Important note! As ie attached pictures are shown directly within a post and they are normally visible, the points for the picture attachments are directly substracted. If a user does not have enough points, he won’t see the pictures!'
+		0 => 'Points Per Attachment Download',
+		1 => 'Here you can set, how much a user has to pay to download an attachment, this is per attachment and not per post with attachment. You can specify through permissions which users/groups have to pay for attachment, and who don\'t! <br />
+		<strong>Important Note (1):</strong> Attachments in Private Messages <em>(PM)</em> are excluded from this setting/payment. Attachments sent through PM\'s can be downloaded freely.<br />
+		<strong>Important Note (2):</strong> Image attachments in posts are excluded from this setting/payment. As images are shown directly in posts, every time a user visits the topic and only <em>views</em> the post, it would already substract the points. Therefore image attachments are excluded from payment.'
+	),
+	array(
+		0 => 'Points to pay for new topic',
+		1 => 'Here you can set, how much a user has to pay to make a new topic in a specific forum. This is per forum specific, you can set them all at once through the Forum Point Settings or per individual forum. Afterwards you\'ll have to set permissions for which users/groups have to pay and which do not.'
+	),
+	array(
+		0 => 'Points to pay for new post',
+		1 => 'Here you can set, how much a user has to pay to make a new post <em>(reply)</em> in a specific forum. This is per forum specific, you can set them all at once through the Forum Point Settings or per individual forum. Afterwards you\'ll have to set permissions for which users/groups have to pay and which do not.'
 	),
 	array(
 		0 => '--',
@@ -525,13 +557,13 @@ The thief will have to pay the set percentage of the value he tried to rob. What
 				<ul><li>Changing Image<br />You can change this item by replacing the image in <em>root/ext/dmzx/ultimatepoints/styles/all/theme/images/</em>, make sure it is named <strong>icon_points.gif</strong> and has the size of <strong>12px by 12px</strong>!</li>
 				<li>Adding new Image<br />Or you can add a new image to <em>root/ext/dmzx/ultimatepoints/styles/all/theme/images/</em>, <br />
 				and then you\'ll have to edit <em>root/ext/dmzx/ultimatepoints/styles/all/theme/ultimatepoints.css</em>, <br />
-				and change the <strong>.icon-points { background-image: url("./images/<em>your_image_name.gif</em>"); }</strong></li></ul>',
+				and change the <strong>.icon-points { background-image: url("./images/<em>your_image_name.gif</em>"); }</strong></li></ul>'
 	),
 	array(
 		0 => 'Change points image',
 		1 => 'To clarify: The points image is the images that shows up behind your currency through out the forum, viewtopics and profiles.<br />
 				<ul><li>Changing Image<br />
 				You can upload a new image to <em>root/ext/dmzx/ultimatepoints/styles/all/theme/images/</em>, <br />
-				This image <strong>HAS</strong> to be named <strong>money.png</strong> and has to be <strong>11px by 11px</strong>!',
+				This image <strong>HAS</strong> to be named <strong>money.png</strong> and has to be <strong>11px by 11px</strong>!'
 		),
 );

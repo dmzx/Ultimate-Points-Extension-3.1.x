@@ -184,7 +184,7 @@ class points_robbery
 				}
 			}
 
-			// Select the user_id and language of user to be robbed
+			// Select the user_id of user to be robbed
 			$sql_array = array(
 				'SELECT'	=> 'user_id',
 				'FROM'		=> array(
@@ -195,18 +195,6 @@ class points_robbery
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 			$user_id = (int) $this->db->sql_fetchfield('user_id');
-			$this->db->sql_freeresult($result);
-
-			$sql_array = array(
-				'SELECT'	=> 'user_lang',
-				'FROM'		=> array(
-					USERS_TABLE => 'u',
-				),
-				'WHERE'		=> 'user_id = "' . (int) $user_id . '"',
-			);
-			$sql = $this->db->sql_build_query('SELECT', $sql_array);
-			$result = $this->db->sql_query($sql);
-			$user_row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
 			// If no matching user id is found
@@ -252,7 +240,7 @@ class points_robbery
 			$rand_base = $points_values['robbery_chance'];
 			$rand_value = rand(0, 100);
 
-			// If robbery was successful and PM is enabled, send PM
+			// If robbery was successful and notification is enabled, send notification
 			if ($rand_value <= $rand_base)
 			{
 				$this->functions_points->add_points($this->user->data['user_id'], $attacked_amount);
@@ -273,40 +261,26 @@ class points_robbery
 
 				if ($points_config['robbery_notify'])
 				{
-					// first check if language file exists, if not, use the default language
-					$user_row['user_lang'] = (file_exists($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . $user_row['user_lang'] . "/common.{$this->phpEx}")) ? $user_row['user_lang'] : $this->config['default_lang'];
-
-					// load receivers language
-					include($this->phpbb_root_path . 'ext/dmzx/ultimatepoints/language/' . basename($user_row['user_lang']) . "/common.{$this->phpEx}");
-
-					// Increase robbery notification ID
-					$sql = 'UPDATE ' . $this->points_values_table . '
-							SET robbery_notify_id = robbery_notify_id + 1';
-					$this->db->sql_query($sql);
-
-					// Get our robbery notification ID
-					$sql = 'SELECT robbery_notify_id
-							FROM ' . $this->points_values_table;
-					$this->db->sql_query($sql);
-					$notify_id = $this->db->sql_fetchfield('robbery_notify_id');
-					$this->db->sql_freeresult($result);
+					// Increase our notification sent counter
+					$this->config->increment('points_notification_id', 1);
 
 					// Store the notification data we will use in an array
 					$data = array(
-						'robbery_notify_id'		=> (int) $notify_id,
-						'robbery_notify_msg'	=> sprintf($this->user->lang['NOTIFICATION_ROBBERY_SUCCES'], $attacked_amount, $this->config['points_name']),
-						'robber'				=> (int) $this->user->data['user_id'],
-						'victim'				=> (int) $user_id,
+						'points_notify_id'		=> (int) $this->config['points_notification_id'],
+						'points_notify_msg'		=> sprintf($this->user->lang['NOTIFICATION_ROBBERY_SUCCES'], $attacked_amount, $this->config['points_name']),
+						'sender'				=> (int) $this->user->data['user_id'],
+						'receiver'				=> (int) $user_id,
+						'mode'					=> 'robbery',
 					);
 
 					// Create the notification
-					$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.robbery', $data);
+					$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 				}
 
 				$message = $this->user->lang['ROBBERY_SUCCESFUL'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';
 				trigger_error($message);
 			}
-			// If robbery failed and PM is enabled, send PM
+			// If robbery failed and notify user
 			else
 			{
 				if ($points_values['robbery_loose'] != 0)
@@ -316,29 +290,20 @@ class points_robbery
 
 					if ($points_config['robbery_notify'])
 					{
-
-						// Increase robbery notification ID
-						$sql = 'UPDATE ' . $this->points_values_table . '
-								SET robbery_notify_id = robbery_notify_id + 1';
-						$this->db->sql_query($sql);
-
-						// Get our robbery notification ID
-						$sql = 'SELECT robbery_notify_id
-								FROM ' . $this->points_values_table;
-						$this->db->sql_query($sql);
-						$notify_id = $this->db->sql_fetchfield('robbery_notify_id');
-						$this->db->sql_freeresult($result);
+						// Increase our notification sent counter
+						$this->config->increment('points_notification_id', 1);
 
 						// Store the notification data we will use in an array
 						$data = array(
-							'robbery_notify_id'		=> (int) $notify_id,
-							'robbery_notify_msg'	=> $this->user->lang['NOTIFICATION_ROBBERY_FAILED'],
-							'robber'				=> (int) $this->user->data['user_id'],
-							'victim'				=> (int) $user_id,
+							'points_notify_id'		=> (int) $this->config['points_notification_id'],
+							'points_notify_msg'		=> $this->user->lang['NOTIFICATION_ROBBERY_FAILED'],
+							'sender'				=> (int) $this->user->data['user_id'],
+							'receiver'				=> (int) $user_id,
+							'mode'					=> 'robbery',
 						);
 
 						// Create the notification
-						$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.robbery', $data);
+						$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
 					}
 
 					$message = $this->user->lang['ROBBERY_BAD'] . '<br /><br /><a href="' . $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery')) . '">&laquo; ' . $this->user->lang['BACK_TO_PREV'] . '</a>';

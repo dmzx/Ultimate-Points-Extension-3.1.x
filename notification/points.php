@@ -13,13 +13,13 @@ namespace dmzx\ultimatepoints\notification;
 * @package Ultimate Points
 */
 
-class robbery extends \phpbb\notification\type\base
+class points extends \phpbb\notification\type\base
 {
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
 	/**
-	* Notification Type Robbery Constructor
+	* Notification Type Points Constructor
 	*
 	* @param \phpbb\user_loader 					$user_loader
 	* @param \phpbb\db\driver\driver_interface 		$db
@@ -48,11 +48,11 @@ class robbery extends \phpbb\notification\type\base
 	*/
 	public function get_type()
 	{
-		return 'dmzx.ultimatepoints.notification.type.robbery';
+		return 'dmzx.ultimatepoints.notification.type.points';
 	}
 
 	public static $notification_option = array(
-		'lang'		=> 'NOTIFICATION_ROBBERY_UCP',
+		'lang'		=> 'NOTIFICATION_POINTS_UCP',
 		'group'		=> 'NOTIFICATION_GROUP_MISCELLANEOUS',
 	);
 
@@ -74,7 +74,7 @@ class robbery extends \phpbb\notification\type\base
 	*/
 	public static function get_item_id($data)
 	{
-		return (int) $data['robbery_notify_id'];
+		return (int) $data['points_notify_id'];
 	}
 
 	/**
@@ -99,9 +99,9 @@ class robbery extends \phpbb\notification\type\base
 	public function find_users_for_notification($data, $options = array())
 	{
 		$users = array();
-		$users[$data['victim']] = array('');
-
+		$users[$data['receiver']] = array('');
 		$this->user_loader->load_users(array_keys($users));
+
 		return $this->check_user_notification_options(array_keys($users), $options);
 	}
 
@@ -116,17 +116,26 @@ class robbery extends \phpbb\notification\type\base
 	}
 
 	/**
+	* Get the user's avatar
+	*/
+	public function get_avatar()
+	{
+		return $this->user_loader->get_avatar($this->get_data('sender'));
+	}
+
+	/**
 	* Get the HTML formatted title of this notification
 	*
 	* @return string
 	*/
 	public function get_title()
 	{
-		$users = array($this->get_data('robber'));
+		$users = array();
+		$users = array($this->get_data('sender'));
 		$this->user_loader->load_users($users);
-		$username = $this->user_loader->get_username($this->get_data('robber'), 'no_profile');
+		$username = $this->user_loader->get_username($this->get_data('sender'), 'no_profile');
 
-		return $username . '&nbsp;' . $this->get_data('robbery_notify_msg');
+		return $username . '&nbsp;' . $this->get_data('points_notify_msg');
 	}
 
 	/**
@@ -136,7 +145,7 @@ class robbery extends \phpbb\notification\type\base
 	*/
 	public function get_url()
 	{
-		return $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery'));
+		return $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => $this->get_data('mode')));
 	}
 
 	/**
@@ -170,10 +179,11 @@ class robbery extends \phpbb\notification\type\base
 	*/
 	public function create_insert_array($data, $pre_create_data = array())
 	{
-		$this->set_data('robbery_notify_id', $data['robbery_notify_id']);
-		$this->set_data('robbery_notify_msg', $data['robbery_notify_msg']);
-		$this->set_data('robber', $data['robber']);
-		$this->set_data('victim', $data['victim']);
+		$this->set_data('points_notify_id', $data['points_notify_id']);
+		$this->set_data('points_notify_msg', $data['points_notify_msg']);
+		$this->set_data('sender', $data['sender']);
+		$this->set_data('receiver', $data['receiver']);
+		$this->set_data('mode', $data['mode']);
 
 		return parent::create_insert_array($data, $pre_create_data);
 	}

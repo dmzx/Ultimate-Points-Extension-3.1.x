@@ -22,7 +22,7 @@ class ext extends \phpbb\extension\base
 		{
 			case '':
 				$phpbb_notifications = $this->container->get('notification_manager');
-				$phpbb_notifications->enable_notifications('dmzx.ultimatepoints.notification.type.robbery');
+				$phpbb_notifications->enable_notifications('dmzx.ultimatepoints.notification.type.points');
 				return 'notifications';
 			break;
 			default:
@@ -37,7 +37,7 @@ class ext extends \phpbb\extension\base
 		{
 			case '':
 				$phpbb_notifications = $this->container->get('notification_manager');
-				$phpbb_notifications->disable_notifications('dmzx.ultimatepoints.notification.type.robbery');
+				$phpbb_notifications->disable_notifications('dmzx.ultimatepoints.notification.type.points');
 				return 'notifications';
 			break;
 			default:
@@ -54,7 +54,7 @@ class ext extends \phpbb\extension\base
 				try
 				{
 					$phpbb_notifications = $this->container->get('notification_manager');
-					$phpbb_notifications->purge_notifications('dmzx.ultimatepoints.notification.type.robbery');
+					$phpbb_notifications->purge_notifications('dmzx.ultimatepoints.notification.type.points');
 				}
 				catch (\phpbb\notification\exception $e)
 				{

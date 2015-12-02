@@ -35,58 +35,58 @@ class ultimatepoints_sample_value extends \phpbb\db\migration\migration
 				'config_name' 	=> 'transfer_enable',
 					'config_value'	=> '1',
 				),
-				array(
-					'config_name' 	=> 'transfer_pm_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'comments_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'logs_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'images_topic_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'images_memberlist_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'lottery_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'bank_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'robbery_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'points_disablemsg',
-					'config_value'	=> 'Ultimate Points is currently disabled!',
-				),
-				array(
-					'config_name' 	=> 'stats_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'lottery_multi_ticket_enable',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'robbery_notify',
-					'config_value'	=> '1',
-				),
-				array(
-					'config_name' 	=> 'display_lottery_stats',
-					'config_value'	=> '1',
-				),
+			array(
+				'config_name' 	=> 'transfer_pm_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'comments_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'logs_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'images_topic_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'images_memberlist_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'lottery_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'bank_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'robbery_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'points_disablemsg',
+				'config_value'	=> 'Ultimate Points is currently disabled!',
+			),
+			array(
+				'config_name' 	=> 'stats_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'lottery_multi_ticket_enable',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'robbery_notify',
+				'config_value'	=> '1',
+			),
+			array(
+				'config_name' 	=> 'display_lottery_stats',
+				'config_value'	=> '1',
+			),
 		);
 
 		// Insert sample data

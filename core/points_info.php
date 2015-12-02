@@ -95,6 +95,7 @@ class points_info
 		$info_post_character	= ($points_values['points_per_post_character'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['points_per_post_character']) . '&nbsp;' . $this->config['points_name']);
 		$info_cost_warning		= ($points_values['points_per_warn'] == 0) ? sprintf($this->user->lang['INFO_NO_COST'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['points_per_warn']) . '&nbsp;' . $this->config['points_name']);
 		$info_reg_bonus			= ($points_values['reg_points_bonus'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) : sprintf($this->functions_points->number_format_points($points_values['reg_points_bonus']) . '&nbsp;' . $this->config['points_name']);
+		$info_points_bonus		= ($points_values['points_bonus_chance'] == 0) ? sprintf($this->user->lang['INFO_NO_POINTS'], $this->config['points_name']) : sprintf($this->user->lang['INFO_BONUS_CHANCE_EXPLAIN'], $this->functions_points->number_format_points($points_values['points_bonus_chance']), $this->functions_points->number_format_points($points_values['points_bonus_min']), $this->functions_points->number_format_points($points_values['points_bonus_max']), $this->config['points_name']);
 
 		$this->template->assign_vars(array(
 			'USER_POINTS'				=> sprintf($this->functions_points->number_format_points($this->user->data['user_points'])),
@@ -113,6 +114,7 @@ class points_info
 			'INFO_POST_CHARACTER'		=> $info_post_character,
 			'INFO_COST_WARNING'			=> $info_cost_warning,
 			'INFO_REG_BONUS'			=> $info_reg_bonus,
+			'INFO_POINTS_BONUS'			=> $info_points_bonus,
 
 			'U_TRANSFER_USER'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
 			'U_LOGS'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),

@@ -39,6 +39,12 @@ class points_bank
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
+	/** @var \phpbb\log\log */
+	protected $log;
+
+	/** @var \phpbb\notification\manager */
+	protected $notification_manager;
+
 	/** @var string */
 	protected $phpEx;
 
@@ -65,6 +71,7 @@ class points_bank
 	* @param \phpbb\request\request		 		$request
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
+	* @param \phpbb\log\log					 	$log
 	* @param									$phpEx
 	* @param									$phpbb_root_path
 	* @param string 							$points_bank_table
@@ -73,7 +80,7 @@ class points_bank
 	*
 	*/
 
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpEx, $phpbb_root_path, $points_bank_table, $points_config_table, $points_values_table)
+	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\log\log $log, \phpbb\notification\manager $notification_manager, $phpEx, $phpbb_root_path, $points_bank_table, $points_config_table, $points_values_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -83,6 +90,8 @@ class points_bank
 		$this->request 				= $request;
 		$this->config 				= $config;
 		$this->helper 				= $helper;
+		$this->log 					= $log;
+		$this->notification_manager = $notification_manager;
 		$this->phpEx 				= $phpEx;
 		$this->phpbb_root_path 		= $phpbb_root_path;
 		$this->points_bank_table 	= $points_bank_table;
@@ -145,7 +154,7 @@ class points_bank
 
 			// Pay the users
 			$sql = 'UPDATE ' . $this->points_bank_table . '
-					SET holding = holding + round(((holding / 100) * ' . $points_values['bank_interest'] . '))
+					SET holding = holding + round((holding / 100) * ' . $points_values['bank_interest'] . ')
 					WHERE holding < ' . $points_values['bank_interestcut'] . '
 						OR ' . $points_values['bank_interestcut'] . ' = 0';
 			$this->db->sql_query($sql);
@@ -158,6 +167,34 @@ class points_bank
 						WHERE holding >= ' . $points_values['bank_cost'] . '';
 				$this->db->sql_query($sql);
 			}
+
+			// Increase our notification sent counter
+			$this->config->increment('points_notification_id', 1);
+
+			$data = array(
+				'points_notify_id'		=> (int) $this->config['points_notification_id'],
+				'points_notify_msg'		=> $this->user->lang['NOTIFICATION_BANK_PAYOUT'],
+				'sender'				=> $this->user->data['user_id'],
+				'receiver'				=> (int) $this->user->data['user_id'],
+				'mode'					=> 'bank', // The mode where we the notification sends them to
+			);
+
+			// Send the notification
+			$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
+
+			$sql_array = array(
+					'SELECT'	=> 'username',
+					'FROM'		=> array(
+						USERS_TABLE => 'u',
+					),
+					'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
+				);
+			$sql = $this->db->sql_build_query('SELECT', $sql_array);
+			$result = $this->db->sql_query($sql);
+			$points_user = $this->db->sql_fetchrow($result);
+
+			// Add logs
+			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS_BANK_PAYS', false, array($points_user['username']));
 		}
 
 		$sql_array = array(

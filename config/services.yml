@@ -67,8 +67,8 @@ services:
             - %dmzx.ultimatepoints.table.points.config%
             - %dmzx.ultimatepoints.table.points.values%
 
-    dmzx.ultimatepoints.notification.type.robbery:
-        class: dmzx\ultimatepoints\notification\robbery
+    dmzx.ultimatepoints.notification.type.points:
+        class: dmzx\ultimatepoints\notification\points
         scope: prototype # scope MUST be prototype for this to work!
         arguments:
             - @user_loader
@@ -93,6 +93,8 @@ services:
             - @user
             - @dbal.conn
             - @controller.helper
+            - @notification_manager
+            - @log
             - @cache
             - @request
             - @config
@@ -163,6 +165,8 @@ services:
             - @request
             - @config
             - @controller.helper
+            - @log
+            - @notification_manager
             - %core.php_ext%
             - %core.root_path%
             - %dmzx.ultimatepoints.table.points.bank%
@@ -197,6 +201,7 @@ services:
             - @request
             - @config
             - @controller.helper
+            - @log
             - %core.php_ext%
             - %core.root_path%
             - %dmzx.ultimatepoints.table.points.bank%
@@ -230,6 +235,7 @@ services:
             - @dbal.conn
             - @config
             - @controller.helper
+            - @log
             - @request
             - %core.php_ext%
             - %core.root_path%

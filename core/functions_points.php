@@ -29,6 +29,12 @@ class functions_points
 	/** @var \phpbb\controller\helper */
 	protected $helper;
 
+	/** @var \phpbb\notification\manager */
+	protected $notification_manager;
+
+	/** @var \phpbb\log\log */
+	protected $log;
+
 	/** @var \phpbb\cache\service */
 	protected $cache;
 
@@ -69,6 +75,8 @@ class functions_points
 	* @param \phpbb\user						$user
 	* @param \phpbb\db\driver\driver_interface	$db
 	* @param \phpbb\controller\helper		 	$helper
+	* @param \phpbb\notification\manager		$notification_manager
+	* @param \phpbb\log\log					 	$log
 	* @param \phpbb\cache\service		 		$cache
 	* @param \phpbb\request\request		 		$request
 	* @param \phpbb\config\config				$config
@@ -83,21 +91,22 @@ class functions_points
 	*
 	*/
 
-	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper,
-		\phpbb\cache\service $cache, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\pagination $pagination, $phpEx, $phpbb_root_path, $points_bank_table, $points_config_table, $points_lottery_history_table, $points_lottery_tickets_table, $points_values_table)
+	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \phpbb\notification\manager $notification_manager, \phpbb\log\log $log, \phpbb\cache\service $cache, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\pagination $pagination, $phpEx, $phpbb_root_path, $points_bank_table, $points_config_table, $points_lottery_history_table, $points_lottery_tickets_table, $points_values_table)
 	{
-		$this->template 			= $template;
-		$this->user 				= $user;
-		$this->db 					= $db;
-		$this->helper 				= $helper;
-		$this->cache 				= $cache;
-		$this->request 				= $request;
-		$this->config 				= $config;
-		$this->pagination 			= $pagination;
-		$this->phpEx 				= $phpEx;
-		$this->phpbb_root_path 		= $phpbb_root_path;
-		$this->points_bank_table 	= $points_bank_table;
-		$this->points_config_table 	= $points_config_table;
+		$this->template 						= $template;
+		$this->user 							= $user;
+		$this->db 								= $db;
+		$this->helper 							= $helper;
+		$this->notification_manager 			= $notification_manager;
+		$this->log 								= $log;
+		$this->cache 							= $cache;
+		$this->request 							= $request;
+		$this->config 							= $config;
+		$this->pagination 						= $pagination;
+		$this->phpEx 							= $phpEx;
+		$this->phpbb_root_path 					= $phpbb_root_path;
+		$this->points_bank_table 				= $points_bank_table;
+		$this->points_config_table 				= $points_config_table;
 		$this->points_lottery_history_table 	= $points_lottery_history_table;
 		$this->points_lottery_tickets_table 	= $points_lottery_tickets_table;
 		$this->points_values_table 				= $points_values_table;
@@ -582,5 +591,76 @@ class functions_points
 				SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE post_id = ' . (int) $post_id;
 		$this->db->sql_query($sql);
+	}
+
+	function random_bonus_increment($user_id)
+	{
+		/**
+		* Read out config values
+		*/
+		$sql = 'SELECT *
+			FROM ' . $this->points_values_table;
+		$result = $this->db->sql_query($sql);
+		$points_values = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		$bonus_chance = '';
+		$bonus = false; // Basic value, sorry..
+		$bonus_value = 0.00; // Basic value
+		// Following numbers are 'times 100' to get rid of commas, as mt_rand doesn't get comma numbers.
+		$bonus_chance = $points_values['points_bonus_chance'] * 100; // The chance percentage for a user to get the bonus
+		$random_number = mt_rand(0, 10000); // The random number we compare to the chance percentage
+
+		if ($random_number <= $bonus_chance)
+		{
+			$bonus = true;
+
+			// Check if we want a fixed bonus value or not
+			if ($points_values['points_bonus_min'] == $points_values['points_bonus_max'])
+			{
+				$bonus_value = $points_values['points_bonus_min'];
+			}
+			else
+			{
+				// Create the bonus value, between the set minimum and maximum
+				// Following numbers are 'times 100' to get rid of commas, as mt_rand doesn't get comma numbers.
+				$bonus_random = mt_rand($points_values['points_bonus_min'] * 100, $points_values['points_bonus_max'] * 100) / 100;
+				$bonus_value = round($bonus_random, 0, PHP_ROUND_HALF_UP);
+			}
+		}
+
+		if ($bonus && $bonus_value)
+		{
+			$this->add_points((int) $user_id, $bonus_value);
+
+			// Send out notification
+
+			// Increase our notification sent counter
+			$this->config->increment('points_notification_id', 1);
+
+			// Store the notification data we will use in an array
+			$data = array(
+				'points_notify_id'		=> (int) $this->config['points_notification_id'],
+				'points_notify_msg'		=> sprintf($this->user->lang['NOTIFICATION_RANDOM_BONUS'], $bonus_value, $this->config['points_name']),
+				'sender'				=> (int) $this->user->data['user_id'],
+				'receiver'				=> (int) $user_id,
+				'mode'					=> 'logs', // The mode where the notification sends the user to
+			);
+			$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
+
+			$sql_array = array(
+					'SELECT'	=> 'username',
+					'FROM'		=> array(
+						USERS_TABLE => 'u',
+					),
+					'WHERE'		=> 'user_id = ' . (int) $user_id,
+				);
+			$sql = $this->db->sql_build_query('SELECT', $sql_array);
+			$result = $this->db->sql_query($sql);
+			$points_user = $this->db->sql_fetchrow($result);
+
+			// Add logs
+			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS_RANDOM', false, array($points_user['username']));
+		}
 	}
 }

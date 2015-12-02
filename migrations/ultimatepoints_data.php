@@ -11,13 +11,14 @@ namespace dmzx\ultimatepoints\migrations;
 
 class ultimatepoints_data extends \phpbb\db\migration\migration
 {
-	var $ext_version = '1.0.0';
+	var $ext_version = '1.1.0';
 
 	public function update_data()
 	{
 		return array(
 			// Add config
 			array('config.add', array('ultimate_points_version', $this->ext_version)),
+			array('config.add', array('points_notification_id', 0)),
 			// Add permission
 			array('permission.add', array('u_use_points', true)),
 			array('permission.add', array('u_use_bank', true)),
@@ -25,6 +26,9 @@ class ultimatepoints_data extends \phpbb\db\migration\migration
 			array('permission.add', array('u_use_robbery', true)),
 			array('permission.add', array('u_use_lottery', true)),
 			array('permission.add', array('u_use_transfer', true)),
+			array('permission.add', array('f_pay_attachment', false)),
+			array('permission.add', array('f_pay_topic', false)),
+			array('permission.add', array('f_pay_post', false)),
 			array('permission.add', array('m_chg_points', true)),
 			array('permission.add', array('m_chg_bank', true)),
 			array('permission.add', array('a_points', true)),
