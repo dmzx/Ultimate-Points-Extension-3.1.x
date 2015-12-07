@@ -64,6 +64,7 @@ class ultimatepoints_sample extends \phpbb\db\migration\migration
 					'points_per_warn' => '0',
 					'robbery_chance' => '50',
 					'robbery_loose' => '50',
+					'transfer_fee' => '10',
 					'bank_cost' => '0',
 					'bank_name' => 'BANK NAME',
 					'lottery_name' => 'LOTTERY NAME',

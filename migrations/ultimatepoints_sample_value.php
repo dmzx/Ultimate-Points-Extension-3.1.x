@@ -87,6 +87,10 @@ class ultimatepoints_sample_value extends \phpbb\db\migration\migration
 				'config_name' 	=> 'display_lottery_stats',
 				'config_value'	=> '1',
 			),
+			array(
+				'config_name' 	=> 'uplist_enable',
+				'config_value'	=> '1',
+			),
 		);
 
 		// Insert sample data

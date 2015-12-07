@@ -110,6 +110,7 @@ class ultimatepoints_schema extends \phpbb\db\migration\migration
 						'robbery_chance'				=> array('DECIMAL:5', 0.00),
 						'robbery_loose'					=> array('DECIMAL:5', 0.00),
 						'robbery_max_rob'				=> array('DECIMAL:5', 10.00),
+						'transfer_fee'					=> array('UINT:10', 0),
 						'lottery_pm_from'				=> array('UINT:10', 0),
 						'forum_topic'					=> array('DECIMAL:10', 0.00),
 						'forum_post'					=> array('DECIMAL:10', 0.00),

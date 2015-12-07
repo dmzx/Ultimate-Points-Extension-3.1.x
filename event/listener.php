@@ -467,11 +467,15 @@ class listener implements EventSubscriberInterface
 	{
 		if (isset($this->config['points_name']))
 		{
+			$points_config = $this->cache->get('points_config');
+
 			$this->template->assign_vars(array(
 				'U_POINTS'				=> $this->helper->route('dmzx_ultimatepoints_controller'),
+				'U_POINTS_LIST'			=> $this->helper->route('dmzx_ultimatepoints_list_controller'),
 				'POINTS_LINK'			=> $this->config['points_name'],
 				'USER_POINTS'			=> sprintf($this->functions_points->number_format_points($this->user->data['user_points'])),
 				'S_POINTS_ENABLE'		=> $this->config['points_enable'],
+				'S_UPLIST_ENABLE'		=> $points_config['uplist_enable'],
 				'S_USE_POINTS'			=> $this->auth->acl_get('u_use_points'),
 			));
 		}

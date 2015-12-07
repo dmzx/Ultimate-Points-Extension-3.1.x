@@ -68,6 +68,10 @@
 					<label><input type="radio" class="radio" name="transfer_enable" value="0"<!-- IF not TRANSFER_ENABLE --> id="transfer_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
 			</dl>
 			<dl>
+				<dt><label for="transfer_fee">{L_POINTS_TRANSFER_FEE}{L_COLON}</label><br />{L_POINTS_TRANSFER_FEE_EXPLAIN}</dt>
+				<dd><input type="text" id="transfer_fee" name="transfer_fee" value="{TRANSFER_FEE}" maxlength="5" size="5" /> %</dd>
+			</dl>
+			<dl>
 				<dt><label>{L_POINTS_STATS}{L_COLON}</label><br />{L_POINTS_STATS_EXPLAIN}</dt>
 				<dd><label><input type="radio" class="radio" name="stats_enable" value="1"<!-- IF STATS_ENABLE --> id="stats_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
 					<label><input type="radio" class="radio" name="stats_enable" value="0"<!-- IF not STATS_ENABLE --> id="stats_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
@@ -81,6 +85,11 @@
 				<dt><label>{L_POINTS_COMMENTS}{L_COLON}</label><br />{L_POINTS_COMMENTS_EXPLAIN}</dt>
 				<dd><label><input type="radio" class="radio" name="comments_enable" value="1"<!-- IF COMMENTS_ENABLE --> id="comments_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
 					<label><input type="radio" class="radio" name="comments_enable" value="0"<!-- IF not COMMENTS_ENABLE --> id="comments_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
+			</dl>
+			<dl>
+				<dt><label>{L_UPLIST_ENABLE}{L_COLON}</label><br />{L_UPLIST_ENABLE_EXPLAIN}</dt>
+				<dd><label><input type="radio" class="radio" name="uplist_enable" value="1"<!-- IF UPLIST_ENABLE --> id="uplist_enable" checked="checked" <!-- ENDIF --> /> {L_YES}</label>
+					<label><input type="radio" class="radio" name="uplist_enable" value="0"<!-- IF not UPLIST_ENABLE --> id="uplist_enable" checked="checked" <!-- ENDIF --> /> {L_NO}</label></dd>
 			</dl>
 			<dl>
 				<dt><label>{L_POINTS_LOGS}{L_COLON}</label><br />{L_POINTS_LOGS_EXPLAIN}</dt>

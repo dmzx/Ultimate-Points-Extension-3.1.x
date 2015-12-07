@@ -96,6 +96,7 @@ class points_points_edit
 		$adm_points	= $this->request->variable('adm_points', false);
 		$u_id 		= $this->request->variable('user_id', 0);
 		$post_id	= $this->request->variable('post_id', 0);
+		$method		= $this->request->variable('method', '');
 
 		add_form_key('points_edit');
 
@@ -119,7 +120,21 @@ class points_points_edit
 
 				$new_points = round($this->request->variable('points', 0.00),2);
 
-				$this->functions_points->set_points($u_id, $new_points);
+				// Do we set new points amount
+				if ($method == 'set')
+				{
+					$this->functions_points->set_points($u_id, $new_points);
+				}
+				// Or do we add points
+				else if ($method == 'add')
+				{
+					$this->functions_points->add_points($u_id, $new_points);
+				}
+				// Or do we substract points
+				else if ($method == 'substract')
+				{
+					$this->functions_points->substract_points($u_id, $new_points);
+				}
 
 				$sql_array = array(
 					'SELECT'	=> 'user_id, username, user_points, user_colour',

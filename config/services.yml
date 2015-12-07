@@ -47,6 +47,20 @@ services:
             - %dmzx.ultimatepoints.table.points.config%
             - %dmzx.ultimatepoints.table.points.values%
 
+    dmzx.ultimatepoints.list.controller:
+        class: dmzx\ultimatepoints\controller\userlist
+        arguments:
+            - @dmzx.ultimatepoints.core.functions.points
+            - @template
+            - @user
+            - @dbal.conn
+            - @request
+            - @config
+            - @pagination
+            - @controller.helper
+            - %dmzx.ultimatepoints.table.points.config%
+            - %dmzx.ultimatepoints.table.points.values%
+
     dmzx.ultimatepoints.admin.controller:
         class: dmzx\ultimatepoints\controller\admin_controller
         arguments:
@@ -272,4 +286,5 @@ services:
             - %core.php_ext%
             - %core.root_path%
             - %dmzx.ultimatepoints.table.points.log%
-            - %dmzx.ultimatepoints.table.points.config% 
+            - %dmzx.ultimatepoints.table.points.config%
+            - %dmzx.ultimatepoints.table.points.values%

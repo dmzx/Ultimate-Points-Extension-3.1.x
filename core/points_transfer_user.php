@@ -144,7 +144,7 @@ class points_transfer_user
 				trigger_error('FORM_INVALID');
 			}
 
-			// Grab need variables for the transfer
+			// Grab needed variables for the transfer
 			$am 		= round($this->request->variable('amount', 0.00),2);
 			$comment	= $this->request->variable('comment', '', true);
 			$username1 	= $this->request->variable('username', '', true);
@@ -204,7 +204,8 @@ class points_transfer_user
 			}
 
 			// Add cash to receiver
-			$this->functions_points->add_points($transfer_user['user_id'], $am);
+			$amount = (100 - $points_values['transfer_fee']) / 100 * $am; // Deduct transfer fee
+			$this->functions_points->add_points($transfer_user['user_id'], $amount);
 
 			// Remove cash from sender
 			$this->functions_points->substract_points($this->user->data['user_id'], $am);
@@ -234,7 +235,7 @@ class points_transfer_user
 				$points_name = $this->config['points_name'];
 				$comment = $this->db->sql_escape($comment);
 				$pm_subject	= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_SUBJECT']));
-				$pm_text	= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_BODY'], $am, $points_name, $text));
+				$pm_text	= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_BODY'], $amount, $points_name, $text));
 
 				$poll = $uid = $bitfield = $options = '';
 				generate_text_for_storage($pm_subject, $uid, $bitfield, $options, false, false, false);
@@ -287,6 +288,7 @@ class points_transfer_user
 			'USER_POINTS'				=> sprintf($this->functions_points->number_format_points($checked_user['user_points'])),
 			'POINTS_NAME'				=> $this->config['points_name'],
 			'POINTS_COMMENTS'			=> ($points_config['comments_enable']) ? true : false,
+			'TRANSFER_FEE'				=> $points_values['transfer_fee'],
 			'LOTTERY_NAME'				=> $points_values['lottery_name'],
 			'BANK_NAME'					=> $points_values['bank_name'],
 

@@ -196,6 +196,9 @@ $lang = array_merge($lang, array(
 	'POINTS_TOPIC_PER_WORD'				=> 'Points per word on new topics',
 	'POINTS_TRANSFER'					=> 'Allow Transfers',
 	'POINTS_TRANSFER_EXPLAIN'			=> 'Allow users to transfer/donate points to each other',
+	'POINTS_TRANSFER_FEE'				=> 'Transfer Fee',
+	'POINTS_TRANSFER_FEE_EXPLAIN'		=> 'Percentage that is being helt back per transfer',
+	'POINTS_TRANSFER_FEE_ERROR'			=> 'Transfer Fee can not be a 100% or more.',
 	'POINTS_TRANSFER_PM'				=> 'Notify user by PM of a transfer',
 	'POINTS_TRANSFER_PM_EXPLAIN'		=> 'Allow users to receive a notice by PM, when somebody send points to them',
 	'POINTS_WARN'						=> 'Amount of points to be subtracted per user warning (set 0 to disable this feature)',
@@ -233,6 +236,8 @@ $lang = array_merge($lang, array(
 	'TOP_POINTS'						=> 'Number of top rich members to display',
 	'TOP_POINTS_EXPLAIN'				=> 'Here you can set the value for the most rich users to show. Works in different views',
 
+	'UPLIST_ENABLE'						=> 'Enable Ultimate Points List',
+	'UPLIST_ENABLE_EXPLAIN'				=> 'Allow users to use Ultimate Points List',
 	'USER_POINTS'						=> 'User Points',
 	'USER_POINTS_EXPLAIN'				=> 'Amount of points the user owns',
 

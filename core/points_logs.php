@@ -188,17 +188,17 @@ class points_logs
 					if ($row['point_send'] == $checked_user['user_id'])
 					{
 						$who = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_sendold']) . "->" . $this->functions_points->number_format_points($row['point_sendold'] - $row['point_amount']) . ")";
-						$to = get_username_string('full', $opponent['user_id'], $opponent['username'], $opponent['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_recvold']) . "->" . $this->functions_points->number_format_points($row['point_recvold'] + $row['point_amount']) . ")";
+						$to = get_username_string('full', $opponent['user_id'], $opponent['username'], $opponent['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_recvold']) . "->" . $this->functions_points->number_format_points($row['point_recvold'] + ((100 - $points_values['transfer_fee']) / 100 * $row['point_amount'])) . ")";
 						$rows = 2;
 					}
 					else
 					{
-						$to = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_recvold']) . "->" . $this->functions_points->number_format_points($row['point_recvold'] + $row['point_amount']) . ")";
+						$to = get_username_string('full', $checked_user['user_id'], $checked_user['username'], $checked_user['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_recvold']) . "->" . $this->functions_points->number_format_points($row['point_recvold'] + ((100 - $points_values['transfer_fee']) / 100 * $row['point_amount'])) . ")";
 						$who = get_username_string('full', $opponent['user_id'], $opponent['username'], $opponent['user_colour']) . "<br />(" . $this->functions_points->number_format_points($row['point_sendold']) . "->" . 	$this->functions_points->number_format_points($row['point_sendold'] - $row['point_amount']) . ")";
 						$rows = 1;
 					}
 					$who .= " (-" . $this->functions_points->number_format_points($row['point_amount']) . ")";
-					$to .= " (+" . $this->functions_points->number_format_points($row['point_amount']) . ")";
+					$to .= " (+" . $this->functions_points->number_format_points((100 - $points_values['transfer_fee']) / 100 * $row['point_amount']) . ")";
 				break;
 
 				case 2: //Locked

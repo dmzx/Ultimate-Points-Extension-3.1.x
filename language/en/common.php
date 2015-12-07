@@ -46,6 +46,7 @@ $lang = array_merge($lang, array(
 	'ACP_POINTS_USERGUIDE_TITLE'		=> 'User Guide',
 
 	'BANK_ACCOUNT_OPENING'				=> 'Open an account',
+	'BANK_ACCOUNT_OPENED'				=> 'Opened an bank account on',
 	'BANK_ACTIONS'						=> 'Actions',
 	'BANK_BACK_TO_BANK'					=> '%sClick here to return to the bank%s',
 	'BANK_BACK_TO_INDEX'				=> '%sClick here to return to the index%s',
@@ -100,6 +101,8 @@ $lang = array_merge($lang, array(
 	'EDIT_P_RETURN_INDEX'				=> '%1$sClick here to return to the index.%2$s',
 	'EDIT_P_RETURN_POST'				=> '%1$sClick here to return to the previous post.%2$s',
 	'EDIT_SET_AMOUNT'					=> 'New Amount',
+	'EDIT_ADD_AMOUNT'					=> 'Add Amount',
+	'EDIT_SUB_AMOUNT'					=> 'Substract Amount',
 	'EDIT_USER_NOT_EXIST'				=> 'This user doesn\'t exist.',
 
 	'INFO_GENERAL_INFORMATIONS'			=> 'General Information',
@@ -172,6 +175,7 @@ $lang = array_merge($lang, array(
 	'LOTTERY_VIEW_HISTORY'				=> 'View past winners',
 	'LOTTERY_VIEW_SELF_HISTORY'			=> 'View your winning history',
 	'LOTTERY_WINNINGS'					=> 'Amount Won',
+	'LOTTERY_WON'						=> 'Won by',
 
 	'MAIN_BANK_HAVE'					=> 'In your bank account you have an additional %1$s %2$s.',
 	'MAIN_HELLO_USERNAME'				=> 'Hello %1$s !',
@@ -215,6 +219,12 @@ $lang = array_merge($lang, array(
 		1 => '%d entry',
 		2 => '%d entries',
 	),
+	'POINTS_LIST'						=> 'UP List',
+	'POINTS_LIST_DISABLE'				=> 'Ultimate Points list disabled',
+	'POINTS_LIST_NO_USER'				=> 'No users with points',
+	'POINTS_LIST_TOTAL'					=> 'Ultimate Points List',
+	'POINTS_LIST_USER'					=> '1 user',
+	'POINTS_LIST_USERS'					=> '%s users',
 	'POINTS_LOG_TOTAL'					=> 'Total',
 	'POINTS_LOTTERY'					=> 'Lottery',
 	'POINTS_LOTTERY_TIME'				=> 'Next draw: %1$s',
@@ -239,14 +249,17 @@ $lang = array_merge($lang, array(
 	'POINTS_TRANSFER'					=> 'Transfer',
 	'POINTS_VIEWING'					=> 'Browsing points console',
 
+	'ROBBERY_AMOUNT'					=> 'Amount',
 	'ROBBERY_AMOUNTLOSE'				=> 'If you are not successful, you will loose an additional <strong> %s percent</strong> of the value you wanted to rob!<br /><br />',
 	'ROBBERY_BAD'						=> 'Sorry ... your robbery has failed!',
+	'ROBBERY_DATE'						=> 'Robbed on date',
 	'ROBBERY_CHANCE'					=> 'Here you can try to rob another user. But you only can try to rob <strong>%1$s percent</strong> of the user\'s current cash amount!<br /><br />Like in real life, crime isn\'t really successful. Your chance to be successful with your robbery is <strong> %2$s percent</strong>.',
 	'ROBBERY_DISABLED'					=> 'The Robbery system is disabled',
 	'ROBBERY_MAX_ROB'					=> 'You cannot rob more than <strong>%1$s percent</strong> of the users cash amount at once!',
 	'ROBBERY_NO_ID_SPECIFIED'			=> 'You have not specified a username',
 	'ROBBERY_SELF'						=> 'You can\'t rob yourself.',
 	'ROBBERY_SET_AMOUNTR'				=> 'The amount you would like to rob',
+	'ROBBERY_SET_USERNAMES'				=> 'Name of the members that robbed you!',
 	'ROBBERY_SET_USERNAMER'				=> 'Name of the user you would like to rob',
 	'ROBBERY_START'						=> 'Start Robbery',
 	'ROBBERY_SUCCESFUL'					=> 'You have successfully made a great robbery!',
@@ -271,6 +284,8 @@ $lang = array_merge($lang, array(
 	'TRANSFER_AMOUNT'					=> 'Amount to transfer',
 	'TRANSFER_COMMENT'					=> 'Comment',
 	'TRANSFER_DESCRIPTION'				=> 'Here you can transfer a few %1$s. Simply add the receiver\'s name and the amount of points you would like to donate and click send. The transfer will be logged in your log files.',
+	'TRANSFER_FEE'						=> 'Transfer Fee',
+	'TRANSFER_FEE_EXPLAIN'				=> 'Percentage that is being helt back from your transfer',
 	'TRANSFER_NO_USER_RETURN'			=> '<strong>The selected username is invalid!</strong>',
 	'TRANSFER_PM_BODY'					=> 'You received a donation of %1$s %2$s with the following comment: <br /><i>%3$s</i>',
 	'TRANSFER_PM_SUBJECT'				=> 'You have received a donation!',
@@ -292,4 +307,8 @@ $lang = array_merge($lang, array(
 
 	'WARN_USER_POINTS'					=> 'Additionally we deducted %1$s %2$s from your account!',
 	'WARN_MOD_POINTS'					=> 'Additionally %1$s %2$s has been deducted from %3$s\'s account!',
+
+	//UCP
+	'UCP_ULTIMATEPOINTS_TITLE'			=> 'Ultimate Points',
+	'UCP_ULTIMATEPOINTS_EXPLAIN'		=> 'Your statistics'
 ));

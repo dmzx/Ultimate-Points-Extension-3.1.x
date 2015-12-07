@@ -86,7 +86,7 @@ class admin_controller
 	*/
 
 	public function __construct(
-		\dmzx\ultimatepoints\core\functions_points $functions_points,
+	\dmzx\ultimatepoints\core\functions_points $functions_points,
 		\phpbb\template\template $template,
 		\phpbb\user $user,
 		\phpbb\auth\auth $auth,
@@ -182,6 +182,7 @@ class admin_controller
 			$transfer_enable			= $this->request->variable('transfer_enable', 0);
 			$transfer_pm_enable			= $this->request->variable('transfer_pm_enable', 0);
 			$comments_enable			= $this->request->variable('comments_enable', 0);
+			$uplist_enable				= $this->request->variable('uplist_enable', 0);
 			$stats_enable				= $this->request->variable('stats_enable', 0);
 			$logs_enable				= $this->request->variable('logs_enable', 0);
 			$images_topic_enable 		= $this->request->variable('images_topic_enable', 0);
@@ -189,6 +190,7 @@ class admin_controller
 
 			// Values for phpbb_points_values
 			$sql_ary = array (
+				'transfer_fee'					=> $this->request->variable('transfer_fee', 0),
 				'number_show_per_page' 			=> $this->request->variable('number_show_per_page', 0),
 				'number_show_top_points'		=> $this->request->variable('number_show_top_points', 0),
 				'points_per_attach'				=> round($this->request->variable('points_per_attach', 0.00),2),
@@ -212,6 +214,12 @@ class admin_controller
 			if ($per_page_check < 5)
 			{
 				trigger_error($this->user->lang['POINTS_SHOW_PER_PAGE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
+			}
+
+			// Check if Transfer Fee percent is not more than 100%
+			if ($sql_ary['transfer_fee'] > 100)
+			{
+				trigger_error($this->user->lang['POINTS_TRANSFER_FEE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
 			// Update values in phpbb_config
@@ -240,6 +248,10 @@ class admin_controller
 			if ($comments_enable != $points_config['comments_enable'])
 			{
 				$this->functions_points->set_points_config('comments_enable', $comments_enable);
+			}
+			if ($uplist_enable != $points_config['uplist_enable'])
+			{
+				$this->functions_points->set_points_config('uplist_enable', $uplist_enable);
 			}
 			if ($stats_enable != $points_config['stats_enable'])
 			{
@@ -287,6 +299,8 @@ class admin_controller
 
 				'NUMBER_SHOW_TOP_POINTS'		=> $points_values['number_show_top_points'],
 				'NUMBER_SHOW_PER_PAGE'			=> $points_values['number_show_per_page'],
+
+				'TRANSFER_FEE'					=> $points_values['transfer_fee'],
 
 				'POINTS_ENABLE'					=> ($this->config['points_enable']) ? true : false,
 			));

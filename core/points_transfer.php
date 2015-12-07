@@ -54,6 +54,8 @@ class points_transfer
 
 	protected $points_config_table;
 
+	protected $points_values_table;
+
 	/**
 	* Constructor
 	*
@@ -67,10 +69,11 @@ class points_transfer
 	* @param									$phpbb_root_path
 	* @param string 							$points_log_table
 	* @param string 							$points_config_table
+	* @param string								$points_values_table
 	*
 	*/
 
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpEx, $phpbb_root_path, $points_log_table, $points_config_table)
+	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpEx, $phpbb_root_path, $points_log_table, $points_config_table, $points_values_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -84,6 +87,7 @@ class points_transfer
 		$this->phpbb_root_path 		= $phpbb_root_path;
 		$this->points_log_table 	= $points_log_table;
 		$this->points_config_table 	= $points_config_table;
+		$this->points_values_table	= $points_values_table;
 	}
 
 	var $u_action;
@@ -98,6 +102,13 @@ class points_transfer
 		{
 			$points_config[$row['config_name']] = $row['config_value'];
 		}
+		$this->db->sql_freeresult($result);
+
+		// Grab transfer fee
+		$sql = 'SELECT transfer_fee
+				FROM ' . $this->points_values_table;
+		$result = $this->db->sql_query($sql);
+		$transfer_fee = $this->db->sql_fetchfield('transfer_fee');
 		$this->db->sql_freeresult($result);
 
 		// Grab the variables
@@ -155,7 +166,8 @@ class points_transfer
 			}
 
 			// Add cash to receiver
-			$this->functions_points->add_points($checked_user['user_id'], $am);
+			$amount = (100 - $transfer_fee) / 100 * $am; // Deduct the transfer fee
+			$this->functions_points->add_points($checked_user['user_id'], $amount);
 
 			// Remove cash from sender
 			$this->functions_points->substract_points($this->user->data['user_id'], $am);
@@ -197,7 +209,7 @@ class points_transfer
 				$points_name 	= $this->config['points_name'];
 				$comment 		= $this->db->sql_escape($comment);
 				$pm_subject		= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_SUBJECT']));
-				$pm_text		= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_BODY'], $am, $points_name, $text));
+				$pm_text		= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_BODY'], $amount, $points_name, $text));
 
 				$poll = $uid = $bitfield = $options = '';
 				generate_text_for_storage($pm_subject, $uid, $bitfield, $options, false, false, false);
@@ -237,6 +249,7 @@ class points_transfer
 			'L_TRANSFER_DESCRIPTION'		=> sprintf($this->user->lang['TRANSFER_DESCRIPTION'], $this->config['points_name']),
 			'POINTS_NAME'					=> $this->config['points_name'],
 			'POINTS_COMMENTS'				=> ($points_config['comments_enable']) ? true : false,
+			'TRANSFER_FEE'					=> $transfer_fee,
 			'U_TRANSFER_NAME'				=> sprintf($this->user->lang['TRANSFER_TO_NAME'], $username_full, $this->config['points_name']),
 
 			'S_ALLOW_SEND_PM'				=> $this->auth->acl_get('u_sendpm'),
