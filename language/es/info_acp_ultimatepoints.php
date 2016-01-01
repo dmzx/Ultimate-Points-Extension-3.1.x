@@ -40,7 +40,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
 	'ACP_POINTS'						=> 'Ultimate Points',
 	'ACP_POINTS_BANK_EXPLAIN'			=> 'Here you can alter the settings for the Bank module',
-	'ACP_POINTS_BANK_TITLE'				=> 'Bank Settings',
+	'ACP_POINTS_BANK_TITLE'				=> 'Preferencias del Banco',
 	'ACP_POINTS_DEACTIVATED'			=> '¡Ultimate Points se encuentra desactivado!',
 	'ACP_POINTS_FORUM_EXPLAIN'			=> 'Here you can set the default forum points for all forums at once. So ideal for your first settings.<br />Please keep in mind, that these settings are for <strong>ALL</strong> forums. So if you manually changed any of your forum points settings with individual values, you need to redone this after using this option!',
 	'ACP_POINTS_FORUM_TITLE'			=> 'Forum Points Settings',
