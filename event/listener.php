@@ -79,7 +79,6 @@ class listener implements EventSubscriberInterface
 	* @param string 							$points_values_table
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\user $user, \phpbb\template\template $template, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\controller\helper $helper, \phpbb\cache\service $cache, \phpbb\request\request $request, $phpbb_root_path, $phpEx, $points_bank_table, $points_config_table, $points_values_table)
 	{
 		$this->functions_points 	= $functions_points;
@@ -879,10 +878,6 @@ class listener implements EventSubscriberInterface
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
 				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.{$this->phpEx}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
-			}
-			else
-			{
-				$event['is_authed'] = true;
 			}
 		}
 	}

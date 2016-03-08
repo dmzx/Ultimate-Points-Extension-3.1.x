@@ -63,7 +63,6 @@ class points_points_edit
 	* @param									$phpbb_root_path
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\controller\helper $helper,	\phpbb\log\log $log, \phpbb\request\request $request, $phpEx, $phpbb_root_path)
 	{
 		$this->functions_points		= $functions_points;
@@ -181,14 +180,11 @@ class points_points_edit
 					'POINTS_OF_USER'		=> sprintf($this->functions_points->number_format_points($row['user_points'])),
 					'POINTS_NAME'			=> $this->config['points_name'],
 					'CURRENT_VALUE'			=> $row['user_points'],
-
 					'L_POINTS_MODIFY'		=> sprintf($this->user->lang['EDIT_POINTS_MODIFY'], $this->config['points_name']),
 					'L_P_POINTS_TITLE'		=> sprintf($this->user->lang['EDIT_P_POINTS_TITLE'], $this->config['points_name']),
 					'L_USERNAME'			=> $this->user->lang['USERNAME'],
-
 					'S_ACTION'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'adm_points' => '1')),
 					'S_HIDDEN_FIELDS'		=> $hidden_fields,
-
 					'U_USER_LINK'			=> append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", "mode=viewprofile&amp;u=" . $u_id),
 				));
 			}

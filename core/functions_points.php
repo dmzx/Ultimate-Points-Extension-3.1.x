@@ -90,7 +90,6 @@ class functions_points
 	* @param string 							$points_values_table
 	*
 	*/
-
 	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \phpbb\notification\manager $notification_manager, \phpbb\log\log $log, \phpbb\cache\service $cache, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\pagination $pagination, $phpEx, $phpbb_root_path, $points_bank_table, $points_config_table, $points_lottery_history_table, $points_lottery_tickets_table, $points_values_table)
 	{
 		$this->template 						= $template;

@@ -69,7 +69,6 @@ class points_main
 	* @param string 							$points_lottery_tickets_table
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpbb_root_path, $points_bank_table, $points_values_table, $points_log_table, $points_lottery_tickets_table, $points_lottery_history_table)
 	{
 		$this->functions_points		= $functions_points;
@@ -307,7 +306,6 @@ class points_main
 			'LOTTERY_NAME'		=> $points_values['lottery_name'],
 			'BANK_NAME'			=> $points_values['bank_name'],
 			'S_DISPLAY_INDEX'	=> ($points_values['number_show_top_points'] > 0) ? true : false,
-
 			'U_TRANSFER_USER'	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
 			'U_LOGS'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
 			'U_LOTTERY'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery')),

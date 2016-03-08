@@ -221,12 +221,10 @@ class points_transfer
 					'from_username'		=> $this->user->data['username'],
 					'icon_id'			=> 0,
 					'from_user_ip'		=> '',
-
 					'enable_bbcode'		=> true,
 					'enable_smilies'	=> true,
 					'enable_urls'		=> true,
 					'enable_sig'		=> true,
-
 					'message'			=> $pm_text,
 					'bbcode_bitfield'	=> $bitfield,
 					'bbcode_uid'		=> $uid,
@@ -251,7 +249,6 @@ class points_transfer
 			'POINTS_COMMENTS'				=> ($points_config['comments_enable']) ? true : false,
 			'TRANSFER_FEE'					=> $transfer_fee,
 			'U_TRANSFER_NAME'				=> sprintf($this->user->lang['TRANSFER_TO_NAME'], $username_full, $this->config['points_name']),
-
 			'S_ALLOW_SEND_PM'				=> $this->auth->acl_get('u_sendpm'),
 		));
 

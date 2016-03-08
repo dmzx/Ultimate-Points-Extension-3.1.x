@@ -72,7 +72,6 @@ class points_transfer_user
 	* @param string 							$points_values_table
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpEx, $phpbb_root_path, $points_config_table, $points_log_table, $points_values_table)
 	{
 		$this->functions_points		= $functions_points;
@@ -247,12 +246,10 @@ class points_transfer_user
 					'from_username'		=> $this->user->data['username'],
 					'icon_id'			=> 0,
 					'from_user_ip'		=> '',
-
 					'enable_bbcode'		=> true,
 					'enable_smilies'	=> true,
 					'enable_urls'		=> true,
 					'enable_sig'		=> true,
-
 					'message'		=> $pm_text,
 					'bbcode_bitfield'	=> $bitfield,
 					'bbcode_uid'		=> $uid,
@@ -291,9 +288,7 @@ class points_transfer_user
 			'TRANSFER_FEE'				=> $points_values['transfer_fee'],
 			'LOTTERY_NAME'				=> $points_values['lottery_name'],
 			'BANK_NAME'					=> $points_values['bank_name'],
-
 			'L_TRANSFER_DESCRIPTION'	=> sprintf($this->user->lang['TRANSFER_DESCRIPTION'], $this->config['points_name']),
-
 			'U_TRANSFER_USER'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
 			'U_LOGS'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
 			'U_LOTTERY'					=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery')),
@@ -306,9 +301,8 @@ class points_transfer_user
 			'U_USE_LOTTERY'				=> $this->auth->acl_get('u_use_lottery'),
 			'U_USE_BANK'				=> $this->auth->acl_get('u_use_bank'),
 			'U_USE_ROBBERY'				=> $this->auth->acl_get('u_use_robbery'),
-
 			'S_ALLOW_SEND_PM'			=> $this->auth->acl_get('u_sendpm'),
-			));
+		));
 
 		// Generate the page
 		page_header(sprintf($this->user->lang['TRANSFER_TITLE'], $this->config['points_name']));

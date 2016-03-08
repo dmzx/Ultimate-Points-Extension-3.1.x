@@ -84,7 +84,6 @@ class admin_controller
 	* @param string 							$points_values_table
 	*
 	*/
-
 	public function __construct(
 	\dmzx\ultimatepoints\core\functions_points $functions_points,
 		\phpbb\template\template $template,
@@ -282,7 +281,6 @@ class admin_controller
 		{
 			$this->template->assign_vars(array(
 				'POINTS_NAME'					=> $this->config['points_name'],
-
 				'POINTS_PER_ATTACH'				=> $points_values['points_per_attach'],
 				'POINTS_PER_ATTACH_FILE'		=> $points_values['points_per_attach_file'],
 				'POINTS_PER_POLL'				=> $points_values['points_per_poll'],
@@ -296,12 +294,9 @@ class admin_controller
 				'POINTS_BONUS_CHANCE'			=> $points_values['points_bonus_chance'],
 				'POINTS_BONUS_MIN'				=> $points_values['points_bonus_min'],
 				'POINTS_BONUS_MAX'				=> $points_values['points_bonus_max'],
-
 				'NUMBER_SHOW_TOP_POINTS'		=> $points_values['number_show_top_points'],
 				'NUMBER_SHOW_PER_PAGE'			=> $points_values['number_show_per_page'],
-
 				'TRANSFER_FEE'					=> $points_values['transfer_fee'],
-
 				'POINTS_ENABLE'					=> ($this->config['points_enable']) ? true : false,
 			));
 		}
@@ -799,11 +794,9 @@ class admin_controller
 			'LOTTERY_CHANCE'				=> $points_values['lottery_chance'],
 			'LOTTERY_MAX_TICKETS'			=> $points_values['lottery_max_tickets'],
 			'LOTTERY_PM_FROM'				=> $points_values['lottery_pm_from'],
-
 			'S_LOTTERY_ENABLE'				=> ($points_config['lottery_enable']) ? true : false,
 			'S_LOTTERY_MULTI_TICKET_ENABLE'	=> ($points_config['lottery_multi_ticket_enable']) ? true : false,
 			'S_DISPLAY_LOTTERY_STATS'		=> ($points_config['display_lottery_stats']) ? true : false,
-
 			'S_LOTTERY'			=> true,
 			'U_ACTION'			=> $this->u_action)
 		);
@@ -921,9 +914,7 @@ class admin_controller
 			'BANK_INTERESTCUT'	=> $points_values['bank_interestcut'],
 			'BANK_COST'			=> $points_values['bank_cost'],
 			'BANK_NAME'			=> $points_values['bank_name'],
-
 			'S_BANK_ENABLE'		=> ($points_config['bank_enable']) ? true : false,
-
 			'S_POINTS_BANK'		=> true,
 			'U_ACTION'			=> $this->u_action)
 		);
@@ -1051,10 +1042,8 @@ class admin_controller
 			'ROBBERY_CHANCE'	=> $points_values['robbery_chance'],
 			'ROBBERY_LOOSE'		=> $points_values['robbery_loose'],
 			'ROBBERY_MAX_ROB'	=> $points_values['robbery_max_rob'],
-
 			'S_ROBBERY_ENABLE'	=> ($points_config['robbery_enable']) ? true : false,
 			'S_ROBBERY_NOTIFY'	=> ($points_config['robbery_notify']) ? true : false,
-
 			'S_ROBBERY'			=> true,
 			'U_ACTION'			=> $this->u_action)
 		);
@@ -1219,7 +1208,6 @@ class admin_controller
 			'FORUM_COST'		=> $points_values['forum_cost'],
 			'FORUM_COST_TOPIC'	=> $points_values['forum_cost_topic'],
 			'FORUM_COST_POST'	=> $points_values['forum_cost_post'],
-
 			'S_FORUMPOINTS'		=> true,
 			'U_ACTION'			=> $this->u_action)
 		);

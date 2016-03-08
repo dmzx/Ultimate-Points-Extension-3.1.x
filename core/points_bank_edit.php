@@ -70,7 +70,6 @@ class points_bank_edit
 	* @param string 							$points_bank_table
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper,	\phpbb\log\log $log, $phpEx, $phpbb_root_path, $points_bank_table)
 	{
 		$this->functions_points		= $functions_points;
@@ -184,14 +183,11 @@ class points_bank_edit
 					'BANK_POINTS'		=> sprintf($this->functions_points->number_format_points($row['holding'])),
 					'POINTS_NAME'		=> $this->config['points_name'],
 					'CURRENT_VALUE'		=> $row['holding'],
-
 					'L_POINTS_MODIFY'	=> sprintf($this->user->lang['EDIT_BANK_MODIFY'], $this->config['points_name']),
 					'L_P_BANK_TITLE'	=> sprintf($this->user->lang['EDIT_P_BANK_TITLE'], $this->config['points_name']),
 					'L_USERNAME'		=> $this->user->lang['USERNAME'],
 					'L_SET_AMOUNT'		=> $this->user->lang['EDIT_SET_AMOUNT'],
-
 					'U_USER_LINK'		=> append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", "mode=viewprofile&amp;u=" . $u_id),
-
 					'S_ACTION'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'adm_points' => '1')),
 					'S_HIDDEN_FIELDS'	=> $hidden_fields,
 				));

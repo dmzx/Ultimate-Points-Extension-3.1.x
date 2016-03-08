@@ -541,9 +541,7 @@ class points_bank
 			'BANK_NAME'				=> $points_values['bank_name'],
 			'BANK_NOBODY_IN_BANK'	=> sprintf($this->user->lang['BANK_NOBODY_IN_BANK'], $this->config['points_name'], $points_values['bank_name']),
 			'S_DISPLAY_INDEX'		=> ($points_values['number_show_top_points'] > 0) ? true : false,
-
 			'L_BANK_DESCRIPTION'	=> sprintf($this->user->lang['BANK_DESCRIPTION'], $this->config['points_name']),
-
 			'U_TRANSFER_USER'		=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
 			'U_LOGS'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),
 			'U_LOTTERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery')),

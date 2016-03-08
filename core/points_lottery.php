@@ -79,7 +79,6 @@ class points_lottery
 	* @param string								$points_lottery_tickets_table,
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\pagination $pagination, $phpEx, $phpbb_root_path, $points_config_table, $points_values_table, $points_lottery_history_table, $points_lottery_tickets_table)
 	{
 		$this->functions_points		= $functions_points;
@@ -516,14 +515,11 @@ class points_lottery
 				'LOTTERY_TICKETS'		=> $no_of_tickets,
 				'LOTTERY_PLAYERS'		=> $no_of_players,
 				'MAX_TICKETS'			=> $points_values['lottery_max_tickets'],
-
 				'S_PURCHASE_SINGLE'		=> (($viewer_total_tickets == 0) && ($points_config['lottery_multi_ticket_enable'] == 0) && ($points_config['lottery_enable'] == 1)) ? true : false,
 				'S_PURCHASE_MULTI'		=> (($viewer_total_tickets < $points_values['lottery_max_tickets']) && ($points_config['lottery_multi_ticket_enable'] == 1) && ($points_config['lottery_enable'] == 1)) ? true : false,
-
 				'S_MULTI_TICKETS'		=> ($points_config['lottery_multi_ticket_enable'] == 1) ? true : false,
 				'S_LOTTERY_ENABLE'		=> ($points_config['lottery_enable'] == 1) ? true : false,
 				'S_DRAWING_ENABLED'		=> ($points_values['lottery_draw_period']) ? true : false,
-
 				'U_PREVIOUS_WINNER'		=> $link_member,
 				'U_VIEW_HISTORY'		=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery', 'history' => 'all')),
 				'U_VIEW_SELF_HISTORY'	=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'lottery', 'history' => 'ego')),

@@ -76,7 +76,6 @@ class points_robbery
 	* @param string								$points_log_table
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\notification\manager $notification_manager, $phpEx, $phpbb_root_path, $points_config_table, $points_values_table, $points_log_table)
 	{
 		$this->functions_points		= $functions_points;
@@ -323,10 +322,8 @@ class points_robbery
 			'POINTS_NAME'			=> $this->config['points_name'],
 			'LOTTERY_NAME'			=> $points_values['lottery_name'],
 			'BANK_NAME'				=> $points_values['bank_name'],
-
 			'L_ROBBERY_CHANCE'		=> sprintf($this->user->lang['ROBBERY_CHANCE'], ($this->functions_points->number_format_points($points_values['robbery_max_rob'])), ($this->functions_points->number_format_points($points_values['robbery_chance']))),
 			'L_ROBBERY_AMOUNTLOSE'	=> sprintf($this->user->lang['ROBBERY_AMOUNTLOSE'], ($this->functions_points->number_format_points($points_values['robbery_loose']))),
-
 			'U_FIND_USERNAME'		=> append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", "mode=searchuser&amp;form=post&amp;field=username"),
 			'U_TRANSFER_USER'		=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer_user')),
 			'U_LOGS'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'logs')),

@@ -54,7 +54,6 @@ class points_info
 	* @param									$phpbb_root_path
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpbb_root_path, $points_values_table)
 	{
 		$this->functions_points		= $functions_points;
