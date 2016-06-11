@@ -146,55 +146,9 @@ class points_bank
 		));
 
 		// Check, if it's time to pay users
-		$time = time();
-
-		if (($time - $points_values['bank_last_restocked']) > $points_values['bank_pay_period'])
+		if ((time() - $points_values['bank_last_restocked']) > $points_values['bank_pay_period'])
 		{
-			$this->functions_points->set_points_values('bank_last_restocked', $time);
-
-			// Pay the users
-			$sql = 'UPDATE ' . $this->points_bank_table . '
-					SET holding = holding + round((holding / 100) * ' . $points_values['bank_interest'] . ')
-					WHERE holding < ' . $points_values['bank_interestcut'] . '
-						OR ' . $points_values['bank_interestcut'] . ' = 0';
-			$this->db->sql_query($sql);
-
-			// Mantain the bank costs
-			if ($points_values['bank_cost'] <> '0')
-			{
-				$sql = 'UPDATE ' . $this->points_bank_table . '
-						SET holding = holding - ' . $points_values['bank_cost'] . '
-						WHERE holding >= ' . $points_values['bank_cost'] . '';
-				$this->db->sql_query($sql);
-			}
-
-			// Increase our notification sent counter
-			$this->config->increment('points_notification_id', 1);
-
-			$data = array(
-				'points_notify_id'		=> (int) $this->config['points_notification_id'],
-				'points_notify_msg'		=> $this->user->lang['NOTIFICATION_BANK_PAYOUT'],
-				'sender'				=> $this->user->data['user_id'],
-				'receiver'				=> (int) $this->user->data['user_id'],
-				'mode'					=> 'bank', // The mode where we the notification sends them to
-			);
-
-			// Send the notification
-			$this->notification_manager->add_notifications('dmzx.ultimatepoints.notification.type.points', $data);
-
-			$sql_array = array(
-					'SELECT'	=> 'username',
-					'FROM'		=> array(
-						USERS_TABLE => 'u',
-					),
-					'WHERE'		=> 'user_id = ' . (int) $this->user->data['user_id'],
-				);
-			$sql = $this->db->sql_build_query('SELECT', $sql_array);
-			$result = $this->db->sql_query($sql);
-			$points_user = $this->db->sql_fetchrow($result);
-
-			// Add logs
-			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS_BANK_PAYS', false, array($points_user['username']));
+			$this->functions_points->run_bank();
 		}
 
 		$sql_array = array(

@@ -284,6 +284,12 @@ class listener implements EventSubscriberInterface
 				$this->functions_points->run_lottery();
 			}
 
+			// Run Bank
+			if ((time() - $points_values['bank_last_restocked']) > $points_values['bank_pay_period'])
+			{
+				$this->functions_points->run_bank();
+			}
+
 			$this->template->assign_vars(array(
 				'TOTAL_BANK_USER'			=> sprintf($this->user->lang['POINTS_BUPOINTS_TOTAL'], $bankusers, $points_values['bank_name']),
 				'TOTAL_BANK_POINTS'			=> sprintf($this->user->lang['POINTS_BPOINTS_TOTAL'], $this->functions_points->number_format_points($bankholdings), $this->config['points_name'], $points_values['bank_name']),
@@ -292,6 +298,7 @@ class listener implements EventSubscriberInterface
 				'S_DISPLAY_LOTTERY'			=> ($points_config['display_lottery_stats']) ? true : false,
 				'S_DISPLAY_POINTS_STATS'	=> ($points_config['stats_enable']) ? true : false,
 				'S_DISPLAY_INDEX'			=> ($points_values['number_show_top_points'] > 0) ? true : false,
+				'U_USE_POINTS'				=> $this->auth->acl_get('u_use_points'),
 			));
 		}
 	}

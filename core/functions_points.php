@@ -306,6 +306,39 @@ class functions_points
 	}
 
 	/**
+	* Run Bank
+	*/
+	function run_bank()
+	{
+		// Get all values
+		$sql = 'SELECT *
+			FROM ' . $this->points_values_table;
+		$result = $this->db->sql_query($sql);
+		$points_values = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		// time to pay users
+		$time = time();
+		$this->set_points_values('bank_last_restocked', $time);
+
+		// Pay the users
+		$sql = 'UPDATE ' . $this->points_bank_table . '
+			SET holding = holding + round((holding / 100) * ' . $points_values['bank_interest'] . ')
+			WHERE holding < ' . $points_values['bank_interestcut'] . '
+				OR ' . $points_values['bank_interestcut'] . ' = 0';
+		$this->db->sql_query($sql);
+
+		// Maintain the bank costs
+		if ($points_values['bank_cost'] <> '0')
+		{
+			$sql = 'UPDATE ' . $this->points_bank_table . '
+				SET holding = holding - ' . $points_values['bank_cost'] . '
+				WHERE holding >= ' . $points_values['bank_cost'] . '';
+			$this->db->sql_query($sql);
+		}
+	}
+
+	/**
 	* Run Lottery
 	*/
 	function run_lottery()
@@ -365,7 +398,7 @@ class functions_points
 
 		if ($total_tickets > 0)
 		{
-			// Genarate a random number
+			// Generate a random number
 			$rand_base 	= $points_values['lottery_chance'];
 			$rand_value = rand(0, 100);
 
@@ -388,9 +421,9 @@ class functions_points
 				$this->db->sql_freeresult($result);
 
 				// Check if lottery is enabled and prepare winner informations
-				$sql = 'SELECT lottery_enable
-						FROM ' . $this->points_config_table;
-				$result = $this->db->sql_query($result);
+				$sql = 'SELECT *
+					FROM ' . $this->points_config_table;
+				$result = $this->db->sql_query($sql);
 				$lottery_enabled = $this->db->sql_fetchfield('lottery_enable');
 				$this->db->sql_freeresult($result);
 

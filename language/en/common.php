@@ -268,7 +268,7 @@ $lang = array_merge($lang, array(
 	'ROBBERY_TO_MUCH'					=> 'You are trying to rob too many points, if you fail you will not be able to pay the damage ...',
 	'ROBBERY_TO_MUCH_FROM_USER'			=> 'You are trying to rob more than the user has.',
 
-	'TRANSFER_AMOUNT'					=> 'Amount',
+	'TRANSFER_AMOUNTS'					=> 'Amount',
 	'TRANSFER_SET_USERNAMES'			=> 'Name of the members that donated to you!',
 	'TRANSFER_DATE'						=> 'Transfer received on',
 	'TRANSFER_RECEIVED_DISABLED'		=> 'The transfer system is disabled',
