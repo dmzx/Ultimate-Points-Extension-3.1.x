@@ -54,7 +54,6 @@ branches:
 install:
   - travis/prepare-phpbb.sh $EXTNAME $PHPBB_BRANCH
   - cd ../../phpBB3
-  - travis/prepare-extension.sh $EXTNAME $PHPBB_BRANCH
   - travis/setup-phpbb.sh $DB $TRAVIS_PHP_VERSION $NOTESTS
   - ../dmzx/Ultimate-Points-Extension/travis/prepare-epv.sh $EPV $NOTESTS  
 
