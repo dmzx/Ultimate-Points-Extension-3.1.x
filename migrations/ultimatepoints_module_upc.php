@@ -17,9 +17,9 @@ class ultimatepoints_module_upc extends \phpbb\db\migration\migration
 			array('module.add', array('ucp', false, 'UCP_ULTIMATEPOINTS_TITLE')),
 			array('module.add', array(
 				'ucp', 'UCP_ULTIMATEPOINTS_TITLE', array(
-					'module_basename'	=> '\dmzx\ultimatepoints\ucp\ultimatepoints_module',
+					'module_basename'	=> '\dmzx\ultimatepoints\ucp\ucp_ultimatepoints_module',
 					'auth'				=> 'ext_dmzx/ultimatepoints',
-					'modes'				=> array('lottery', 'bank', 'robbery'),
+					'modes'				=> array('lottery', 'bank', 'robbery', 'transfer'),
 				),
 			)),
 		);

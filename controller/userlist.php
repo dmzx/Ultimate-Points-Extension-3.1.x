@@ -112,10 +112,12 @@ class userlist
 			WHERE user_points > 0
 			ORDER BY user_points DESC';
 		$result = $this->db->sql_query_limit($sql, $limit, $start);
+
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$this->template->assign_block_vars('ultimatelist', array(
 				'USERNAME'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'AVATAR'	=> phpbb_get_user_avatar($row),
 				'POINT'		=> sprintf($this->functions_points->number_format_points($row['user_points'])),
 				)
 			);

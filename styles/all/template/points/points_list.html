@@ -14,28 +14,33 @@
 	<!-- ENDIF -->
 </div>
 
-<div class="forumbg">
+<div class="forumbg forumbg-table">
 	<div class="inner">
-	<table class="table1">
-	<thead>
-	<tr>
-		<th class="table1" style="text-align:center;">{L_USERNAME}</th>
-		<th class="table1" style="text-align:center;">{POINTSLIST}</th>
-	</tr>
-	</thead>
-	<tbody>
-	<!-- BEGIN ultimatelist -->
-	<tr class="<!-- IF ultimatelist.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
-		<td style="text-align:center;"><b>{ultimatelist.USERNAME}</b></td>
-		<td style="text-align:center;">{ultimatelist.POINT}</td>
-	</tr>
-	<!-- BEGINELSE -->
-	<tr class="bg1">
-		<td colspan="4">{L_POINTS_LIST_NO_USER}</td>
-	</tr>
-	<!-- END ultimatelist -->
-	</tbody>
-	</table>
+		<table class="table1">
+			<thead>
+				<tr>
+					<th class="name">{L_USERNAME}</th>
+					<th class="joined">{POINTSLIST}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- BEGIN ultimatelist -->
+				<tr class="<!-- IF ultimatelist.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+					<td>
+						<div class="rich-user-avatar">
+							<!-- IF ultimatelist.AVATAR -->{ultimatelist.AVATAR}<!-- ELSE --><img src="{T_THEME_PATH}/images/no_avatar.gif" width="60px;" height="60px;" alt="" /><!-- ENDIF -->
+						</div>
+						<b>{ultimatelist.USERNAME}</b>
+					</td>
+					<td >{ultimatelist.POINT}</td>
+				</tr>
+				<!-- BEGINELSE -->
+				<tr class="bg1">
+					<td colspan="4">{L_POINTS_LIST_NO_USER}</td>
+				</tr>
+				<!-- END ultimatelist -->
+			</tbody>
+		</table>
 	</div>
 </div>
 <hr />

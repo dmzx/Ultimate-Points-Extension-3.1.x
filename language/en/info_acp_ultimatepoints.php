@@ -240,21 +240,6 @@ $lang = array_merge($lang, array(
 	'UPLIST_ENABLE_EXPLAIN'				=> 'Allow users to use Ultimate Points List',
 	'USER_POINTS'						=> 'User Points',
 	'USER_POINTS_EXPLAIN'				=> 'Amount of points the user owns',
-
-	//Permissions
-	'ACL_CAT_POINTS'		=> 'Ultimate Points',
-	'ACL_U_USE_POINTS'		=> 'Can use Ultimate Points',
-	'ACL_U_USE_ROBBERY'		=> 'Can use Robbery Module',
-	'ACL_U_USE_BANK'		=> 'Can use Bank Module',
-	'ACL_U_USE_LOGS'		=> 'Can use Log Module',
-	'ACL_U_USE_LOTTERY'		=> 'Can use Lottery Module',
-	'ACL_U_USE_TRANSFER'	=> 'Can use Transfer Module',
-	'ACL_F_PAY_ATTACHMENT'	=> 'Has to pay for downloading attachments',
-	'ACL_F_PAY_TOPIC'		=> 'Has to pay for making a new topic',
-	'ACL_F_PAY_POST'		=> 'Has to pay for making a new post',
-	'ACL_M_CHG_POINTS'		=> 'Can change users points',
-	'ACL_M_CHG_BANK'		=> 'Can change users Bank points',
-	'ACL_A_POINTS'			=> 'Can administrate Ultimate Points',
 ));
 
 $help = array(

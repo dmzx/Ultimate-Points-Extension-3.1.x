@@ -9,12 +9,12 @@
 
 namespace dmzx\ultimatepoints\ucp;
 
-class ultimatepoints_info
+class ucp_ultimatepoints_info
 {
 	function module()
 	{
 		return array(
-			'filename'		=> 'dmzx\ultimatepoints\ucp\ultimatepoints_module',
+			'filename'		=> 'dmzx\ultimatepoints\ucp\ucp_ultimatepoints_module',
 			'title'			=> 'UCP_ULTIMATEPOINTS_TITLE',
 			'modes'			=> array(
 				'lottery'	=> array(
@@ -29,6 +29,11 @@ class ultimatepoints_info
 				),
 				'robbery'	=> array(
 					'title'	=> 'POINTS_ROBBERY',
+					'auth'	=> 'ext_dmzx/ultimatepoints',
+					'cat'	=> array('UCP_MAIN')
+				),
+				'transfer'	=> array(
+					'title'	=> 'POINTS_TRANSFER_RECIEVED',
 					'auth'	=> 'ext_dmzx/ultimatepoints',
 					'cat'	=> array('UCP_MAIN')
 				),

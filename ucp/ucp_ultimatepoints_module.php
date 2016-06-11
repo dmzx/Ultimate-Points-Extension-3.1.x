@@ -9,7 +9,7 @@
 
 namespace dmzx\ultimatepoints\ucp;
 
-class ultimatepoints_module
+class ucp_ultimatepoints_module
 {
 	public $u_action;
 	function main($id, $mode)
@@ -39,6 +39,10 @@ class ultimatepoints_module
 				case 'robbery':
 					$this->robbery_info();
 				break;
+
+				case 'transfer':
+					$this->transfer_info();
+				break;
 			}
 		}
 		else
@@ -58,7 +62,8 @@ class ultimatepoints_module
 			FROM ' . $this->points_lottery_history_table . ' p
 				LEFT JOIN ' . USERS_TABLE . ' u
 				ON p.user_name=u.username
-			WHERE p.user_id = ' . $user->data['user_id'] . ' ORDER BY p.amount DESC';
+			WHERE p.user_id = ' . $user->data['user_id'] . '
+			ORDER BY p.amount DESC';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow())
@@ -92,7 +97,8 @@ class ultimatepoints_module
 			FROM ' . $this->points_bank_table . ' b
 				LEFT JOIN ' . USERS_TABLE . ' u
 				ON b.user_id=u.user_id
-			WHERE b.user_id = ' . $user->data['user_id'] . ' ORDER BY b.holding DESC';
+			WHERE b.user_id = ' . $user->data['user_id'] . '
+			ORDER BY b.holding DESC';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow())
@@ -125,7 +131,9 @@ class ultimatepoints_module
 			FROM ' . $this->points_log_table . ' l
 				LEFT JOIN ' . USERS_TABLE . ' u
 				ON l.point_send=u.user_id
-			WHERE l.point_recv = ' . $user->data['user_id'] . ' ORDER BY l.point_date DESC';
+			WHERE l.point_recv = ' . $user->data['user_id'] . '
+			AND l.point_type = 3
+			ORDER BY l.point_date DESC';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow())
@@ -144,6 +152,41 @@ class ultimatepoints_module
 		$template->assign_vars(array(
 			'S_ROBBERY_INFO'			=> true,
 			'S_ROBBERY_ENABLE'			=> $points_config['robbery_enable'],
+		));
+	}
+
+	public function transfer_info()
+	{
+		global $db, $user, $template, $config;
+
+		$points_config = $this->config_info();
+
+		$sql = 'SELECT *
+			FROM ' . $this->points_log_table . ' l
+				LEFT JOIN ' . USERS_TABLE . ' u
+				ON l.point_send=u.user_id
+			WHERE l.point_recv = ' . $user->data['user_id'] . '
+			AND l.point_type = 1
+			ORDER BY l.point_date DESC';
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow())
+		{
+			$template->assign_block_vars('ucp_ultimatepoints_transfer', array(
+				'TRANSFER_USERNAME'			=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'TRANSFER_AMOUNT'			=> $row['point_amount'],
+				'TRANSFER_TIME'				=> $user->format_date($row['point_date']),
+			));
+		}
+		$db->sql_freeresult($result);
+
+		$this->tpl_name = 'points/ucp_ultimatepoints';
+		$this->page_title = $user->lang['UCP_ULTIMATEPOINTS_TITLE'];
+
+		$template->assign_vars(array(
+			'S_TRANSFER_INFO'			=> true,
+			'S_TRANSFER_ENABLE'			=> $points_config['transfer_enable'],
+			'L_TRANSFER_RECEIVED'		=> sprintf($user->lang['TRANSFER_RECEIVED'], $config['points_name'])
 		));
 	}
 

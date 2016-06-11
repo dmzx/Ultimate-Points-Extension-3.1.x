@@ -9,7 +9,7 @@
 
 namespace dmzx\ultimatepoints\migrations;
 
-class ultimatepoints_module extends \phpbb\db\migration\migration
+class ultimatepoints_module_acp extends \phpbb\db\migration\migration
 {
 	public function update_data()
 	{
@@ -17,7 +17,7 @@ class ultimatepoints_module extends \phpbb\db\migration\migration
 			array('module.add', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_POINTS')),
 			array('module.add', array(
 			'acp', 'ACP_POINTS', array(
-					'module_basename'	=> '\dmzx\ultimatepoints\acp\ultimatepoints_module', 'modes' => array('points', 'bank', 'lottery', 'robbery', 'forumpoints', 'userguide'),
+					'module_basename'	=> '\dmzx\ultimatepoints\acp\acp_ultimatepoints_module', 'modes' => array('points', 'bank', 'lottery', 'robbery', 'forumpoints', 'userguide'),
 				),
 			)),
 		);

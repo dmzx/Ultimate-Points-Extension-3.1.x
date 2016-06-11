@@ -9,7 +9,7 @@
 
 namespace dmzx\ultimatepoints\acp;
 
-class ultimatepoints_module
+class acp_ultimatepoints_module
 {
 	public	$u_action;
 

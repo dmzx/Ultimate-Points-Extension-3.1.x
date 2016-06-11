@@ -102,7 +102,7 @@ $lang = array_merge($lang, array(
 	'EDIT_P_RETURN_POST'				=> '%1$sClick here to return to the previous post.%2$s',
 	'EDIT_SET_AMOUNT'					=> 'New Amount',
 	'EDIT_ADD_AMOUNT'					=> 'Add Amount',
-	'EDIT_SUB_AMOUNT'					=> 'Substract Amount',
+	'EDIT_SUB_AMOUNT'					=> 'Subtract Amount',
 	'EDIT_USER_NOT_EXIST'				=> 'This user doesn\'t exist.',
 
 	'INFO_GENERAL_INFORMATIONS'			=> 'General Information',
@@ -157,7 +157,7 @@ $lang = array_merge($lang, array(
 	'LOTTERY_NEVER_WON'					=> 'You have never won the Lottery!',
 	'LOTTERY_NEXT_DRAWING'				=> 'Next draw will be on',
 	'LOTTERY_NO_WINNER'					=> 'No winner this time',
-	'LOTTERY_NO_WINNERS'				=> 'Noone has won a lottery yet.',
+	'LOTTERY_NO_WINNERS'				=> 'None has won a lottery yet.',
 	'LOTTERY_PLAYERS'					=> 'Number of players up to now',
 	'LOTTERY_PM_BODY'					=> 'Congratulations! You have won %1$s in our Lottery! %2$s',
 	'LOTTERY_PM_CASH_ENABLED'			=> 'Your winnings have been deposited into your account, enjoy it!<br /><br /><i>The Lottery Management</i>',
@@ -193,7 +193,7 @@ $lang = array_merge($lang, array(
 	'NOTIFICATION_RANDOM_BONUS'			=> 'You received %1$s %2$s random bonus!',
 	'NOTIFICATION_ROBBERY_FAILED'		=> 'tried to rob you, but failed!',
 	'NOTIFICATION_ROBBERY_SUCCES'		=> 'has robbed %1$s %2$s from you!',
-	'NOTIFICATION_POINTS_UCP'			=> 'Receive notification about points <em>(succesful/failed robbery, bonus points, etc..)</em>',
+	'NOTIFICATION_POINTS_UCP'			=> 'Receive notification about points <em>(successful/failed robbery, bonus points, etc..)</em>',
 
 	'POINTS'							=> 'Points',
 	'POINTS_ATTACHMENT_MINI_POSTS'		=> 'You need more %1$s in order to download this attachment!',
@@ -247,6 +247,7 @@ $lang = array_merge($lang, array(
 	'POINTS_TITLE_MAIN'					=> '%1$s Control Panel',
 	'POINTS_TOTAL'						=> 'Total Cash on Hand: %1$s %2$s',
 	'POINTS_TRANSFER'					=> 'Transfer',
+	'POINTS_TRANSFER_RECIEVED'			=> 'Transfers received',
 	'POINTS_VIEWING'					=> 'Browsing points console',
 
 	'ROBBERY_AMOUNT'					=> 'Amount',
@@ -266,6 +267,12 @@ $lang = array_merge($lang, array(
 	'ROBBERY_TOO_SMALL_AMOUNT'			=> 'You need to rob a little more!<br />The entered value is too small ...',
 	'ROBBERY_TO_MUCH'					=> 'You are trying to rob too many points, if you fail you will not be able to pay the damage ...',
 	'ROBBERY_TO_MUCH_FROM_USER'			=> 'You are trying to rob more than the user has.',
+
+	'TRANSFER_AMOUNT'					=> 'Amount',
+	'TRANSFER_SET_USERNAMES'			=> 'Name of the members that donated to you!',
+	'TRANSFER_DATE'						=> 'Transfer received on',
+	'TRANSFER_RECEIVED_DISABLED'		=> 'The transfer system is disabled',
+	'TRANSFER_RECEIVED'					=> '%1$s received',
 
 	'TIME_DAY'							=> 'day',
 	'TIME_DAYS'							=> 'days',
@@ -307,8 +314,4 @@ $lang = array_merge($lang, array(
 
 	'WARN_USER_POINTS'					=> 'Additionally we deducted %1$s %2$s from your account!',
 	'WARN_MOD_POINTS'					=> 'Additionally %1$s %2$s has been deducted from %3$s\'s account!',
-
-	//UCP
-	'UCP_ULTIMATEPOINTS_TITLE'			=> 'Ultimate Points',
-	'UCP_ULTIMATEPOINTS_EXPLAIN'		=> 'Your statistics'
 ));

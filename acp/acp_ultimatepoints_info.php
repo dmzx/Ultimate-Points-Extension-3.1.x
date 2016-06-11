@@ -9,12 +9,12 @@
 
 namespace dmzx\ultimatepoints\acp;
 
-class ultimatepoints_info
+class acp_ultimatepoints_info
 {
 	function module()
 	{
 		return array(
-			'filename'		=> '\dmzx\ultimatepoints\acp\ultimatepoints_module',
+			'filename'		=> '\dmzx\ultimatepoints\acp\acp_ultimatepoints_module',
 			'title'			=> 'ACP_POINTS',
 			'modes'			=> array(
 				'points'		=> array('title' => 'ACP_POINTS_INDEX_TITLE', 'auth' => 'ext_dmzx/ultimatepoints && acl_a_board', 'cat' => array('ACP_POINTS')),

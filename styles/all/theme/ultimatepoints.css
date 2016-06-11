@@ -28,3 +28,31 @@ table.table1 thead.logs_head th {
 	margin: 4px;
 	margin-top: 0;
 }
+
+.rich-user-avatar {
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin-bottom: 2px;
+	vertical-align: middle;
+}
+
+.rich-user-avatar img {
+	position: absolute;
+	-moz-transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	left: 0px;
+	top: 0px;
+	max-height: 20px;
+	max-width: 20px;
+}
+
+.rich-user-avatar img:hover {
+	left: -40px;
+	top: -40px;
+	max-height:100px;
+	max-width:100px;
+	box-shadow: 0 0 20px #000;
+	z-index: 10;
+}

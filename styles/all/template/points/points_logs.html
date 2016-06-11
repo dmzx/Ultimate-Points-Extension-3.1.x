@@ -29,22 +29,24 @@
 			<h2>{L_POINTS_LOGS}</h2>
 			<div class="panel">
 				<div class="inner">
-					<table cellspacing="1" class="table1">
+					<table class="table1">
 						<thead class="logs_head">
-							<th>{L_LOGS_DATE}</th>
-							<th>{L_LOGS_TYPE}</th>
-							<th>{L_LOGS_WHO}</th>
-							<th>{L_LOGS_TO}</th>
-							<th>{L_LOGS_COMMENT}</th>
+							<tr>
+								<th>{L_LOGS_DATE}</th>
+								<th>{L_LOGS_TYPE}</th>
+								<th>{L_LOGS_WHO}</th>
+								<th>{L_LOGS_TO}</th>
+								<th>{L_LOGS_COMMENT}</th>
+							</tr>
 						</thead>
 						<tbody>
 							<!-- BEGIN logs -->
 								<tr class="bg<!-- IF log.S_ROW_COUNT is even -->1<!-- ELSE -->2<!-- ENDIF -->">
-									<td>{logs.DATE}</td>
-									<td>{logs.TYPE}</td>
-									<td>{logs.WHO}</td>
-									<td>{logs.TO}</td>
-									<td>{logs.COMMENT}</td>
+									<td style="text-align:center;">{logs.DATE}</td>
+									<td style="text-align:center;">{logs.TYPE}</td>
+									<td style="text-align:center;">{logs.WHO}</td>
+									<td style="text-align:center;">{logs.TO}</td>
+									<td style="text-align:center;">{logs.COMMENT}</td>
 								</tr>
 							<!-- BEGINELSE -->
 								<tr>

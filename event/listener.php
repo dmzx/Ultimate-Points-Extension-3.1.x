@@ -197,7 +197,7 @@ class listener implements EventSubscriberInterface
 			// Create richest users - cash and bank
 			$limit = $points_values['number_show_top_points'];
 			$sql_array = array(
-				'SELECT'	=> 'u.user_id, u.username, u.user_colour, u.user_points, b.holding',
+				'SELECT'	=> 'u.user_id, u.username, u.user_colour, u.user_points, u.user_avatar, u.user_avatar_type, u.user_avatar_height, u.user_avatar_width, b.holding',
 
 				'FROM'		=> array(
 					USERS_TABLE	=> 'u',
@@ -225,7 +225,7 @@ class listener implements EventSubscriberInterface
 				{
 					$total_points = $row['user_points'] + $row['holding'];
 					$index = $row['user_id'];
-					$rich_users[$index] = array('total_points' => $total_points, 'username' => $row['username'], 'user_colour' => $row['user_colour'], 'user_id' => $index);
+					$rich_users[$index] = array('total_points' => $total_points, 'user_avatar' => $row['user_avatar'], 'user_avatar_type' => $row['user_avatar_type'], 'user_avatar_height' => $row['user_avatar_height'], 'user_avatar_width' => $row['user_avatar_width'], 'username' => $row['username'], 'user_colour' => $row['user_colour'], 'user_id' => $index);
 					$rich_users_sort[$index] = $total_points;
 				}
 			}
@@ -254,7 +254,8 @@ class listener implements EventSubscriberInterface
 			{
 				$this->template->assign_block_vars('rich_user', array(
 					'USERNAME'		 	=> get_username_string('full', $var['user_id'], $var['username'], $var['user_colour']),
-					'SUM_POINTS'			=> $this->functions_points->number_format_points($var['total_points']),
+					'AVATAR'			=> phpbb_get_user_avatar($var),
+					'SUM_POINTS'		=> $this->functions_points->number_format_points($var['total_points']),
 					'SUM_POINTS_NAME'	=> $this->config['points_name'],
 				));
 			}
@@ -308,8 +309,8 @@ class listener implements EventSubscriberInterface
 
 		// Grab user's bank holdings
 		$sql = 'SELECT holding
-				FROM ' . $this->points_bank_table . '
-				WHERE user_id = '. $user_id;
+			FROM ' . $this->points_bank_table . '
+			WHERE user_id = '. $user_id;
 		$result = $this->db->sql_query($sql);
 		$holding = $this->db->sql_fetchfield('holding');
 
@@ -352,8 +353,8 @@ class listener implements EventSubscriberInterface
 		$display_cat = (int) $event['display_cat'];
 
 		$sql = 'SELECT forum_cost
-				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . (int) $forum_id;
+			FROM ' . FORUMS_TABLE . '
+			WHERE forum_id = ' . (int) $forum_id;
 		$result = $this->db->sql_query($sql);
 		$forum_cost = $this->db->sql_fetchfield('forum_cost');
 		$this->db->sql_freeresult($result);
@@ -715,8 +716,8 @@ class listener implements EventSubscriberInterface
 
 			// We grab forum specific points increment
 			$sql = 'SELECT forum_peredit, forum_perpost, forum_pertopic, forum_cost_topic, forum_cost_post
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_id = ' . (int) $forum_id;
+				FROM ' . FORUMS_TABLE . '
+				WHERE forum_id = ' . (int) $forum_id;
 			$result = $this->db->sql_query($sql);
 			$forum = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
@@ -783,8 +784,8 @@ class listener implements EventSubscriberInterface
 
 				// We grab previously received points amount
 				$sql = 'SELECT points_topic_received
-						FROM ' . POSTS_TABLE . '
-						WHERE post_id = ' . (int) $post_id;
+					FROM ' . POSTS_TABLE . '
+					WHERE post_id = ' . (int) $post_id;
 				$result = $this->db->sql_query($sql);
 				$prev_points = $this->db->sql_fetchfield('points_topic_received');
 				$this->db->sql_freeresult($result);
@@ -813,8 +814,8 @@ class listener implements EventSubscriberInterface
 
 				// We grab previously received points amount
 				$sql = 'SELECT points_post_received
-						FROM ' . POSTS_TABLE . '
-						WHERE post_id = ' . (int) $post_id;
+					FROM ' . POSTS_TABLE . '
+					WHERE post_id = ' . (int) $post_id;
 				$result = $this->db->sql_query($sql);
 				$prev_points = $this->db->sql_fetchfield('points_post_received');
 				$this->db->sql_freeresult($result);
@@ -853,16 +854,16 @@ class listener implements EventSubscriberInterface
 
 			// Grab the costs of making a topic or post in this forum
 			$sql = 'SELECT forum_cost_topic, forum_cost_post
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_id = ' . (int) $event['forum_id'];
+				FROM ' . FORUMS_TABLE . '
+				WHERE forum_id = ' . (int) $event['forum_id'];
 			$result = $this->db->sql_query($sql);
 			$forum = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
 			// Grab the user's points
 			$sql = 'SELECT user_points
-					FROM ' . USERS_TABLE . '
-					WHERE user_id = ' . (int) $this->user->data['user_id'];
+				FROM ' . USERS_TABLE . '
+				WHERE user_id = ' . (int) $this->user->data['user_id'];
 			$result = $this->db->sql_query($sql);
 			$user_points = $this->db->sql_fetchfield('user_points');
 			$this->db->sql_freeresult($result);
