@@ -1,0 +1,52 @@
+<!-- INCLUDE overall_header.html -->
+
+<br style="clear:both" />
+
+<div class="panel bg3">
+	<div class="inner">
+
+		<div id="cp-menu">
+
+			<div class="cp-mini" style="min-height: 210px;">
+				<div class="inner">
+					<dl class="mini">
+						<dd><h3>{L_POINTS_DESCRIPTION}</h3></dd>
+						<dd>{L_ROBBERY_CHANCE}</dd>
+						<dd>{L_ROBBERY_AMOUNTLOSE}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+
+		<div id="cp-main" class="ucp-main">
+			<h2>{L_POINTS_ROBBERY}</h2>
+			<form id="post" action="{U_ACTION}" method="post">
+				<div class="panel">
+					<div class="inner">
+						<!-- IF S_USER_LOGGED_IN -->
+							<p>{L_POINTS_CASH_ON_HAND}{L_COLON}&nbsp;{USER_POINTS} {POINTS_NAME}</p><br />
+							<fieldset>
+								<i>{U_ROBBERY_NAME}</i><br /><br />
+								<dl>
+									<dt><label>{L_ROBBERY_SET_AMOUNTR}{L_COLON}</label></dt>
+									<dd><input type="text" tabindex="2" maxlength="10" class="inputbox autowidth" title="{L_POINTS_NUMBER_FORMAT_EXPLAIN}" name="attacked_amount" value=""/> {POINTS_NAME}</dd>
+								</dl>
+							</fieldset>
+							<fieldset class="submit-buttons">
+								{S_HIDDEN_FIELDS}
+								<input type="submit" accesskey="s" tabindex="3" name="submit" value="{L_ROBBERY_START}" class="button1" />
+								{S_FORM_TOKEN}
+							</fieldset>
+						<!-- ELSE -->
+							<p>{L_POINTS_BOT_GUEST}</p>
+						<!-- ENDIF -->
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<br /><div style="text-align: center;" class="copyright">{L_POINTS_COPYRIGHT}{POINT_VERS}<br />{L_POINTS_COPYRIGHTS}</div>
+
+<!-- INCLUDE overall_footer.html -->

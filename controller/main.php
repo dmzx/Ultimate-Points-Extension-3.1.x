@@ -41,6 +41,9 @@ class main
 	/** @var \dmzx\ultimatepoints\core\points_robbery */
 	protected $points_robbery;
 
+	/** @var \dmzx\ultimatepoints\core\points_robbery_user */
+	protected $points_robbery_user;
+
 	/** @var \dmzx\ultimatepoints\core\points_transfer */
 	protected $points_transfer;
 
@@ -93,21 +96,21 @@ class main
 	* @var \dmzx\ultimatepoints\core\points_lottery
 	* @var \dmzx\ultimatepoints\core\points_points_edit
 	* @var \dmzx\ultimatepoints\core\points_robbery
+	* @var \dmzx\ultimatepoints\core\points_robbery_user
 	* @var \dmzx\ultimatepoints\core\points_transfer
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\auth\auth					$auth
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\request\request		 		$request
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\controller\helper		 	$helper
-	* @param string 							$phpbb_root_path
-	* @param string 							$phpEx
-	* @param string 							$points_config_table
-	* @param string 							$points_values_table
+	* @param \phpbb\template\template		 				$template
+	* @param \phpbb\user									$user
+	* @param \phpbb\auth\auth								$auth
+	* @param \phpbb\db\driver\driver_interface				$db
+	* @param \phpbb\request\request		 					$request
+	* @param \phpbb\config\config							$config
+	* @param \phpbb\controller\helper		 				$helper
+	* @param string 										$phpbb_root_path
+	* @param string 										$phpEx
+	* @param string 										$points_config_table
+	* @param string 										$points_values_table
 	*
 	*/
-
 	public function __construct(
 		\dmzx\ultimatepoints\core\functions_points $functions_points,
 		\dmzx\ultimatepoints\core\points_main $points_main,
@@ -119,6 +122,7 @@ class main
 		\dmzx\ultimatepoints\core\points_lottery $points_lottery,
 		\dmzx\ultimatepoints\core\points_points_edit $points_points_edit,
 		\dmzx\ultimatepoints\core\points_robbery $points_robbery,
+		\dmzx\ultimatepoints\core\points_robbery_user $points_robbery_user,
 		\dmzx\ultimatepoints\core\points_transfer $points_transfer,
 		\phpbb\template\template $template,
 		\phpbb\user $user,
@@ -142,6 +146,7 @@ class main
 		$this->points_lottery		= $points_lottery;
 		$this->points_points_edit	= $points_points_edit;
 		$this->points_robbery		= $points_robbery;
+		$this->points_robbery_user	= $points_robbery_user;
 		$this->points_transfer		= $points_transfer;
 		$this->template 			= $template;
 		$this->user 				= $user;
@@ -272,6 +277,10 @@ class main
 
 			case 'robbery':
 				$this->points_robbery->main($checked_user);
+			break;
+
+			case 'robbery_user':
+				$this->points_robbery_user->main($checked_user);
 			break;
 
 			case 'points_edit':

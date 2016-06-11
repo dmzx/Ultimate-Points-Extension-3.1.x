@@ -48,18 +48,17 @@ class userlist
 	* Constructor
 	*
 	* @var \dmzx\ultimatepoints\core\functions_points
-	* @param \phpbb\template\template		 	$template
-	* @param \phpbb\user						$user
-	* @param \phpbb\db\driver\driver_interface	$db
-	* @param \phpbb\request\request		 		$request
-	* @param \phpbb\config\config				$config
-	* @param \phpbb\pagination					$pagination
-	* @param \phpbb\controller\helper		 	$helper
-	* @param string 							$points_config_table
-	* @param string 							$points_values_table
+	* @param \phpbb\template\template		 			$template
+	* @param \phpbb\user								$user
+	* @param \phpbb\db\driver\driver_interface			$db
+	* @param \phpbb\request\request		 				$request
+	* @param \phpbb\config\config						$config
+	* @param \phpbb\pagination							$pagination
+	* @param \phpbb\controller\helper		 			$helper
+	* @param string 									$points_config_table
+	* @param string 									$points_values_table
 	*
 	*/
-
 	public function __construct(
 		\dmzx\ultimatepoints\core\functions_points $functions_points,
 		\phpbb\template\template $template,
@@ -141,7 +140,11 @@ class userlist
 
 		// Output the page
 		page_header($this->user->lang['POINTS_LIST_TOTAL']);
-		$this->template->set_filenames(array('body' => 'points/points_list.html'));
+
+		$this->template->set_filenames(array(
+			'body' => 'points/points_list.html'
+		));
+
 		page_footer();
 	}
 }

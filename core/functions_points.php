@@ -427,12 +427,9 @@ class functions_points
 				$lottery_enabled = $this->db->sql_fetchfield('lottery_enable');
 				$this->db->sql_freeresult($result);
 
-				if ($lottery_enabled != 0)
+				if ($lottery_enabled = 1)
 				{
-					$winnings_update = $winner['user_points'] + $this->points_values('lottery_jackpot');
-					$this->set_points($winner['user_id'], $winnings_update);
-
-					$winner_notification = $this->number_format_points($points_values['lottery_jackpot']) . ' ' . $this->config['points_name'] . ' ';
+					$winner_notification = $this->number_format_points($points_values['lottery_jackpot']) . ' ' . ($this->config['points_name']) . ' ';
 					$winner_deposit = $this->user->lang['LOTTERY_PM_CASH_ENABLED'];
 					$amount_won = $points_values['lottery_jackpot'];
 				}

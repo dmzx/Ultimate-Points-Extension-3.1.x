@@ -16,17 +16,20 @@ table.table1 thead.logs_head th {
 	font-size: 1.1em;
 }
 
+.points-info {
+   text-align: center;
+}
+
 .points-main-main {
-	float: left;
-	clear: left;
-	width: 40%;
+   text-align: left;
 }
 
 .points-main-lists {
-	float: right;
-	width: 12%;
-	margin: 4px;
-	margin-top: 0;
+    text-align: left;
+    display: inline-flex;
+    margin: 1%;
+    width: 20%;
+    min-width: 130px;
 }
 
 .rich-user-avatar {

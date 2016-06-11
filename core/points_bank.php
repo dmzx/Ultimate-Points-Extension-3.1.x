@@ -79,7 +79,6 @@ class points_bank
 	* @param string 							$points_values_table
 	*
 	*/
-
 	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\log\log $log, \phpbb\notification\manager $notification_manager, $phpEx, $phpbb_root_path, $points_bank_table, $points_config_table, $points_values_table)
 	{
 		$this->functions_points		= $functions_points;

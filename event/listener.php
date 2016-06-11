@@ -290,6 +290,27 @@ class listener implements EventSubscriberInterface
 				$this->functions_points->run_bank();
 			}
 
+			// Lottery winner index
+			$sql_array = array(
+				'SELECT'	=> 'user_id, username, user_colour',
+				'FROM'		=> array(
+					USERS_TABLE => 'u',
+				),
+				'WHERE'		=> 'user_id = ' . (int) $points_values['lottery_prev_winner_id'],
+			);
+			$sql = $this->db->sql_build_query('SELECT', $sql_array);
+			$result = $this->db->sql_query($sql);
+			$row = $this->db->sql_fetchrow($result);
+
+			if ($row == null)
+			{
+				$username_colored = $this->user->lang['LOTTERY_NO_WINNER'];
+			}
+			else
+			{
+				$username_colored = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
+			}
+
 			$this->template->assign_vars(array(
 				'TOTAL_BANK_USER'			=> sprintf($this->user->lang['POINTS_BUPOINTS_TOTAL'], $bankusers, $points_values['bank_name']),
 				'TOTAL_BANK_POINTS'			=> sprintf($this->user->lang['POINTS_BPOINTS_TOTAL'], $this->functions_points->number_format_points($bankholdings), $this->config['points_name'], $points_values['bank_name']),
@@ -299,6 +320,7 @@ class listener implements EventSubscriberInterface
 				'S_DISPLAY_POINTS_STATS'	=> ($points_config['stats_enable']) ? true : false,
 				'S_DISPLAY_INDEX'			=> ($points_values['number_show_top_points'] > 0) ? true : false,
 				'U_USE_POINTS'				=> $this->auth->acl_get('u_use_points'),
+				'L_PREVIOUS_WINNER'	 		=> sprintf($this->user->lang['LOTTERY_WINNER_INDEX'], $username_colored),
 			));
 		}
 	}
@@ -338,6 +360,11 @@ class listener implements EventSubscriberInterface
 			'USE_POINTS'			=> $this->config['points_enable'],
 			'USE_IMAGES_POINTS'		=> $points_config['images_memberlist_enable'],
 			'USE_BANK'				=> $points_config['bank_enable'],
+			'S_IS_OWN_PROF'			=> ($user_id == $this->user->data['user_id']) ? true : false,
+			'U_ROBBERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery_user', 'user_id' => $user_id)),
+			'U_USE_ROBBERY'			=> $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
+			'U_USE_TRANSFER'		=> $this->auth->acl_get('u_use_transfer') && $points_config['transfer_enable'],
+			'L_ROBBERY'				=> $this->user->lang['ROBBERY_USER'],
 		));
 	}
 
@@ -450,6 +477,8 @@ class listener implements EventSubscriberInterface
 		$post_row = $event['post_row'];
 		$post_id = (int) $row['post_id'];
 		$poster_id = (int) $event['poster_id'];
+		$points_config = $this->cache->get('points_config');
+		$points_values = $this->cache->get('points_values');
 
 		$post_row = array_merge($post_row, array(
 			'POSTER_POINTS'		=> $this->functions_points->number_format_points($row['points']),
@@ -462,9 +491,12 @@ class listener implements EventSubscriberInterface
 			'U_POINTS_MODIFY'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
 			'L_BANK_USER_POINTS'	=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
 			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'user_id' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
-			'L_DONATE'				=> ($this->auth->acl_get('u_use_points')) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
+			'L_DONATE'				=> ($this->auth->acl_get('u_use_points') && $points_config['transfer_enable']) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
 			'U_POINTS_DONATE'		=> ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer', 'i' => $poster_id, 'adm_points' => '1', 'post_id' => $row['post_id'])) : '',
 			'S_IS_OWN_POST'			=> ($poster_id == $this->user->data['user_id']) ? true : false,
+			'U_ROBBERY'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'robbery_user', 'user_id' => $poster_id)),
+			'U_USE_ROBBERY'			=> $this->auth->acl_get('u_use_robbery') && $points_config['robbery_enable'],
+			'L_ROBBERY'				=> $this->user->lang['ROBBERY_USER'],
 		));
 		$event['post_row'] = $post_row;
 	}

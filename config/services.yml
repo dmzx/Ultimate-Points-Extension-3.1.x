@@ -34,6 +34,7 @@ services:
             - '@dmzx.ultimatepoints.core.points.lottery'
             - '@dmzx.ultimatepoints.core.points.points.edit'
             - '@dmzx.ultimatepoints.core.points.robbery'
+            - '@dmzx.ultimatepoints.core.points.robbery.user'
             - '@dmzx.ultimatepoints.core.points.transfer'
             - '@template'
             - '@user'
@@ -271,7 +272,23 @@ services:
             - '%dmzx.ultimatepoints.table.points.config%'
             - '%dmzx.ultimatepoints.table.points.values%'
             - '%dmzx.ultimatepoints.table.points.log%'
-
+    dmzx.ultimatepoints.core.points.robbery.user:
+        class: dmzx\ultimatepoints\core\points_robbery_user
+        arguments:
+            - '@dmzx.ultimatepoints.core.functions.points'
+            - '@auth'
+            - '@template'
+            - '@user'
+            - '@dbal.conn'
+            - '@request'
+            - '@config'
+            - '@controller.helper'
+            - '@notification_manager'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+            - '%dmzx.ultimatepoints.table.points.config%'
+            - '%dmzx.ultimatepoints.table.points.values%'
+            - '%dmzx.ultimatepoints.table.points.log%'
     dmzx.ultimatepoints.core.points.transfer:
         class: dmzx\ultimatepoints\core\points_transfer
         arguments:

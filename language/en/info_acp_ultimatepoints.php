@@ -136,7 +136,7 @@ $lang = array_merge($lang, array(
 	'LOTTERY_NAME_EXPLAIN'				=> 'Enter a name for your Lottery, i.e. Our Forum Lottery',
 	'LOTTERY_OPTIONS'					=> 'Lottery Settings',
 	'LOTTERY_PM_ID'						=> 'Sender ID',
-	'LOTTERY_PM_ID_EXPLAIN'				=> 'Enter here the user ID, which will be used as sender of the PM to the lucky winner (0 = use the winner\'s ID)',
+	'LOTTERY_PM_ID_EXPLAIN'				=> 'Enter here the user ID, which will be used as sender of the PM to the lucky winner (0 = use the winner’s ID)',
 	'LOTTERY_TICKET_COST'				=> 'Ticket costs',
 	'LOTTERY_VIEW'						=> 'Enable Points Lottery',
 	'LOTTERY_VIEW_EXPLAIN'				=> 'This will enable the Lottery Module',
@@ -160,7 +160,7 @@ $lang = array_merge($lang, array(
 	'POINTS_ENABLE_EXPLAIN'				=> 'Allow users to use Ultimate Points',
 	'POINTS_GROUP_TRANSFER'				=> 'Group Transfer',
 	'POINTS_GROUP_TRANSFER_ADD'			=> 'Add',
-	'POINTS_GROUP_TRANSFER_EXPLAIN'		=> 'Here you can add, subtract or set values for a certain group. You also may send a personal message to each member of the group. Handy, if you like to send i.e. Christmas Greetings with a small present (you can use smilies and bbCodes). If you don\' want to send a personal message with your transfer, just leave the fields subject and comment empty.',
+	'POINTS_GROUP_TRANSFER_EXPLAIN'		=> 'Here you can add, subtract or set values for a certain group. You also may send a personal message to each member of the group. Handy, if you like to send i.e. Christmas Greetings with a small present (you can use smilies and bbCodes). If you don’ want to send a personal message with your transfer, just leave the fields subject and comment empty.',
 	'POINTS_GROUP_TRANSFER_FUNCTION'	=> 'Function',
 	'POINTS_GROUP_TRANSFER_PM_COMMENT'	=> 'Comment for your personal message',
 	'POINTS_GROUP_TRANSFER_PM_ERROR'	=> 'You need to enter the subject <strong>AND</strong> the comment in order to send a personal message with your group transfer!',
@@ -214,7 +214,7 @@ $lang = array_merge($lang, array(
 	'RESYNC_POINTSLOGS_CONFIRM'			=> 'Are you sure, you want to reset the users logs?<br />Note: This action cannot be undone!',
 	'RESYNC_POINTSLOGS_EXPLAIN'			=> 'Delete all users logs',
 	'RESYNC_POINTS_CONFIRM'				=> 'Are you sure, you want to reset all users points?<br />Note: This cannot be undone!',
-	'RESYNC_POINTS_EXPLAIN'				=> 'Reset all users\' points accounts to zero',
+	'RESYNC_POINTS_EXPLAIN'				=> 'Reset all users’ points accounts to zero',
 	'ROBBERY_CHANCE'					=> 'Chance to make a successful robbery',
 	'ROBBERY_CHANCE_ERROR'				=> 'The chance for a successful robbery cannot be higher than 100% !!',
 	'ROBBERY_CHANCE_EXPLAIN'			=> 'Here you can set the percentage to make a successful robbery (the higher the value, the bigger the chance to be successful)',
@@ -401,17 +401,17 @@ If you set 0, also the advanced points settings (words, characters) are NOT coun
 	),
 	array(
 		0 => 'Points Per Attachment Download',
-		1 => 'Here you can set, how much a user has to pay to download an attachment, this is per attachment and not per post with attachment. You can specify through permissions which users/groups have to pay for attachment, and who don\'t! <br />
-		<strong>Important Note (1):</strong> Attachments in Private Messages <em>(PM)</em> are excluded from this setting/payment. Attachments sent through PM\'s can be downloaded freely.<br />
+		1 => 'Here you can set, how much a user has to pay to download an attachment, this is per attachment and not per post with attachment. You can specify through permissions which users/groups have to pay for attachment, and who don’t! <br />
+		<strong>Important Note (1):</strong> Attachments in Private Messages <em>(PM)</em> are excluded from this setting/payment. Attachments sent through PM’s can be downloaded freely.<br />
 		<strong>Important Note (2):</strong> Image attachments in posts are excluded from this setting/payment. As images are shown directly in posts, every time a user visits the topic and only <em>views</em> the post, it would already substract the points. Therefore image attachments are excluded from payment.'
 	),
 	array(
 		0 => 'Points to pay for new topic',
-		1 => 'Here you can set, how much a user has to pay to make a new topic in a specific forum. This is per forum specific, you can set them all at once through the Forum Point Settings or per individual forum. Afterwards you\'ll have to set permissions for which users/groups have to pay and which do not.'
+		1 => 'Here you can set, how much a user has to pay to make a new topic in a specific forum. This is per forum specific, you can set them all at once through the Forum Point Settings or per individual forum. Afterwards you’ll have to set permissions for which users/groups have to pay and which do not.'
 	),
 	array(
 		0 => 'Points to pay for new post',
-		1 => 'Here you can set, how much a user has to pay to make a new post <em>(reply)</em> in a specific forum. This is per forum specific, you can set them all at once through the Forum Point Settings or per individual forum. Afterwards you\'ll have to set permissions for which users/groups have to pay and which do not.'
+		1 => 'Here you can set, how much a user has to pay to make a new post <em>(reply)</em> in a specific forum. This is per forum specific, you can set them all at once through the Forum Point Settings or per individual forum. Afterwards you’ll have to set permissions for which users/groups have to pay and which do not.'
 	),
 	array(
 		0 => '--',
@@ -546,7 +546,7 @@ The thief will have to pay the set percentage of the value he tried to rob. What
 		1 => 'To clarify: The points icon is the icon in your overall_header, just before the link that will take you to the Ultimate Points modules <em>(such as Overview, Lottery, Robbery, etc..)</em> and <strong>NOT</strong> the icon behind your points through out the forum!<br />
 				<ul><li>Changing Image<br />You can change this item by replacing the image in <em>root/ext/dmzx/ultimatepoints/styles/all/theme/images/</em>, make sure it is named <strong>icon_points.gif</strong> and has the size of <strong>12px by 12px</strong>!</li>
 				<li>Adding new Image<br />Or you can add a new image to <em>root/ext/dmzx/ultimatepoints/styles/all/theme/images/</em>, <br />
-				and then you\'ll have to edit <em>root/ext/dmzx/ultimatepoints/styles/all/theme/ultimatepoints.css</em>, <br />
+				and then you’ll have to edit <em>root/ext/dmzx/ultimatepoints/styles/all/theme/ultimatepoints.css</em>, <br />
 				and change the <strong>.icon-points { background-image: url("./images/<em>your_image_name.gif</em>"); }</strong></li></ul>'
 	),
 	array(

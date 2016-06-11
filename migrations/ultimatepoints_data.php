@@ -11,7 +11,7 @@ namespace dmzx\ultimatepoints\migrations;
 
 class ultimatepoints_data extends \phpbb\db\migration\migration
 {
-	var $ext_version = '1.1.4';
+	var $ext_version = '1.1.5';
 
 	public function update_data()
 	{
