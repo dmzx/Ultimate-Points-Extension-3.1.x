@@ -12,7 +12,7 @@ namespace dmzx\ultimatepoints\ucp;
 class ucp_ultimatepoints_module
 {
 	public $u_action;
-	
+
 	function main($id, $mode)
 	{
 		global $phpbb_container, $config;
