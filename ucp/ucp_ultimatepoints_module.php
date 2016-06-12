@@ -12,6 +12,7 @@ namespace dmzx\ultimatepoints\ucp;
 class ucp_ultimatepoints_module
 {
 	public $u_action;
+	
 	function main($id, $mode)
 	{
 		global $phpbb_container, $config;
@@ -24,9 +25,9 @@ class ucp_ultimatepoints_module
 
 		$points_config = $this->config_info();
 
-		if($config['points_enable'])
+		if ($config['points_enable'])
 		{
-			switch($mode)
+			switch ($mode)
 			{
 				case 'lottery':
 					$this->lottery_info();

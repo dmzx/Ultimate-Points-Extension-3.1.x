@@ -556,7 +556,7 @@ class admin_controller
 		{
 			$this->metadata = $md_manager->get_metadata('all');
 		}
-		catch(\phpbb\extension\exception $e)
+		catch (\phpbb\extension\exception $e)
 		{
 			trigger_error($e, E_USER_WARNING);
 		}

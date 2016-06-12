@@ -142,7 +142,7 @@ class points_robbery
 		add_form_key('robbery_attack');
 
 		$submit = (isset($_POST['submit'])) ? true : false;
-		if($submit)
+		if ($submit)
 		{
 			if (!check_form_key('robbery_attack'))
 			{

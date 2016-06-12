@@ -257,7 +257,7 @@ class main
 			'U_USE_ROBBERY'		=> $this->auth->acl_get('u_use_robbery'),
 		)));
 
-		switch($mode)
+		switch ($mode)
 		{
 			case 'transfer_user':
 				$this->points_transfer_user->main($checked_user);

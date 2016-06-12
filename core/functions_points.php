@@ -120,9 +120,9 @@ class functions_points
 		$new_text = '';
 		$text = explode('[quote', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
-			if(stristr($text[$i], '[/quote') === false) //checkout if it's a double/triple and so on quote
+			if (stristr($text[$i], '[/quote') === false) //checkout if it's a double/triple and so on quote
 			{
 				continue;
 			}
@@ -137,9 +137,9 @@ class functions_points
 		$new_text = '';
 		$text = explode('[code', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
-			if(stristr($text[$i], '[/code') === false) //checkout if it's a double/triple and so on code
+			if (stristr($text[$i], '[/code') === false) //checkout if it's a double/triple and so on code
 			{
 				continue;
 			}
@@ -154,9 +154,9 @@ class functions_points
 		$new_text = '';
 		$text = explode('[url', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
-			if(stristr($text[$i], '[/url') === false) //checkout if it's a double/triple and so on url
+			if (stristr($text[$i], '[/url') === false) //checkout if it's a double/triple and so on url
 			{
 				continue;
 			}
@@ -170,10 +170,10 @@ class functions_points
 		$new_text = '';
 		$text = explode('[', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
 			$item = explode(']' , $text[$i]);
-			if(sizeof($item) > 1) // if any part of text remains :-D
+			if (sizeof($item) > 1) // if any part of text remains :-D
 			{
 				$new_text .= $item[1];
 			}
@@ -182,9 +182,9 @@ class functions_points
 
 		//BEGIN to remove extra spaces
 		$new_text = explode(' ', $new_text);
-		for($i = 0, $size = sizeof($new_text); $i < $size; $i++)
+		for ($i = 0, $size = sizeof($new_text); $i < $size; $i++)
 		{
-			if(trim($new_text[$i]) == '' || trim($new_text[$i]) == '&nbsp;')
+			if (trim($new_text[$i]) == '' || trim($new_text[$i]) == '&nbsp;')
 			{
 				unset($new_text[$i]);
 			}
