@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -41,17 +41,17 @@ class admin_controller
 	/** @var \phpbb\cache\service */
 	protected $cache;
 
-	/** @var \phpbb\extension\manager */
-	protected $phpbb_extension_manager;
+	/** @var ContainerBuilder */
+	protected $phpbb_container;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/** @var string phpBB admin path */
 	protected $phpbb_admin_path;
 
-	/** @var string phpEx */
-	protected $phpEx;
+	/** @var string php_ext */
+	protected $php_ext;
 
 	/**
 	* The database tables
@@ -76,10 +76,10 @@ class admin_controller
 	* @param \phpbb\controller\helper		 	$helper
 	* @param \phpbb\log\log					 	$log
 	* @param \phpbb\cache\service		 		$cache
-	* @param \phpbb\extension\manager 			$phpbb_extension_manager
-	* @param string 							$phpbb_root_path
+	* @param \Symfony\Component\DependencyInjection\ContainerInterface 	$phpbb_container
+	* @param string 							$root_path
 	* @param string 							$phpbb_admin_path
-	* @param string 							$phpEx
+	* @param string 							$php_ext
 	* @param string 							$points_config_table
 	* @param string 							$points_values_table
 	*
@@ -95,10 +95,10 @@ class admin_controller
 		\phpbb\controller\helper $helper,
 		\phpbb\log\log $log,
 		\phpbb\cache\service $cache,
-		\phpbb\extension\manager $phpbb_extension_manager,
-		$phpbb_root_path,
+		$phpbb_container,
+		$root_path,
 		$phpbb_admin_path,
-		$phpEx,
+		$php_ext,
 		$points_config_table,
 		$points_values_table)
 	{
@@ -112,10 +112,10 @@ class admin_controller
 		$this->helper 						= $helper;
 		$this->log 							= $log;
 		$this->cache 						= $cache;
-		$this->phpbb_extension_manager 		= $phpbb_extension_manager;
-		$this->phpbb_root_path 				= $phpbb_root_path;
+		$this->phpbb_container 				= $phpbb_container;
+		$this->root_path 					= $root_path;
 		$this->phpbb_admin_path 			= $phpbb_admin_path;
-		$this->phpEx 						= $phpEx;
+		$this->php_ext 						= $php_ext;
 		$this->points_config_table 			= $points_config_table;
 		$this->points_values_table 			= $points_values_table;
 	}
@@ -126,35 +126,15 @@ class admin_controller
 		$action = $this->request->variable('action', '');
 		$id		= $this->request->variable('id', 0);
 
-		// Read out config data
-		$sql_array = array(
-			'SELECT'	=> 'config_name, config_value',
-			'FROM'		=> array(
-				$this->points_config_table => 'c',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
+		$this->version_check = $this->phpbb_container->get('dmzx.ultimatepoints.version.check');
 
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$points_config[$row['config_name']] = $row['config_value'];
-		}
-		$this->db->sql_freeresult($result);
+		// Get all configs
+		$points_config = $this->functions_points->points_all_configs();
 
 		$this->template->assign_vars(array_change_key_case($points_config, CASE_UPPER));
 
-		// Read out values data
-		$sql_array = array(
-			'SELECT'	=> '*',
-			'FROM'		=> array(
-				$this->points_values_table => 'v',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
 
 		// Form key
 		add_form_key('acp_points');
@@ -395,7 +375,7 @@ class admin_controller
 		$this->db->sql_freeresult($result);
 
 		$this->template->assign_vars(array(
-			'U_SMILIES'	=> append_sid("{$this->phpbb_root_path}posting.{$this->phpEx}", 'mode=smilies'),
+			'U_SMILIES'	=> append_sid("{$this->root_path}posting.{$this->php_ext}", 'mode=smilies'),
 			'S_GROUP_OPTIONS'	=> group_select_options($total_groups),
 			'U_ACTION'			=> $this->u_action)
 		);
@@ -505,11 +485,12 @@ class admin_controller
 						}
 
 						// and notify PM to recipient of rating:
-						require_once($this->phpbb_root_path . 'includes/functions_privmsgs.' . $this->phpEx);
+						require_once($this->root_path . 'includes/functions_privmsgs.' . $this->php_ext);
+						include_once($this->root_path . 'includes/message_parser.' . $this->php_ext);
 
-						$poll = $uid = $bitfield = $options = '';
-						generate_text_for_storage($pm_subject, $uid, $bitfield, $options, false, false, false);
-						generate_text_for_storage($pm_text, $uid, $bitfield, $options, true, true, true);
+						$message_parser = new \parse_message();
+						$message_parser->message = $pm_text;
+						$message_parser->parse(true, true, true, false, false, true, true);
 
 						$pm_data = array(
 							'address_list'		=> array ('g' => $group_to),
@@ -523,9 +504,9 @@ class admin_controller
 							'enable_urls'		=> true,
 							'enable_sig'		=> true,
 
-							'message'			=> $pm_text,
-							'bbcode_bitfield'	=> $bitfield,
-							'bbcode_uid'		=> $uid,
+							'message'		 	=> $message_parser->message,
+							'bbcode_bitfield' 	=> $message_parser->bbcode_bitfield,
+							'bbcode_uid'		=> $message_parser->bbcode_uid,
 						);
 						submit_pm('post', $pm_subject, $pm_data, false);
 
@@ -547,40 +528,7 @@ class admin_controller
 			'S_POINTS_ACTIVATED'	=> ($this->config['points_enable']) ? true : false,
 			'U_ACTION'				=> $this->u_action)
 		);
-
-		// Version check
-		$this->user->add_lang(array('install', 'acp/extensions', 'migrator'));
-		$ext_name = 'dmzx/ultimatepoints';
-		$md_manager = new \phpbb\extension\metadata_manager($ext_name, $this->config, $this->phpbb_extension_manager, $this->template, $this->user, $this->phpbb_root_path);
-		try
-		{
-			$this->metadata = $md_manager->get_metadata('all');
-		}
-		catch (\phpbb\extension\exception $e)
-		{
-			trigger_error($e, E_USER_WARNING);
-		}
-		$md_manager->output_template_data();
-		try
-		{
-			$updates_available = $this->version_check($md_manager, $this->request->variable('versioncheck_force', false));
-			$this->template->assign_vars(array(
-				'S_UP_TO_DATE'		=> empty($updates_available),
-				'S_VERSIONCHECK'	=> true,
-				'UP_TO_DATE_MSG'	=> $this->user->lang(empty($updates_available) ? 'UP_TO_DATE' : 'NOT_UP_TO_DATE', $md_manager->get_metadata('display-name')),
-			));
-			foreach ($updates_available as $branch => $version_data)
-			{
-				$this->template->assign_block_vars('updates_available', $version_data);
-			}
-		}
-		catch (\RuntimeException $e)
-		{
-			$this->template->assign_vars(array(
-				'S_VERSIONCHECK_STATUS'			=> $e->getCode(),
-				'VERSIONCHECK_FAIL_REASON'		=> ($e->getMessage() !== $this->user->lang('VERSIONCHECK_FAIL')) ? $e->getMessage() : '',
-			));
-		}
+		$this->version_check->check();
 	}
 
 	public function display_lottery()
@@ -607,17 +555,8 @@ class admin_controller
 
 		$this->template->assign_vars(array_change_key_case($points_config, CASE_UPPER));
 
-		// Read out values data
-		$sql_array = array(
-			'SELECT'	=> '*',
-			'FROM'		=> array(
-				$this->points_values_table => 'v',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
 
 		// Form key
 		add_form_key('acp_points');
@@ -826,17 +765,8 @@ class admin_controller
 
 		$this->template->assign_vars(array_change_key_case($points_config, CASE_UPPER));
 
-		// Read out values data
-		$sql_array = array(
-			'SELECT'	=> '*',
-			'FROM'		=> array(
-				$this->points_values_table => 'v',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
 
 		// Form key
 		add_form_key('acp_points');
@@ -943,17 +873,8 @@ class admin_controller
 
 		$this->template->assign_vars(array_change_key_case($points_config, CASE_UPPER));
 
-		// Read out values data
-		$sql_array = array(
-			'SELECT'	=> '*',
-			'FROM'		=> array(
-				$this->points_values_table => 'v',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
 
 		// Form key
 		add_form_key('acp_points');
@@ -1049,33 +970,6 @@ class admin_controller
 		);
 	}
 
-	public function display_userguide()
-	{
-		$this->template->assign_vars(array(
-			'S_IN_POINTS_USERGUIDE'		=> true,
-			'L_BACK_TO_TOP'				=> $this->user->lang['BACK_TO_TOP'],
-			'ICON_BACK_TO_TOP'			=> '<img src="' . $this->phpbb_root_path . '' . $this->phpbb_admin_path . 'images/icon_up.gif" style="vertical-align: middle;" alt="' . $this->user->lang['BACK_TO_TOP'] . '" title="' . $this->user->lang['BACK_TO_TOP'] . '" />',
-		));
-
-		// Pull the array data from the lang pack
-		foreach ($this->user->help as $help_ary)
-		{
-			if ($help_ary[0] == '--')
-			{
-				$this->template->assign_block_vars('userguide_block', array(
-					'BLOCK_TITLE'		=> $help_ary[1])
-				);
-
-				continue;
-			}
-
-			$this->template->assign_block_vars('userguide_block.userguide_row', array(
-				'USERGUIDE_QUESTION'		=> $help_ary[0],
-				'USERGUIDE_ANSWER'			=> $help_ary[1])
-			);
-		}
-	}
-
 	public function display_forumpoints()
 	{
 		// Grab some vars
@@ -1119,17 +1013,8 @@ class admin_controller
 
 		$this->template->assign_vars(array_change_key_case($points_config, CASE_UPPER));
 
-		// Read out values data
-		$sql_array = array(
-			'SELECT'	=> '*',
-			'FROM'		=> array(
-				$this->points_values_table => 'v',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
 
 		// Form key
 		add_form_key('acp_points');
@@ -1211,21 +1096,6 @@ class admin_controller
 			'S_FORUMPOINTS'		=> true,
 			'U_ACTION'			=> $this->u_action)
 		);
-	}
-
-	protected function version_check(\phpbb\extension\metadata_manager $md_manager, $force_update = false, $force_cache = false)
-	{
-		$meta = $md_manager->get_metadata('all');
-		if (!isset($meta['extra']['version-check']))
-		{
-			throw new \RuntimeException($this->user->lang('NO_VERSIONCHECK'), 1);
-		}
-		$version_check = $meta['extra']['version-check'];
-		$version_helper = new \phpbb\version_helper($this->cache, $this->config, new \phpbb\file_downloader(), $this->user);
-		$version_helper->set_current_version($meta['version']);
-		$version_helper->set_file_location($version_check['host'], $version_check['directory'], $version_check['filename']);
-		$version_helper->force_stability($this->config['extension_force_unstable'] ? 'unstable' : null);
-		return $updates = $version_helper->get_suggested_updates($force_update, $force_cache);
 	}
 
 	/**

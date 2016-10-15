@@ -14,35 +14,61 @@
 	<!-- ENDIF -->
 </div>
 
-<div class="forumbg forumbg-table">
+<!-- IF .ultimatelist -->
+<div class="forabg">
 	<div class="inner">
-		<table class="table1">
-			<thead>
-				<tr>
-					<th class="name">{L_USERNAME}</th>
-					<th class="joined">{POINTSLIST}</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- BEGIN ultimatelist -->
-				<tr class="<!-- IF ultimatelist.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
-					<td>
-						<div class="rich-user-avatar">
-							<!-- IF ultimatelist.AVATAR -->{ultimatelist.AVATAR}<!-- ELSE --><img src="{T_THEME_PATH}/images/no_avatar.gif" width="60px;" height="60px;" alt="" /><!-- ENDIF -->
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="row-item">
+					<dt><div class="list-inner">{L_USERNAME}</div></dt>
+					<dd class="lastpost">{POINTSLIST}</dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist forums">
+		<!-- BEGIN ultimatelist -->
+			<li class="row <!-- IF ultimatelist.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+				<dl>
+					<dt style="font-size: 1.2em;line-height: 2.2em;padding: 4px 0;">
+						<div class="list-inner">
+							<div class="rich-user-avatar"><!-- IF ultimatelist.AVATAR -->{ultimatelist.AVATAR}<!-- ELSE --><img src="{T_THEME_PATH}/images/no_avatar.gif" width="60px;" height="60px;" alt="" /><!-- ENDIF --></div> {ultimatelist.USERNAME}
 						</div>
-						<b>{ultimatelist.USERNAME}</b>
-					</td>
-					<td >{ultimatelist.POINT}</td>
-				</tr>
-				<!-- BEGINELSE -->
-				<tr class="bg1">
-					<td colspan="4">{L_POINTS_LIST_NO_USER}</td>
-				</tr>
-				<!-- END ultimatelist -->
-			</tbody>
-		</table>
+					</dt>
+					<dd class="lastpost"><span style="margin-top:5px;font-size: 1.2em;">{ultimatelist.POINT}</span></dd>
+				</dl>
+			</li>
+			<!-- END ultimatelist -->
+		</ul>
 	</div>
 </div>
+
+<!-- ELSE -->
+
+<div class="forabg">
+	<div class="inner">
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="row-item">
+					<dt><div class="list-inner">{L_USERNAME}</div></dt>
+					<dd></dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist forums">
+			<li class="row">
+				<dl>
+					<dt style="font-size: 1.2em;line-height: 2.2em;padding: 4px 0; text-align:center;">
+						<div>
+							{L_POINTS_LIST_NO_USER}
+						</div>
+					</dt>
+				</dl>
+			</li>
+		</ul>
+	</div>
+</div>
+<!-- ENDIF -->
+
 <hr />
 <div class="action-bar bottom">
 	<!-- IF .pagination or TOTAL_ULTIMATEPOINTS_LIST -->

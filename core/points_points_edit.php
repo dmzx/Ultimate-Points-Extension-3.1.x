@@ -2,16 +2,12 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\core;
-
-/**
-* @package Ultimate Points
-*/
 
 class points_points_edit
 {
@@ -42,11 +38,11 @@ class points_points_edit
 	/** @var \phpbb\request\request */
 	protected $request;
 
-	/** @var string phpEx */
-	protected $phpEx;
+	/** @var string php_ext */
+	protected $php_ext;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/**
 	* Constructor
@@ -59,11 +55,22 @@ class points_points_edit
 	* @param \phpbb\controller\helper		 	$helper
 	* @param \phpbb\log\log					 	$log
 	* @param \phpbb\request\request				$request
-	* @param 									$phpEx
-	* @param									$phpbb_root_path
+	* @param string 							$php_ext
+	* @param string								$root_path
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\controller\helper $helper,	\phpbb\log\log $log, \phpbb\request\request $request, $phpEx, $phpbb_root_path)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\auth\auth $auth,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		\phpbb\log\log $log,
+		\phpbb\request\request $request,
+		$php_ext,
+		$root_path)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -74,8 +81,8 @@ class points_points_edit
 		$this->helper 				= $helper;
 		$this->log 					= $log;
 		$this->request				= $request;
-		$this->phpEx				= $phpEx;
-		$this->phpbb_root_path 		= $phpbb_root_path;
+		$this->php_ext				= $php_ext;
+		$this->root_path 			= $root_path;
 	}
 
 	var $u_action;
@@ -87,7 +94,7 @@ class points_points_edit
 		{
 			if ($this->user->data['is_bot'])
 			{
-				redirect(append_sid("{$this->phpbb_root_path}index.{$this->phpEx}"));
+				redirect(append_sid("{$this->root_path}index.{$this->php_ext}"));
 			}
 			login_box('', $this->user->lang['LOGIN_INFO']);
 		}
@@ -148,7 +155,7 @@ class points_points_edit
 
 				// Add logs
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_POINTS', false, array($points_user['username']));
-				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="'. append_sid("{$this->phpbb_root_path}viewtopic.{$this->phpEx}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") . '">', '</a>');
+				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="'. append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
 				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
 			}
 			else
@@ -185,7 +192,7 @@ class points_points_edit
 					'L_USERNAME'			=> $this->user->lang['USERNAME'],
 					'S_ACTION'				=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'points_edit', 'adm_points' => '1')),
 					'S_HIDDEN_FIELDS'		=> $hidden_fields,
-					'U_USER_LINK'			=> append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", "mode=viewprofile&amp;u=" . $u_id),
+					'U_USER_LINK'			=> append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
 				));
 			}
 		}

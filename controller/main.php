@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -69,10 +69,10 @@ class main
 	protected $helper;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
-	/** @var string phpEx */
-	protected $phpEx;
+	/** @var string php_ext */
+	protected $php_ext;
 
 	/**
 	* The database tables
@@ -105,8 +105,8 @@ class main
 	* @param \phpbb\request\request		 					$request
 	* @param \phpbb\config\config							$config
 	* @param \phpbb\controller\helper		 				$helper
-	* @param string 										$phpbb_root_path
-	* @param string 										$phpEx
+	* @param string 										$root_path
+	* @param string 										$php_ext
 	* @param string 										$points_config_table
 	* @param string 										$points_values_table
 	*
@@ -131,8 +131,8 @@ class main
 		\phpbb\request\request $request,
 		\phpbb\config\config $config,
 		\phpbb\controller\helper $helper,
-		$phpbb_root_path,
-		$phpEx,
+		$root_path,
+		$php_ext,
 		$points_config_table,
 		$points_values_table)
 	{
@@ -155,48 +155,28 @@ class main
 		$this->request 				= $request;
 		$this->config 				= $config;
 		$this->helper 				= $helper;
-		$this->phpbb_root_path 		= $phpbb_root_path;
-		$this->phpEx 				= $phpEx;
+		$this->root_path 			= $root_path;
+		$this->php_ext 				= $php_ext;
 		$this->points_config_table 	= $points_config_table;
 		$this->points_values_table 	= $points_values_table;
 	}
 
 	public function handle_ultimatepoints()
 	{
-		include($this->phpbb_root_path . 'includes/functions_user.' . $this->phpEx);
-		include($this->phpbb_root_path . 'includes/functions_module.' . $this->phpEx);
-		include($this->phpbb_root_path . 'includes/functions_display.' . $this->phpEx);
-		include($this->phpbb_root_path . 'includes/functions_privmsgs.' . $this->phpEx);
+		include($this->root_path . 'includes/functions_user.' . $this->php_ext);
+		include($this->root_path . 'includes/functions_module.' . $this->php_ext);
+		include($this->root_path . 'includes/functions_display.' . $this->php_ext);
+		include($this->root_path . 'includes/functions_privmsgs.' . $this->php_ext);
 
 		$mode = $this->request->variable('mode', '');
 
-		// Read out config data
-		$sql_array = array(
-			'SELECT'	=> 'config_name, config_value',
-			'FROM'		=> array(
-				$this->points_config_table => 'c',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$points_config[$row['config_name']] = $row['config_value'];
-		}
-		$this->db->sql_freeresult($result);
-
-		// Read out config values
-		$sql = 'SELECT *
-				FROM ' . $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all configs
+		$points_config = $this->functions_points->points_all_configs();
 
 		// Exclude Bots
 		if ($this->user->data['is_bot'])
 		{
-			redirect(append_sid("{$this->phpbb_root_path}index.{$this->phpEx}"));
+			redirect(append_sid("{$this->root_path}index.{$this->php_ext}"));
 		}
 
 		// Check if you are locked or not
@@ -226,9 +206,6 @@ class main
 			trigger_error('POINTS_NO_USER');
 		}
 
-		// Ultimate Points Version
-		$version = $this->config['ultimate_points_version'];
-
 		// Check if points system is enabled
 		if (!$this->config['points_enable'])
 		{
@@ -249,7 +226,7 @@ class main
 			'USER_POINTS'		=> $this->functions_points->number_format_points ($this->user->data['user_points']),
 			'U_USE_POINTS'		=> $this->auth->acl_get('u_use_points'),
 			'U_CHG_POINTS'		=> $this->auth->acl_get('m_chg_points'),
-			'POINT_VERS'		=> $version,
+			'POINT_VERS'		=> $this->config['ultimate_points_version'],
 			'U_USE_TRANSFER'	=> $this->auth->acl_get('u_use_transfer'),
 			'U_USE_LOGS'		=> $this->auth->acl_get('u_use_logs'),
 			'U_USE_LOTTERY'		=> $this->auth->acl_get('u_use_lottery'),
@@ -257,7 +234,7 @@ class main
 			'U_USE_ROBBERY'		=> $this->auth->acl_get('u_use_robbery'),
 		)));
 
-		switch ($mode)
+		switch($mode)
 		{
 			case 'transfer_user':
 				$this->points_transfer_user->main($checked_user);

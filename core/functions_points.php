@@ -2,18 +2,12 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\core;
-
-/**
-* @package Ultimate Points
-*/
-
-//$ultimate_points = new functions_points();
 
 class functions_points
 {
@@ -48,10 +42,10 @@ class functions_points
 	protected $pagination;
 
 	/** @var string */
-	protected $phpEx;
+	protected $php_ext;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/**
 	* The database tables
@@ -81,8 +75,8 @@ class functions_points
 	* @param \phpbb\request\request		 		$request
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\pagination					$pagination
-	* @param									$phpEx
-	* @param									$phpbb_root_path
+	* @param string								$php_ext
+	* @param string								$root_path
 	* @param string 							$points_bank_table
 	* @param string 							$points_config_table
 	* @param string 							$points_lottery_history_table
@@ -90,7 +84,24 @@ class functions_points
 	* @param string 							$points_values_table
 	*
 	*/
-	public function __construct(\phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \phpbb\notification\manager $notification_manager, \phpbb\log\log $log, \phpbb\cache\service $cache, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\pagination $pagination, $phpEx, $phpbb_root_path, $points_bank_table, $points_config_table, $points_lottery_history_table, $points_lottery_tickets_table, $points_values_table)
+	public function __construct(
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\controller\helper $helper,
+		\phpbb\notification\manager $notification_manager,
+		\phpbb\log\log $log,
+		\phpbb\cache\service $cache,
+		\phpbb\request\request $request,
+		\phpbb\config\config $config,
+		\phpbb\pagination $pagination,
+		$php_ext,
+		$root_path,
+		$points_bank_table,
+		$points_config_table,
+		$points_lottery_history_table,
+		$points_lottery_tickets_table,
+		$points_values_table)
 	{
 		$this->template 						= $template;
 		$this->user 							= $user;
@@ -102,8 +113,8 @@ class functions_points
 		$this->request 							= $request;
 		$this->config 							= $config;
 		$this->pagination 						= $pagination;
-		$this->phpEx 							= $phpEx;
-		$this->phpbb_root_path 					= $phpbb_root_path;
+		$this->php_ext 							= $php_ext;
+		$this->root_path 						= $root_path;
 		$this->points_bank_table 				= $points_bank_table;
 		$this->points_config_table 				= $points_config_table;
 		$this->points_lottery_history_table 	= $points_lottery_history_table;
@@ -120,9 +131,9 @@ class functions_points
 		$new_text = '';
 		$text = explode('[quote', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
-			if (stristr($text[$i], '[/quote') === false) //checkout if it's a double/triple and so on quote
+			if(stristr($text[$i], '[/quote') === false) //checkout if it's a double/triple and so on quote
 			{
 				continue;
 			}
@@ -137,9 +148,9 @@ class functions_points
 		$new_text = '';
 		$text = explode('[code', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
-			if (stristr($text[$i], '[/code') === false) //checkout if it's a double/triple and so on code
+			if(stristr($text[$i], '[/code') === false) //checkout if it's a double/triple and so on code
 			{
 				continue;
 			}
@@ -154,9 +165,9 @@ class functions_points
 		$new_text = '';
 		$text = explode('[url', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
-			if (stristr($text[$i], '[/url') === false) //checkout if it's a double/triple and so on url
+			if(stristr($text[$i], '[/url') === false) //checkout if it's a double/triple and so on url
 			{
 				continue;
 			}
@@ -170,10 +181,10 @@ class functions_points
 		$new_text = '';
 		$text = explode('[', $text);
 		$new_text .= $text[0]; //1st frame is always valid text
-		for ($i = 1, $size = sizeof($text); $i < $size; $i++)
+		for($i = 1, $size = sizeof($text); $i < $size; $i++)
 		{
 			$item = explode(']' , $text[$i]);
-			if (sizeof($item) > 1) // if any part of text remains :-D
+			if(sizeof($item) > 1) // if any part of text remains :-D
 			{
 				$new_text .= $item[1];
 			}
@@ -182,9 +193,9 @@ class functions_points
 
 		//BEGIN to remove extra spaces
 		$new_text = explode(' ', $new_text);
-		for ($i = 0, $size = sizeof($new_text); $i < $size; $i++)
+		for($i = 0, $size = sizeof($new_text); $i < $size; $i++)
 		{
-			if (trim($new_text[$i]) == '' || trim($new_text[$i]) == '&nbsp;')
+			if(trim($new_text[$i]) == '' || trim($new_text[$i]) == '&nbsp;')
 			{
 				unset($new_text[$i]);
 			}
@@ -221,8 +232,8 @@ class functions_points
 		);
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
-				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-				WHERE user_id = ' . (int) $user_id;
+			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -252,8 +263,8 @@ class functions_points
 		);
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
-				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-				WHERE user_id = ' . (int) $user_id;
+			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -270,8 +281,8 @@ class functions_points
 		);
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
-				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-				WHERE user_id = ' . (int) $user_id;
+			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -288,8 +299,8 @@ class functions_points
 		);
 
 		$sql = 'UPDATE ' . $this->points_bank_table . '
-				SET ' . $this->db->sql_build_array('UPDATE', $data) . '
-				WHERE user_id = ' . (int) $user_id;
+			SET ' . $this->db->sql_build_array('UPDATE', $data) . '
+			WHERE user_id = ' . (int) $user_id;
 		$this->db->sql_query($sql);
 
 		return;
@@ -311,11 +322,7 @@ class functions_points
 	function run_bank()
 	{
 		// Get all values
-		$sql = 'SELECT *
-			FROM ' . $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		$points_values = $this->points_all_values();
 
 		// time to pay users
 		$time = time();
@@ -345,14 +352,8 @@ class functions_points
 	{
 		$current_time = time();
 
-		/**
-		* Read out config values
-		*/
-		$sql = 'SELECT *
-				FROM ' . $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->points_all_values();
 
 		// Count number of tickets
 		$sql_array = array(
@@ -460,12 +461,14 @@ class functions_points
 					$this->db->sql_freeresult($result);
 
 					// Notify the lucky winner by PM
-					$pm_subject	= utf8_normalize_nfc($this->user->lang['LOTTERY_PM_SUBJECT']);
-					$pm_text	= utf8_normalize_nfc(sprintf($this->user->lang['LOTTERY_PM_BODY'], $winner_notification, $winner_deposit));
+					$pm_subject	= $this->user->lang['LOTTERY_PM_SUBJECT'];
+					$pm_text	= sprintf($this->user->lang['LOTTERY_PM_BODY'], $winner_notification, $winner_deposit);
 
-					$poll = $uid = $bitfield = $options = '';
-					generate_text_for_storage($pm_subject, $uid, $bitfield, $options, false, false, false);
-					generate_text_for_storage($pm_text, $uid, $bitfield, $options, true, true, true);
+					include_once($this->root_path . 'includes/message_parser.' . $this->php_ext);
+
+					$message_parser = new \parse_message();
+					$message_parser->message = $pm_text;
+					$message_parser->parse(true, true, true, false, false, true, true);
 
 					$pm_data = array(
 						'address_list'		=> array ('u' => array($winner['user_id'] => 'to')),
@@ -479,9 +482,9 @@ class functions_points
 						'enable_urls'		=> true,
 						'enable_sig'		=> true,
 
-						'message'			=> $pm_text,
-						'bbcode_bitfield'	=> $bitfield,
-						'bbcode_uid'		=> $uid,
+						'message'		 	=> $message_parser->message,
+						'bbcode_bitfield' 	=> $message_parser->bbcode_bitfield,
+						'bbcode_uid'		=> $message_parser->bbcode_uid,
 					);
 
 					submit_pm('post', $pm_subject, $pm_data, false);
@@ -560,8 +563,8 @@ class functions_points
 	function set_points_config($config_name, $config_value, $is_dynamic = false)
 	{
 		$sql = 'UPDATE ' . $this->points_config_table . "
-				SET config_value = '" . $this->db->sql_escape($config_value) . "'
-				WHERE config_name = '" . $this->db->sql_escape($config_name) . "'";
+			SET config_value = '" . $this->db->sql_escape($config_value) . "'
+			WHERE config_name = '" . $this->db->sql_escape($config_name) . "'";
 		$this->db->sql_query($sql);
 
 		if (!$this->db->sql_affectedrows() && !isset($points_config[$config_name]))
@@ -587,7 +590,7 @@ class functions_points
 	function set_points_values($field, $value)
 	{
 		$sql = "UPDATE " . $this->points_values_table . "
-				SET $field = $value";
+			SET $field = $value";
 		$this->db->sql_query($sql);
 
 		return;
@@ -599,12 +602,42 @@ class functions_points
 		* Read out config values
 		*/
 		$sql = 'SELECT ' . $config_name . '
-				FROM ' . $this->points_values_table;
+			FROM ' . $this->points_values_table;
 		$result = $this->db->sql_query($sql);
 		$config_value = $this->db->sql_fetchfield($config_name);
 		$this->db->sql_freeresult($result);
 
 		return $config_value;
+	}
+
+	function points_all_values()
+	{
+		/**
+		* Read out config values
+		*/
+		// Get all values
+		$sql = 'SELECT *
+			FROM ' . $this->points_values_table;
+		$result = $this->db->sql_query($sql);
+		$points_values = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		return $points_values;
+	}
+
+	function points_all_configs()
+	{
+		// Get all point config names and config values
+		$sql = 'SELECT config_name, config_value
+				FROM ' . $this->points_config_table;
+		$result = $this->db->sql_query($sql);
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$points_config[$row['config_name']] = $row['config_value'];
+		}
+		$this->db->sql_freeresult($result);
+
+		return $points_config;
 	}
 
 	function add_points_to_table($post_id, $points, $mode, $attachments, $poll)
@@ -617,21 +650,15 @@ class functions_points
 		);
 
 		$sql = 'UPDATE ' . POSTS_TABLE . '
-				SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-				WHERE post_id = ' . (int) $post_id;
+			SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
+			WHERE post_id = ' . (int) $post_id;
 		$this->db->sql_query($sql);
 	}
 
 	function random_bonus_increment($user_id)
 	{
-		/**
-		* Read out config values
-		*/
-		$sql = 'SELECT *
-			FROM ' . $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->points_all_values();
 
 		$bonus_chance = '';
 		$bonus = false; // Basic value, sorry..

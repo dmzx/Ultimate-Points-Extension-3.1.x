@@ -1,6 +1,24 @@
 imports:
     - { resource: tables.yml }
+parameters:
+    ultimatepoints.version_data:
+        author: dmzx & posey
+        title: Ultimate Points
+        version: ultimate_points_version
+        file:
+            - www.dmzx-web.net
+            - /versions
+            - ultimatepoints_version.json
 services:
+    dmzx.ultimatepoints.version.check:
+        class: dmzx\ultimatepoints\includes\version_check
+        scope: prototype
+        arguments:
+            - '%ultimatepoints.version_data%'
+            - '@config'
+            - '@version_helper'
+            - '@template'
+            - '@user'
     dmzx.ultimatepoints.listener:
         class: dmzx\ultimatepoints\event\listener
         arguments:
@@ -18,6 +36,7 @@ services:
             - '%dmzx.ultimatepoints.table.points.bank%'
             - '%dmzx.ultimatepoints.table.points.config%'
             - '%dmzx.ultimatepoints.table.points.values%'
+            - '@?files.factory'
         tags:
             - { name: event.listener }
 
@@ -75,7 +94,7 @@ services:
             - '@controller.helper'
             - '@log'
             - '@cache'
-            - '@ext.manager'
+            - '@service_container'
             - '%core.root_path%'
             - '%core.adm_relative_path%'
             - '%core.php_ext%'

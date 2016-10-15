@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -37,7 +37,7 @@ class points_info
 	protected $helper;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	protected $points_values_table;
 
@@ -51,10 +51,19 @@ class points_info
 	* @param \phpbb\user						$user
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
-	* @param									$phpbb_root_path
+	* @param string								$root_path
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\db\driver\driver_interface $db, \phpbb\template\template $template, \phpbb\user $user, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpbb_root_path, $points_values_table)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\auth\auth $auth,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		$root_path,
+		$points_values_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -63,7 +72,7 @@ class points_info
 		$this->user 				= $user;
 		$this->config 				= $config;
 		$this->helper 				= $helper;
-		$this->phpbb_root_path		= $phpbb_root_path;
+		$this->root_path			= $root_path;
 		$this->points_values_table	= $points_values_table;
 	}
 
@@ -71,11 +80,8 @@ class points_info
 
 	function main()
 	{
-		$sql = 'SELECT *
-				FROM '. $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
 
 		// Add part to bar
 		$this->template->assign_block_vars('navlinks', array(

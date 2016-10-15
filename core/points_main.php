@@ -2,16 +2,12 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\core;
-
-/**
-* @package Ultimate Points
-*/
 
 class points_main
 {
@@ -37,7 +33,7 @@ class points_main
 	protected $helper;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/**
 	* The database tables
@@ -63,13 +59,26 @@ class points_main
 	* @param \phpbb\db\driver\driver_interface	$db
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
-	* @param									$phpbb_root_path
+	* @param string								$root_path
 	* @param string 							$points_bank_table
 	* @param string								$points_values_table
 	* @param string 							$points_lottery_tickets_table
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpbb_root_path, $points_bank_table, $points_values_table, $points_log_table, $points_lottery_tickets_table, $points_lottery_history_table)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\auth\auth $auth,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		$root_path,
+		$points_bank_table,
+		$points_values_table,
+		$points_log_table,
+		$points_lottery_tickets_table,
+		$points_lottery_history_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -78,7 +87,7 @@ class points_main
 		$this->db 					= $db;
 		$this->config 				= $config;
 		$this->helper 				= $helper;
-		$this->phpbb_root_path 		= $phpbb_root_path;
+		$this->root_path 			= $root_path;
 		$this->points_bank_table 	= $points_bank_table;
 		$this->points_values_table	= $points_values_table;
 		$this->points_log_table		= $points_log_table;
@@ -91,11 +100,7 @@ class points_main
 	function main($checked_user)
 	{
 		// Get all values
-		$sql = 'SELECT *
-				FROM ' . $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		$points_values = $this->functions_points->points_all_values();
 
 		// Select user's bank holding
 		$sql_array = array(
@@ -288,7 +293,7 @@ class points_main
 		// lw_ is Lotteries Won
 		while ($lw_row = $this->db->sql_fetchrow($result))
 		{
-			if ($lw_row['user_id'] != 0) // 0 means there was no winner..
+			if($lw_row['user_id'] != 0) // 0 means there was no winner..
 			{
 				$lw_username = get_username_string('full', $lw_row['user_id'], $lw_row['username'], $lw_row['user_colour']);
 

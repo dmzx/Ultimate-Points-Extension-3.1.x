@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -160,7 +160,7 @@ $lang = array_merge($lang, array(
 	'LOTTERY_NO_WINNERS'				=> 'None has won a lottery yet.',
 	'LOTTERY_PLAYERS'					=> 'Number of players up to now',
 	'LOTTERY_PM_BODY'					=> 'Congratulations! You have won %1$s in our Lottery! %2$s',
-	'LOTTERY_PM_CASH_ENABLED'			=> 'Your winnings have been deposited into your account, enjoy it!<br /><br /><i>The Lottery Management</i>',
+	'LOTTERY_PM_CASH_ENABLED'			=> 'Your winnings have been deposited into your account, enjoy it! [i]The Lottery Management[/i]',
 	'LOTTERY_PM_COMMISION'				=> 'The Lottery Management',
 	'LOTTERY_PM_SUBJECT'				=> 'You won the lottery!',
 	'LOTTERY_PURCHASE_TICKET'			=> 'Buy Ticket',
@@ -204,7 +204,7 @@ $lang = array_merge($lang, array(
 	'POINTS_BUPOINTS_TOTAL'				=> 'Bank Accounts : %1$s',
 	'POINTS_CASH_ON_HAND'				=> 'Cash on hand',
 	'POINTS_COPYRIGHT'					=> 'Ultimate Points by <a href="http://die-muellers.org" onclick="window.open(this.href); return false">femu</a> &amp; <a href="http://www.spieleresidenz.de" onclick="window.open(this.href); return false">Wuerzi</a> v',
-	'POINTS_COPYRIGHTS'					=> '&copy; 2015 <a href="http://www.dmzx-web.net" onclick="window.open(this.href); return false">dmzx &amp; posey</a>',
+	'POINTS_COPYRIGHTS'					=> '&copy; 2016 <a href="http://www.dmzx-web.net" onclick="window.open(this.href); return false">dmzx &amp; posey</a>',
 	'POINTS_DESCRIPTION'				=> 'Description',
 	'POINTS_DISABLED'					=> 'Ultimate Points is currently disabled.',
 	'POINTS_DONATE'						=> '[Donate]',
@@ -296,7 +296,8 @@ $lang = array_merge($lang, array(
 	'TRANSFER_FEE'						=> 'Transfer Fee',
 	'TRANSFER_FEE_EXPLAIN'				=> 'Percentage that is being helt back from your transfer',
 	'TRANSFER_NO_USER_RETURN'			=> '<strong>The selected username is invalid!</strong>',
-	'TRANSFER_PM_BODY'					=> 'You received a donation of %1$s %2$s with the following comment: <br /><i>%3$s</i>',
+	'TRANSFER_PM_BODY'					=> 'You received a donation of %1$s %2$s with the following comment: [i]%3$s[/i]',
+	'TRANSFER_PM_BODY_USER'				=> 'You received a donation of %1$s %2$s.',
 	'TRANSFER_PM_SUBJECT'				=> 'You have received a donation!',
 	'TRANSFER_REASON_MINPOINTS'			=> 'You do not have enough %1$s to transfer.',
 	'TRANSFER_REASON_TRANSFER'			=> 'The Admin has disabled transferring',
@@ -316,4 +317,14 @@ $lang = array_merge($lang, array(
 
 	'WARN_USER_POINTS'					=> 'Additionally we deducted %1$s %2$s from your account!',
 	'WARN_MOD_POINTS'					=> 'Additionally %1$s %2$s has been deducted from %3$s’s account!',
+	'ULTIMATEPOINTS_VERSION_CHECK'		=> 'Ultimate Points Version Check',
+	'ULTIMATEPOINTS_AUTHOR'				=> 'Authors',
+	'ULTIMATEPOINTS_ANNOUNCEMENT_TOPIC'	=> 'Release Announcement',
+	'ULTIMATEPOINTS_CURRENT_VERSION'	=> 'Current Version',
+	'ULTIMATEPOINTS_DOWNLOAD_LATEST'	=> 'Download Latest Version',
+	'ULTIMATEPOINTS_DOWNLOAD'			=> 'Download',
+	'ULTIMATEPOINTS_LATEST_VERSION'		=> 'Latest Version',
+	'ULTIMATEPOINTS_NOT_UP_TO_DATE'		=> '%s is not up to date',
+	'ULTIMATEPOINTS_RELEASE_ANNOUNCEMENT' => 'Announcement Topic',
+	'ULTIMATEPOINTS_UP_TO_DATE'			=> '%s is up to date',
 ));

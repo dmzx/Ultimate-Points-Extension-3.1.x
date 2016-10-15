@@ -5,6 +5,26 @@
   background-image: url("./images/icon_points.gif");
 }
 
+.icon-members { 
+  background-image: url("./images/icon_members.gif");
+}
+#cp-menu {
+    float: left;
+    width: 19%;
+    margin-top: 1em;
+    margin-bottom: 5px;
+}
+
+#cp-main {
+    float: left;
+    width: 81%;
+}
+
+#navigation {
+    width: 100%;
+    padding-top: 36px;
+}
+
 table.table1 thead.logs_head th {
 	color: #303333;
 	font-weight: bold;
@@ -49,13 +69,4 @@ table.table1 thead.logs_head th {
 	top: 0px;
 	max-height: 20px;
 	max-width: 20px;
-}
-
-.rich-user-avatar img:hover {
-	left: -40px;
-	top: -40px;
-	max-height:100px;
-	max-width:100px;
-	box-shadow: 0 0 20px #000;
-	z-index: 10;
 }

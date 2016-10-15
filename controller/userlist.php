@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -91,17 +91,8 @@ class userlist
 			trigger_error($this->user->lang['POINTS_LIST_DISABLE'], E_USER_NOTICE);
 		}
 
-		// Get some values
-		$sql_array = array(
-			'SELECT'	=> '*',
-			'FROM'		=> array(
-			$this->points_values_table => 'v',
-			),
-		);
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		// Get all values
+		$points_values = $this->functions_points->points_all_values();
 
 		// Generate donors list
 		$start = $this->request->variable('start', 0);
@@ -118,8 +109,7 @@ class userlist
 				'USERNAME'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'AVATAR'	=> phpbb_get_user_avatar($row),
 				'POINT'		=> sprintf($this->functions_points->number_format_points($row['user_points'])),
-				)
-			);
+			));
 		}
 		$this->db->sql_freeresult($result);
 

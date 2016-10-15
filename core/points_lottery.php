@@ -2,16 +2,12 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\core;
-
-/**
-* @package Ultimate Points
-*/
 
 class points_lottery
 {
@@ -43,10 +39,10 @@ class points_lottery
 	protected $pagination;
 
 	/** @var string */
-	protected $phpEx;
+	protected $php_ext;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/**
 	* The database tables
@@ -71,15 +67,30 @@ class points_lottery
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
 	* @param \phpbb\pagination					$pagination
-	* @param									$phpEx
-	* @param									$phpbb_root_path
+	* @param string								$php_ext
+	* @param string								$root_path
 	* @param string 							$points_config_table
 	* @param string 							$points_values_table
 	* @param string								$points_lottery_history_table,
 	* @param string								$points_lottery_tickets_table,
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\pagination $pagination, $phpEx, $phpbb_root_path, $points_config_table, $points_values_table, $points_lottery_history_table, $points_lottery_tickets_table)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\auth\auth $auth,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\request\request $request,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		\phpbb\pagination $pagination,
+		$php_ext,
+		$root_path,
+		$points_config_table,
+		$points_values_table,
+		$points_lottery_history_table,
+		$points_lottery_tickets_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -90,8 +101,8 @@ class points_lottery
 		$this->config 				= $config;
 		$this->helper 				= $helper;
 		$this->pagination			= $pagination;
-		$this->phpEx 				= $phpEx;
-		$this->phpbb_root_path 		= $phpbb_root_path;
+		$this->php_ext 				= $php_ext;
+		$this->root_path 			= $root_path;
 		$this->points_config_table 	= $points_config_table;
 		$this->points_values_table 	= $points_values_table;
 		$this->points_lottery_history_table 	= $points_lottery_history_table;
@@ -103,21 +114,10 @@ class points_lottery
 	function main($checked_user)
 	{
 		// Get all values
-		$sql = 'SELECT *
-				FROM ' . $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		$points_values = $this->functions_points->points_all_values();
 
-		// Get all point config names and config values
-		$sql = 'SELECT config_name, config_value
-				FROM ' . $this->points_config_table;
-		$result = $this->db->sql_query($sql);
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$points_config[$row['config_name']] = $row['config_value'];
-		}
-		$this->db->sql_freeresult($result);
+		// Get all configs
+		$points_config = $this->functions_points->points_all_configs();
 
 		// Set some variables
 		$start	= $this->request->variable('start', 0);
@@ -466,7 +466,7 @@ class points_lottery
 			// Check, if previous winner is a user
 			if ($points_values['lottery_prev_winner_id'] != 0)
 			{
-				$link_member = append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", "mode=viewprofile&amp;u=" . $points_values['lottery_prev_winner_id']);
+				$link_member = append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $points_values['lottery_prev_winner_id']);
 			}
 			else
 			{

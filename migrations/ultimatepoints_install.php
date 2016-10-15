@@ -2,15 +2,87 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\migrations;
 
-class ultimatepoints_schema extends \phpbb\db\migration\migration
+class ultimatepoints_install extends \phpbb\db\migration\migration
 {
+	static public function depends_on()
+	{
+		return array('\phpbb\db\migration\data\v310\gold');
+	}
+
+	public function update_data()
+	{
+		return array(
+			// Add config
+			array('config.add', array('ultimate_points_version', '1.1.6')),
+			array('config.add', array('points_notification_id', 0)),
+			// Add permission
+			array('permission.add', array('u_use_points', true)),
+			array('permission.add', array('u_use_bank', true)),
+			array('permission.add', array('u_use_logs', true)),
+			array('permission.add', array('u_use_robbery', true)),
+			array('permission.add', array('u_use_lottery', true)),
+			array('permission.add', array('u_use_transfer', true)),
+			array('permission.add', array('f_pay_attachment', false)),
+			array('permission.add', array('f_pay_topic', false)),
+			array('permission.add', array('f_pay_post', false)),
+			array('permission.add', array('m_chg_points', true)),
+			array('permission.add', array('m_chg_bank', true)),
+			array('permission.add', array('a_points', true)),
+			// Set permission
+			array('permission.permission_set', array('REGISTERED', 'u_use_points', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_use_bank', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_use_logs', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_use_robbery', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_use_lottery', 'group')),
+			array('permission.permission_set', array('REGISTERED', 'u_use_transfer', 'group')),
+
+			// ACP module
+			array('module.add', array(
+				'acp',
+				'ACP_CAT_DOT_MODS',
+				'ACP_POINTS'
+			)),
+			array('module.add', array(
+				'acp',
+				'ACP_POINTS',
+				array(
+					'module_basename'	=> '\dmzx\ultimatepoints\acp\acp_ultimatepoints_module', 'modes' => array('points', 'bank', 'lottery', 'robbery', 'forumpoints'),
+				),
+			)),
+
+			// UCP module
+			array('module.add', array(
+				'ucp',
+				false,
+				'UCP_ULTIMATEPOINTS_TITLE'
+			)),
+			array('module.add', array(
+				'ucp',
+				'UCP_ULTIMATEPOINTS_TITLE',
+				array(
+					'module_basename'	=> '\dmzx\ultimatepoints\ucp\ucp_ultimatepoints_module',
+					'auth'				=> 'ext_dmzx/ultimatepoints',
+					'modes'				=> array('lottery', 'bank', 'robbery', 'transfer'),
+				),
+			)),
+			// Insert sample data
+			array('custom', array(
+				array(&$this, 'insert_sample_data')
+			)),
+			// Insert config data
+			array('custom', array(
+				array(&$this, 'insert_config_data')
+			)),
+		);
+	}
+
 	public function update_schema()
 	{
 		return array(
@@ -180,5 +252,127 @@ class ultimatepoints_schema extends \phpbb\db\migration\migration
 				),
 			),
 		);
+	}
+
+	public function insert_sample_data()
+	{
+		if ($this->db_tools->sql_table_exists($this->table_prefix . 'points_values'))
+		{
+			$sample_data = array(
+				array(
+					'number_show_per_page' => '15',
+					'number_show_top_points' => '10',
+					'reg_points_bonus' => '50',
+					'lottery_jackpot' => '50',
+					'lottery_winners_total' => '0',
+					'lottery_prev_winner' => '0',
+					'lottery_prev_winner_id' => '0',
+					'lottery_last_draw_time' => '0',
+					'bank_last_restocked' => '0',
+					'lottery_base_amount' => '50.00',
+					'lottery_draw_period' => '3600',
+					'lottery_ticket_cost' => '10',
+					'bank_fees' => '0',
+					'bank_interest' => '0',
+					'bank_pay_period' => '2592000',
+					'bank_min_withdraw' => '0',
+					'bank_min_deposit' => '0',
+					'bank_interestcut' => '0',
+					'points_bonus_chance' => '0',
+					'points_bonus_min' => '10.00',
+					'points_bonus_max' => '50.00',
+					'points_per_poll_option' => '0',
+					'points_per_poll' => '0',
+					'points_per_attach_file' => '0',
+					'points_per_attach' => '0',
+					'points_per_post_word' => '0',
+					'points_per_post_character' => '0',
+					'points_per_topic_word' => '0',
+					'points_per_topic_character' => '0',
+					'points_per_warn' => '0',
+					'robbery_chance' => '50',
+					'robbery_loose' => '50',
+					'transfer_fee' => '10',
+					'bank_cost' => '0',
+					'bank_name' => 'BANK NAME',
+					'lottery_name' => 'LOTTERY NAME',
+				),
+			);
+		}
+
+		// Insert sample data
+		$this->db->sql_multi_insert($this->table_prefix . 'points_values', $sample_data);
+	}
+
+	public function insert_config_data()
+	{
+		if ($this->db_tools->sql_table_exists($this->table_prefix . 'points_config'))
+		{
+			// Define sample rule data
+			$config_data = array(
+				array(
+					'config_name' 	=> 'transfer_enable',
+						'config_value'	=> '1',
+					),
+				array(
+					'config_name' 	=> 'transfer_pm_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'comments_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'logs_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'images_topic_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'images_memberlist_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'lottery_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'bank_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'robbery_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'points_disablemsg',
+					'config_value'	=> 'Ultimate Points is currently disabled!',
+				),
+				array(
+					'config_name' 	=> 'stats_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'lottery_multi_ticket_enable',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'robbery_notify',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'display_lottery_stats',
+					'config_value'	=> '1',
+				),
+				array(
+					'config_name' 	=> 'uplist_enable',
+					'config_value'	=> '1',
+				),
+			);
+		}
+		// Insert sample data
+		$this->db->sql_multi_insert($this->table_prefix . 'points_config', $config_data);
 	}
 }

@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -28,17 +28,17 @@ class points extends \phpbb\notification\type\base
 	* @param \phpbb\auth\auth 						$auth
 	* @param \phpbb\config\config 					$config
 	* @param \phpbb\controller\helper 				$helper
-	* @param string 								$phpbb_root_path
+	* @param string 								$root_path
 	* @param string 								$php_ext
 	* @param string 								$notification_types_table
 	* @param string 								$notifications_table
 	* @param string 								$user_notifications_table
 	* @return \phpbb\notification\type\base
 	*/
-	public function __construct(\phpbb\user_loader $user_loader, \phpbb\db\driver\driver_interface $db, \phpbb\cache\driver\driver_interface $cache, $user, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpbb_root_path, $php_ext, $notification_types_table, $notifications_table, $user_notifications_table)
+	public function __construct(\phpbb\user_loader $user_loader, \phpbb\db\driver\driver_interface $db, \phpbb\cache\driver\driver_interface $cache, $user, \phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\controller\helper $helper, $root_path, $php_ext, $notification_types_table, $notifications_table, $user_notifications_table)
 	{
 		$this->helper = $helper;
-		parent::__construct($user_loader, $db, $cache, $user, $auth, $config, $phpbb_root_path, $php_ext, $notification_types_table, $notifications_table, $user_notifications_table);
+		parent::__construct($user_loader, $db, $cache, $user, $auth, $config, $root_path, $php_ext, $notification_types_table, $notifications_table, $user_notifications_table);
 	}
 
 	/**

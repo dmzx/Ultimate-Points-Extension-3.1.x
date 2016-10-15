@@ -2,7 +2,7 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -44,10 +44,10 @@ class listener implements EventSubscriberInterface
 	protected $request;
 
 	/** @var string */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/** @var string */
-	protected $phpEx;
+	protected $php_ext;
 
 	/**
 	* The database tables
@@ -59,6 +59,9 @@ class listener implements EventSubscriberInterface
 	protected $points_config_table;
 
 	protected $points_values_table;
+
+	/** @var \phpbb\files\factory */
+	protected $files_factory;
 
 	/**
 	* Constructor
@@ -72,14 +75,30 @@ class listener implements EventSubscriberInterface
 	* @param \phpbb\controller\helper			$helper
 	* @param \phpbb\cache\service		 		$cache
 	* @param \phpbb\request\request		 		$request
-	* @param string								$phpbb_root_path
-	* @param string								$phpEx
+	* @param string								$root_path
+	* @param string								$php_ext
 	* @param string 							$points_bank_table
 	* @param string 							$points_config_table
 	* @param string 							$points_values_table
+	* @param \phpbb\files\factory				$files_factory
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\user $user, \phpbb\template\template $template, \phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\controller\helper $helper, \phpbb\cache\service $cache, \phpbb\request\request $request, $phpbb_root_path, $phpEx, $points_bank_table, $points_config_table, $points_values_table)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\user $user,
+		\phpbb\template\template $template,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\config\config $config,
+		\phpbb\auth\auth $auth,
+		\phpbb\controller\helper $helper,
+		\phpbb\cache\service $cache,
+		\phpbb\request\request $request,
+		$root_path,
+		$php_ext,
+		$points_bank_table,
+		$points_config_table,
+		$points_values_table,
+		\phpbb\files\factory $files_factory = null)
 	{
 		$this->functions_points 	= $functions_points;
 		$this->user					= $user;
@@ -90,11 +109,12 @@ class listener implements EventSubscriberInterface
 		$this->helper 				= $helper;
 		$this->cache 				= $cache;
 		$this->request 				= $request;
-		$this->phpbb_root_path 		= $phpbb_root_path;
-		$this->phpEx 				= $phpEx;
+		$this->root_path 			= $root_path;
+		$this->php_ext 				= $php_ext;
 		$this->points_bank_table 	= $points_bank_table;
 		$this->points_config_table 	= $points_config_table;
 		$this->points_values_table 	= $points_values_table;
+		$this->files_factory 		= $files_factory;
 	}
 
 	static public function getSubscribedEvents()
@@ -244,7 +264,7 @@ class listener implements EventSubscriberInterface
 			// Check, if number of users in array is below the set limit
 			$new_limit = sizeof($rich_users) < $limit ? sizeof($rich_users) : $limit;
 
-			for ($i = 0; $i < $new_limit; $i++)
+			for($i = 0; $i < $new_limit; $i++)
 			{
 				$rich_users_sorted[] = $rich_users[$rich_users_sort[$i]];
 			}
@@ -279,7 +299,7 @@ class listener implements EventSubscriberInterface
 			{
 				if (!function_exists('send_pm'))
 				{
-					include($this->phpbb_root_path . 'includes/functions_privmsgs.' . $this->phpEx);
+					include($this->root_path . 'includes/functions_privmsgs.' . $this->php_ext);
 				}
 				$this->functions_points->run_lottery();
 			}
@@ -355,7 +375,7 @@ class listener implements EventSubscriberInterface
 			'L_MOD_USER_BANK'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_bank')) ? sprintf($this->user->lang['POINTS_MODIFY']) : '',
 			'U_BANK_MODIFY'			=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'user_id' => $user_id, 'adm_points' => '1')) : '',
 			'L_DONATE'				=> ($this->auth->acl_get('u_use_points')) ? sprintf($this->user->lang['POINTS_DONATE']) : '',
-			'U_POINTS_DONATE'		=> ($this->auth->acl_get('a_') || $this->auth->acl_get('m_chg_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer', 'i' => $user_id, 'adm_points' => '1')) : '',
+			'U_POINTS_DONATE'		=> ($this->auth->acl_get('u_use_points')) ? $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'transfer', 'i' => $user_id, 'adm_points' => '1')) : '',
 			'P_NAME'				=> $this->config['points_name'],
 			'USE_POINTS'			=> $this->config['points_enable'],
 			'USE_IMAGES_POINTS'		=> $points_config['images_memberlist_enable'],
@@ -516,6 +536,7 @@ class listener implements EventSubscriberInterface
 				'S_POINTS_ENABLE'		=> $this->config['points_enable'],
 				'S_UPLIST_ENABLE'		=> $points_config['uplist_enable'],
 				'S_USE_POINTS'			=> $this->auth->acl_get('u_use_points'),
+				'PHPBB_IS_32'			=> ($this->files_factory !== null) ? true : false,
 			));
 		}
 	}
@@ -523,10 +544,16 @@ class listener implements EventSubscriberInterface
 	// Lets show people where all users are.. addicted to the points, so probably in lottery
 	public function add_page_viewonline($event)
 	{
-		if (strrpos($event['row']['session_page'], 'app.' . $this->phpEx . '/ultimatepoints') === 0)
+		if (strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/ultimatepoints') === 0)
 		{
 			$event['location'] = $this->user->lang('ACP_POINTS');
 			$event['location_url'] = $this->helper->route('dmzx_ultimatepoints_controller');
+		}
+
+		if (strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/ultimatepointslist') === 0)
+		{
+			$event['location'] = $this->user->lang('POINTS_LIST_TOTAL');
+			$event['location_url'] = $this->helper->route('dmzx_ultimatepoints_list_controller');
 		}
 	}
 
@@ -563,7 +590,7 @@ class listener implements EventSubscriberInterface
 		{
 			if ($this->config['allow_attachments'] && $this->config['points_enable'] && ($this->user->data['user_points'] < $forum_cost))
 			{
-				$message = sprintf($this->user->lang['POINTS_ATTACHMENT_MINI_POSTS'], $this->config['points_name']) . '<br /><br /><a href="' . append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") . '">&laquo; ' . $this->user->lang['POINTS_RETURN_INDEX'] . '</a>';
+				$message = sprintf($this->user->lang['POINTS_ATTACHMENT_MINI_POSTS'], $this->config['points_name']) . '<br /><br /><a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">&laquo; ' . $this->user->lang['POINTS_RETURN_INDEX'] . '</a>';
 				trigger_error($message);
 			}
 			if ($this->config['points_enable'])
@@ -620,7 +647,6 @@ class listener implements EventSubscriberInterface
 			'FORUM_COST_TOPIC'			=> $forum_data['forum_cost_topic'],
 			'FORUM_COST_POST'			=> $forum_data['forum_cost_post'],
 		));
-
 		$event['template_data'] = $template_data;
 	}
 
@@ -910,13 +936,13 @@ class listener implements EventSubscriberInterface
 			if ($mode == 'post' && $forum['forum_cost_topic'] > 0 && $user_points < $forum['forum_cost_topic'] && $this->auth->acl_get('f_pay_topic', (int) $event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_TOPIC'], $forum['forum_cost_topic'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.{$this->phpEx}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
 			else if (($mode == 'reply' || $mode == 'quote') && $forum['forum_cost_post'] > 0 && $user_points < $forum['forum_cost_post'] && $this->auth->acl_get('f_pay_post', (int) $event['forum_id']))
 			{
 				$message = sprintf($this->user->lang['POINTS_INSUFFICIENT_POST'], $forum['forum_cost_post'], $this->config['points_name']);
-				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->phpbb_root_path}viewforum.{$this->phpEx}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
+				$message .= '<br /><br />' . $this->user->lang('RETURN_FORUM', '<a href="' . append_sid("{$this->root_path}viewforum.{$this->php_ext}", 'f=' . (int) $event['forum_id']) . '">', '</a>');
 				trigger_error($message);
 			}
 		}

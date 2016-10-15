@@ -2,16 +2,12 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\core;
-
-/**
-* @package Ultimate Points
-*/
 
 class points_transfer
 {
@@ -40,10 +36,10 @@ class points_transfer
 	protected $helper;
 
 	/** @var string */
-	protected $phpEx;
+	protected $php_ext;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/**
 	* The database tables
@@ -65,14 +61,27 @@ class points_transfer
 	* @param \phpbb\request\request		 		$request
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
-	* @param									$phpEx
-	* @param									$phpbb_root_path
+	* @param string								$php_ext
+	* @param string								$root_path
 	* @param string 							$points_log_table
 	* @param string 							$points_config_table
 	* @param string								$points_values_table
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, $phpEx, $phpbb_root_path, $points_log_table, $points_config_table, $points_values_table)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\auth\auth $auth,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\request\request $request,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		$php_ext,
+		$root_path,
+		$points_log_table,
+		$points_config_table,
+		$points_values_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -82,8 +91,8 @@ class points_transfer
 		$this->request 				= $request;
 		$this->config 				= $config;
 		$this->helper 				= $helper;
-		$this->phpEx 				= $phpEx;
-		$this->phpbb_root_path 		= $phpbb_root_path;
+		$this->php_ext 				= $php_ext;
+		$this->root_path 			= $root_path;
 		$this->points_log_table 	= $points_log_table;
 		$this->points_config_table 	= $points_config_table;
 		$this->points_values_table	= $points_values_table;
@@ -93,15 +102,8 @@ class points_transfer
 
 	function main($checked_user)
 	{
-		// Get all point config names and config values
-		$sql = 'SELECT config_name, config_value
-				FROM ' . $this->points_config_table;
-		$result = $this->db->sql_query($sql);
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$points_config[$row['config_name']] = $row['config_value'];
-		}
-		$this->db->sql_freeresult($result);
+		// Get all configs
+		$points_config = $this->functions_points->points_all_configs();
 
 		// Grab transfer fee
 		$sql = 'SELECT transfer_fee
@@ -175,7 +177,7 @@ class points_transfer
 			$current_time = time();
 
 			// Add transfer information to the log
-			$text = utf8_normalize_nfc($message);
+			$text = $message;
 
 			$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', array(
 				'point_send'	=> (int) $this->user->data['user_id'],
@@ -207,12 +209,14 @@ class points_transfer
 
 				$points_name 	= $this->config['points_name'];
 				$comment 		= $this->db->sql_escape($comment);
-				$pm_subject		= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_SUBJECT']));
-				$pm_text		= utf8_normalize_nfc(sprintf($this->user->lang['TRANSFER_PM_BODY'], $amount, $points_name, $text));
+				$pm_subject		= $this->user->lang['TRANSFER_PM_SUBJECT'];
+				$pm_text		= sprintf($this->user->lang['TRANSFER_PM_BODY'], $amount, $points_name, $text);
 
-				$poll = $uid = $bitfield = $options = '';
-				generate_text_for_storage($pm_subject, $uid, $bitfield, $options, false, false, false);
-				generate_text_for_storage($pm_text, $uid, $bitfield, $options, true, true, true);
+				include_once($this->root_path . 'includes/message_parser.' . $this->php_ext);
+
+				$message_parser = new \parse_message();
+				$message_parser->message = $pm_text;
+				$message_parser->parse(true, true, true, false, false, true, true);
 
 				$pm_data = array(
 					'address_list'		=> array ('u' => array($checked_user['user_id'] => 'to')),
@@ -224,15 +228,15 @@ class points_transfer
 					'enable_smilies'	=> true,
 					'enable_urls'		=> true,
 					'enable_sig'		=> true,
-					'message'			=> $pm_text,
-					'bbcode_bitfield'	=> $bitfield,
-					'bbcode_uid'		=> $uid,
+					'message'		 	=> $message_parser->message,
+					'bbcode_bitfield' 	=> $message_parser->bbcode_bitfield,
+					'bbcode_uid'		=> $message_parser->bbcode_uid,
 				);
 
 				submit_pm('post', $pm_subject, $pm_data, false);
 			}
 
-			$message = sprintf($this->user->lang['TRANSFER_REASON_TRANSUCC'], $this->functions_points->number_format_points($am), $this->config['points_name'], $checked_user['username']) . '<br /><br />' . (($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="' . append_sid("{$this->phpbb_root_path}viewtopic.{$this->phpEx}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") . '">', '</a>'));
+			$message = sprintf($this->user->lang['TRANSFER_REASON_TRANSUCC'], $this->functions_points->number_format_points($am), $this->config['points_name'], $checked_user['username']) . '<br /><br />' . (($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="' . append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>'));
 			trigger_error($message);
 
 			$this->template->assign_vars(array(

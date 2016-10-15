@@ -2,16 +2,12 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\core;
-
-/**
-* @package Ultimate Points
-*/
 
 class points_bank_edit
 {
@@ -43,10 +39,10 @@ class points_bank_edit
 	protected $log;
 
 	/** @var string */
-	protected $phpEx;
+	protected $php_ext;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/**
 	* The database tables
@@ -65,12 +61,24 @@ class points_bank_edit
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
 	* @param \phpbb\log\log					 	$log
-	* @param									$phpEx
-	* @param									$phpbb_root_path
+	* @param string								$php_ext
+	* @param string								$root_path
 	* @param string 							$points_bank_table
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper,	\phpbb\log\log $log, $phpEx, $phpbb_root_path, $points_bank_table)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\auth\auth $auth,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\request\request $request,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		\phpbb\log\log $log,
+		$php_ext,
+		$root_path,
+		$points_bank_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -81,8 +89,8 @@ class points_bank_edit
 		$this->config 				= $config;
 		$this->helper 				= $helper;
 		$this->log 					= $log;
-		$this->phpEx 				= $phpEx;
-		$this->phpbb_root_path 		= $phpbb_root_path;
+		$this->php_ext 				= $php_ext;
+		$this->root_path 			= $root_path;
 		$this->points_bank_table 	= $points_bank_table;
 	}
 
@@ -95,7 +103,7 @@ class points_bank_edit
 		{
 			if ($this->user->data['is_bot'])
 			{
-				redirect(append_sid("{$this->phpbb_root_path}index.{$this->phpEx}"));
+				redirect(append_sid("{$this->root_path}index.{$this->php_ext}"));
 			}
 			login_box('', $this->user->lang['LOGIN_INFO']);
 		}
@@ -142,7 +150,7 @@ class points_bank_edit
 
 				// Add logs
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_MOD_BANK', false, array($points_user['username']));
-				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="'. append_sid("{$this->phpbb_root_path}viewtopic.{$this->phpEx}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->phpbb_root_path}index.{$this->phpEx}") . '">', '</a>');
+				$message = ($post_id) ? sprintf($this->user->lang['EDIT_P_RETURN_POST'], '<a href="'. append_sid("{$this->root_path}viewtopic.{$this->php_ext}", "p=" . $post_id) . '">', '</a>') : sprintf($this->user->lang['EDIT_P_RETURN_INDEX'], '<a href="' . append_sid("{$this->root_path}index.{$this->php_ext}") . '">', '</a>');
 				trigger_error((sprintf($this->user->lang['EDIT_POINTS_SET'], $this->config['points_name'])) . $message);
 			}
 			else
@@ -187,7 +195,7 @@ class points_bank_edit
 					'L_P_BANK_TITLE'	=> sprintf($this->user->lang['EDIT_P_BANK_TITLE'], $this->config['points_name']),
 					'L_USERNAME'		=> $this->user->lang['USERNAME'],
 					'L_SET_AMOUNT'		=> $this->user->lang['EDIT_SET_AMOUNT'],
-					'U_USER_LINK'		=> append_sid("{$this->phpbb_root_path}memberlist.{$this->phpEx}", "mode=viewprofile&amp;u=" . $u_id),
+					'U_USER_LINK'		=> append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $u_id),
 					'S_ACTION'			=> $this->helper->route('dmzx_ultimatepoints_controller', array('mode' => 'bank_edit', 'adm_points' => '1')),
 					'S_HIDDEN_FIELDS'	=> $hidden_fields,
 				));

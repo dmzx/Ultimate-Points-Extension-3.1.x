@@ -2,16 +2,12 @@
 /**
 *
 * @package phpBB Extension - Ultimate Points
-* @copyright (c) 2015 dmzx & posey - http://www.dmzx-web.net
+* @copyright (c) 2016 dmzx & posey - http://www.dmzx-web.net
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace dmzx\ultimatepoints\core;
-
-/**
-* @package Ultimate Points
-*/
 
 class points_robbery_user
 {
@@ -43,10 +39,10 @@ class points_robbery_user
 	protected $notification_manager;
 
 	/** @var string */
-	protected $phpEx;
+	protected $php_ext;
 
 	/** @var string phpBB root path */
-	protected $phpbb_root_path;
+	protected $root_path;
 
 	/**
 	* The database tables
@@ -69,14 +65,28 @@ class points_robbery_user
 	* @param \phpbb\request\request		 		$request
 	* @param \phpbb\config\config				$config
 	* @param \phpbb\controller\helper		 	$helper
-	* @param									$phpEx
-	* @param									$phpbb_root_path
+	* @param string								$php_ext
+	* @param string								$root_path
 	* @param string 							$points_config_table
 	* @param string 							$points_values_table
 	* @param string								$points_log_table
 	*
 	*/
-	public function __construct(\dmzx\ultimatepoints\core\functions_points $functions_points, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\notification\manager $notification_manager, $phpEx, $phpbb_root_path, $points_config_table, $points_values_table, $points_log_table)
+	public function __construct(
+		\dmzx\ultimatepoints\core\functions_points $functions_points,
+		\phpbb\auth\auth $auth,
+		\phpbb\template\template $template,
+		\phpbb\user $user,
+		\phpbb\db\driver\driver_interface $db,
+		\phpbb\request\request $request,
+		\phpbb\config\config $config,
+		\phpbb\controller\helper $helper,
+		\phpbb\notification\manager $notification_manager,
+		$php_ext,
+		$root_path,
+		$points_config_table,
+		$points_values_table,
+		$points_log_table)
 	{
 		$this->functions_points		= $functions_points;
 		$this->auth					= $auth;
@@ -87,8 +97,8 @@ class points_robbery_user
 		$this->config 				= $config;
 		$this->helper 				= $helper;
 		$this->notification_manager = $notification_manager;
-		$this->phpEx 				= $phpEx;
-		$this->phpbb_root_path 		= $phpbb_root_path;
+		$this->php_ext 				= $php_ext;
+		$this->root_path 			= $root_path;
 		$this->points_config_table 	= $points_config_table;
 		$this->points_values_table 	= $points_values_table;
 		$this->points_log_table		= $points_log_table;
@@ -99,21 +109,10 @@ class points_robbery_user
 	function main($checked_user)
 	{
 		// Get all values
-		$sql = 'SELECT *
-				FROM ' . $this->points_values_table;
-		$result = $this->db->sql_query($sql);
-		$points_values = $this->db->sql_fetchrow($result);
-		$this->db->sql_freeresult($result);
+		$points_values = $this->functions_points->points_all_values();
 
-		// Get all point config names and config values
-		$sql = 'SELECT config_name, config_value
-				FROM ' . $this->points_config_table;
-		$result = $this->db->sql_query($sql);
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$points_config[$row['config_name']] = $row['config_value'];
-		}
-		$this->db->sql_freeresult($result);
+		// Get all configs
+		$points_config = $this->functions_points->points_all_configs();
 
 		// Check, if user is allowed to use the robbery
 		if (!$this->auth->acl_get('u_use_robbery'))
@@ -147,7 +146,7 @@ class points_robbery_user
 		add_form_key('robbery_attack_user');
 
 		$submit = (isset($_POST['submit'])) ? true : false;
-		if ($submit)
+		if($submit)
 		{
 			// Select the user_id of user to be robbed
 			$sql_array = array(
@@ -244,14 +243,14 @@ class points_robbery_user
 
 				// Add robbery to the log
 				$sql = 'INSERT INTO ' . $this->points_log_table . ' ' . $this->db->sql_build_array('INSERT', array(
-						'point_send'	=> (int) $this->user->data['user_id'],
-						'point_recv'	=> $user_id,
-						'point_amount'	=> $attacked_amount,
-						'point_sendold'	=> $this->user->data['user_points'] ,
-						'point_recvold'	=> $pointsa,
-						'point_comment'	=> '',
-						'point_type'	=> '3',
-						'point_date'	=> time(),
+					'point_send'	=> (int) $this->user->data['user_id'],
+					'point_recv'	=> $user_id,
+					'point_amount'	=> $attacked_amount,
+					'point_sendold'	=> $this->user->data['user_points'] ,
+					'point_recvold'	=> $pointsa,
+					'point_comment'	=> '',
+					'point_type'	=> '3',
+					'point_date'	=> time(),
 				));
 				$this->db->sql_query($sql);
 
