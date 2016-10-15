@@ -264,7 +264,7 @@ class listener implements EventSubscriberInterface
 			// Check, if number of users in array is below the set limit
 			$new_limit = sizeof($rich_users) < $limit ? sizeof($rich_users) : $limit;
 
-			for($i = 0; $i < $new_limit; $i++)
+			for ($i = 0; $i < $new_limit; $i++)
 			{
 				$rich_users_sorted[] = $rich_users[$rich_users_sort[$i]];
 			}

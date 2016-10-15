@@ -146,7 +146,7 @@ class points_robbery_user
 		add_form_key('robbery_attack_user');
 
 		$submit = (isset($_POST['submit'])) ? true : false;
-		if($submit)
+		if ($submit)
 		{
 			// Select the user_id of user to be robbed
 			$sql_array = array(

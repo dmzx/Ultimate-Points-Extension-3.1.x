@@ -293,7 +293,7 @@ class points_main
 		// lw_ is Lotteries Won
 		while ($lw_row = $this->db->sql_fetchrow($result))
 		{
-			if($lw_row['user_id'] != 0) // 0 means there was no winner..
+			if ($lw_row['user_id'] != 0) // 0 means there was no winner..
 			{
 				$lw_username = get_username_string('full', $lw_row['user_id'], $lw_row['username'], $lw_row['user_colour']);
 
